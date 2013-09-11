@@ -8,12 +8,4 @@ package edu.victone.scrabblah.ui;
  * To change this template use File | Settings | File Templates.
  */
 public class GraphicalUIAdapter extends UserInterfaceAdapter {
-    @Override
-    void getBoard() {
-    }
-
-    @Override
-    boolean passTurn() {
-        return false;
-    }
 }

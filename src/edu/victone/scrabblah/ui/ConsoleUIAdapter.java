@@ -1,5 +1,7 @@
 package edu.victone.scrabblah.ui;
 
+import edu.victone.scrabblah.logic.Player;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -8,11 +10,32 @@ package edu.victone.scrabblah.ui;
  */
 public class ConsoleUIAdapter extends UserInterfaceAdapter {
     @Override
-    void getBoard() {
+    void setNumberPlayers(int numPlayers) {
+
     }
 
     @Override
-    boolean passTurn() {
-        return false;
+    void setPlayerData(int playerRank, Object playerData) {
+    }
+
+    @Override
+    void pass(Player p) {
+    }
+
+    @Override
+    void swap(Player p) {
+    }
+
+    @Override
+    void play(Player p) {
+    }
+
+    @Override
+    void resign(Player p) {
+    }
+
+    @Override
+    int getScore(Player p) {
+        return 0;
     }
 }
