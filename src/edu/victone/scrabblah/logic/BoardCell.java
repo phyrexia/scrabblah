@@ -18,10 +18,31 @@ public class BoardCell {
     }
 
     public boolean placeTile(Tile t) {
-        if (tile == null) {
+        if (isEmpty()) {
             tile = t;
             return true;
         }
         return false;
+    }
+
+    public boolean isEmpty() {
+        return (tile == null);
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+        switch (multiplier) {
+            case 1:
+                output = "  ";
+                break;
+            case 2:
+                output = (affectsWord ? "DW" : "DL");
+                break;
+            case 3:
+                output = (affectsWord ? "TW" : "TL");
+                break;
+        }
+        return output;
     }
 }
