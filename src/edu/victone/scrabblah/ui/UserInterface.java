@@ -20,7 +20,7 @@ public abstract class UserInterface {
 
     abstract protected void initGame();
 
-    abstract protected void startGame();
+    abstract protected boolean startGame();
 
     abstract protected void playGame();
 
