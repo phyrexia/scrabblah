@@ -10,7 +10,7 @@ import java.util.Random;
  * User: vwilson
  * Date: 9/11/13
  * Time: 4:19 PM
- * randomly populated bag of STiles
+ * A bag of Tiles
  */
 
 
@@ -18,37 +18,41 @@ public class TileBag {
     private List<Tile> bag;
 
     public TileBag() {
-        // randomly generate Tiles according to distribution and put them in a
-        // bag. Then shuffle the bag.
+        this(true);
+    }
+
+    public TileBag(boolean reg) {
+        // Place tiles in a bag according to the standard scrabble distribution
         bag = new ArrayList<Tile>();
 
-        add('j', 1); //
-        add('k', 1); //
-        add('q', 1); //
-        add('x', 1); //
-        add('z', 1); //
-        add(' ', 2); //
-        add('b', 2); //
-        add('c', 2); //
-        add('f', 2); //
-        add('h', 2); //
-        add('m', 2); //
-        add('v', 2); //
-        add('w', 2); //
-        add('y', 2); //
-        add('p', 2); //
-        add('g', 3); //
-        add('s', 4); //
-        add('u', 4); //
-        add('d', 4); //
-        add('l', 4); //
-        add('n', 6); //
-        add('t', 6); //
-        add('r', 6); //
-        add('o', 8); //
-        add('a', 9); //
-        add('i', 9); //
-        add('e', 12); //
+
+        add('j', (reg ? 1 : 2)); //
+        add('k', (reg ? 1 : 2)); //
+        add('q', (reg ? 1 : 2)); //
+        add('x', (reg ? 1 : 2)); //
+        add('z', (reg ? 1 : 2)); //
+        add(' ', (reg ? 2 : 4)); //
+        add('b', (reg ? 2 : 4)); //
+        add('c', (reg ? 2 : 6)); //
+        add('f', (reg ? 2 : 4)); //
+        add('h', (reg ? 2 : 5)); //
+        add('m', (reg ? 2 : 6)); //
+        add('v', (reg ? 2 : 3)); //
+        add('w', (reg ? 2 : 4)); //
+        add('y', (reg ? 2 : 4)); //
+        add('p', (reg ? 2 : 4)); //
+        add('g', (reg ? 3 : 5)); //
+        add('s', (reg ? 4 : 10)); //
+        add('u', (reg ? 4 : 7)); //
+        add('d', (reg ? 4 : 8)); //
+        add('l', (reg ? 4 : 7)); //
+        add('n', (reg ? 6 : 13)); //
+        add('t', (reg ? 6 : 15)); //
+        add('r', (reg ? 6 : 13)); //
+        add('o', (reg ? 8 : 15)); //
+        add('a', (reg ? 9 : 16)); //
+        add('i', (reg ? 9 : 13)); //
+        add('e', (reg ? 12 : 24)); //
 
         shuffleBag();
     }
