@@ -11,14 +11,21 @@ import edu.victone.scrabblah.logic.TileRack;
 
 public abstract class Player {
     private String name;
-    private int score;
     private int rank;
-    private boolean isHuman;
+    protected boolean isHuman;
 
-    private TileRack rack;
+    private TileRack tileRack;
+
+    private int score = 0;
+
+    public Player(String name, int rank) {
+        this.name = name;
+        this.rank = rank;
+        // tileRack = new TileRack();
+    }
 
     @Override
     public String toString() {
-        return null;
+        return "Player " + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
     }
 }

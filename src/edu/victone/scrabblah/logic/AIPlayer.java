@@ -5,11 +5,11 @@ package edu.victone.scrabblah.logic;
  * User: vwilson
  * Date: 9/11/13
  * Time: 5:23 PM
- * To change this template use File | Settings | File Templates.
  */
+
 public class AIPlayer extends Player {
-    @Override
-    public String toString() {
-        return null;
+    public AIPlayer(String name, int rank) {
+        super(name, rank);
+        isHuman = false;
     }
 }
