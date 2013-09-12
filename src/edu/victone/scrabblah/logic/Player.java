@@ -1,5 +1,7 @@
 package edu.victone.scrabblah.logic;
 
+import edu.victone.scrabblah.logic.TileRack;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -15,5 +17,8 @@ public abstract class Player {
 
     private TileRack rack;
 
-
+    @Override
+    public String toString() {
+        return null;
+    }
 }

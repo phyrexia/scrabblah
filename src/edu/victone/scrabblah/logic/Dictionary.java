@@ -12,22 +12,19 @@ import java.util.Scanner;
  * Date: 9/11/13
  * Time: 4:03 PM
  */
-public class WordList {
-    private static List<String> wordList;
+public class Dictionary {
+    private static List<String> dictionary;
 
-    public WordList(File dictionaryFile) throws FileNotFoundException {
+    public Dictionary(File dictionaryFile) throws FileNotFoundException {
         Scanner scanner = new Scanner(dictionaryFile);
 
-        wordList = new ArrayList<String>();
+        dictionary = new ArrayList<String>();
         while (scanner.hasNext()) {
-            wordList.add(scanner.next().toLowerCase());
+            dictionary.add(scanner.next().toLowerCase());
         }
     }
 
     public boolean isValidWord(String s) {
-        if (wordList.contains(s.toLowerCase())) {
-            return true;
-        }
-        return false;
+        return dictionary.contains(s.toLowerCase()) ? true : false;
     }
 }

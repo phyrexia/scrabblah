@@ -15,7 +15,7 @@ import java.util.Random;
 
 
 public class TileBag {
-    List<Tile> bag;
+    private List<Tile> bag;
 
     public TileBag() {
         // randomly generate Tiles according to distribution and put them in a
@@ -91,5 +91,10 @@ public class TileBag {
 
     public boolean isEmpty() {
         return (bag.size() == 0);
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }
