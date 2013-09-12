@@ -13,17 +13,17 @@ import java.util.List;
  */
 
 public class IOAdapter {
-    private GameEngine game;
+    private GameState gameState;
     private TileBag tileBag;
 
     public IOAdapter() {
-        game = new GameEngine();
+        gameState = new GameState();
         tileBag = new TileBag();   //ready to use
     }
 
     //Game Precondition Methods
     public void setNumberPlayers(int numPlayers) {
-        game.setNumberPlayers(numPlayers);
+        gameState.setNumberPlayers(numPlayers);
 
     }
 
@@ -61,11 +61,7 @@ public class IOAdapter {
     //***********************************************************
 
     public String getBoardState() {
-        return game.getBoard().toString();
-    }
-
-    public GameState getGameState() {
-        return game.getGameState();
+        return gameState.getBoard().toString();
     }
 
     public int getScore(Player p) {
