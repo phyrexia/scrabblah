@@ -1,30 +1,28 @@
 package edu.victone.scrabblah.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
  * Date: 9/11/13
  * Time: 4:19 PM
- * A bag of Tiles
+ * A tileBag of Tiles
  */
 
-
 public class TileBag {
-    private List<Tile> bag;
+    private List<Tile> tileBag;
+    private Random random;
 
     public TileBag() {
         this(true);
     }
 
     public TileBag(boolean reg) {
-        // Place tiles in a bag according to the standard scrabble distribution
-        bag = new ArrayList<Tile>();
+        random = new Random(System.nanoTime());
 
+        // Place tiles in a tileBag according to the standard scrabble distribution
+        tileBag = new ArrayList<Tile>();
 
         add('j', (reg ? 1 : 2)); //
         add('k', (reg ? 1 : 2)); //
@@ -57,48 +55,77 @@ public class TileBag {
         shuffleBag();
     }
 
+    public ArrayList<Tile> swapTiles(ArrayList<Tile> tilesToSwap) {
+        ArrayList<Tile> tilesToReturn;
+        int n = tilesToSwap.size();
+
+        for (Tile t : tilesToSwap) {
+            add(t);
+        }
+
+        shuffleBag();
+
+        return getTiles(n);
+    }
+
     private void add(Character c, int frequency) {
         //add a new Tile $frequency number of times.
         //this is only used for initialization.
         for (int i = 1; i <= frequency; i++) {
-            bag.add(new Tile(c));
+            tileBag.add(new Tile(c));
         }
     }
 
-    public void add(Tile t) {
-        //add a preconstructed tile to the bag.
+    private void add(Tile t) {
+        //add a preconstructed tile to the tileBag.
         //this is only used when a user swaps tiles.
-        bag.add(t);
+        tileBag.add(t);
+        shuffleBag();
     }
 
     public void dumpBag() { // don't call me.  really.
-        while (bag.size() > 0) {
-            System.out.print(bag.remove(0) + " - ");
+        while (tileBag.size() > 0) {
+            System.out.print(tileBag.remove(0) + " - ");
         }
     }
 
-    public void shuffleBag() {
-        Collections.shuffle(bag, new Random(System.nanoTime()));
+    private void shuffleBag() {
+        Collections.shuffle(tileBag, random);
+    }
+
+    public ArrayList<Tile> getTiles(int numTiles) {
+        ArrayList<Tile> tileList = new ArrayList<Tile>(numTiles);
+        for (int i = 1; i <= numTiles; i++) {
+            tileList.add(getTile());
+        }
+        return tileList;
     }
 
     public Tile getTile() { //removes and returns a tile from the list
-        if (bag.size() == 0) {
+        if (tileBag.size() == 0) {
             return null;
         }
-        //shuffleBag();
-        return bag.remove(0);
+        return tileBag.remove(0);
     }
 
     public int size() {
-        return bag.size();
+        return tileBag.size();
     }
 
     public boolean isEmpty() {
-        return (bag.size() == 0);
+        return (tileBag.size() == 0);
     }
 
     @Override
     public String toString() {
-        return null;
+        StringBuilder sb = new StringBuilder("");
+
+        for (int i = 0; i < tileBag.size(); i++) {
+            sb.append(tileBag.get(i).getCharacter());
+            if (i != tileBag.size() - 1)
+                sb.append(", ");
+        }
+
+        return sb.toString();
     }
 }
