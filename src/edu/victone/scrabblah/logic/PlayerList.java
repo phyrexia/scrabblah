@@ -19,7 +19,7 @@ public class PlayerList {
         playerList = new ArrayList<Player>(numPlayers);
     }
 
-    public boolean addPlayer(Player p) {
+    public boolean add(Player p) {
         if (playerList.size() < numPlayers) {
             playerList.add(p.getRank() - 1, p);
             return true;
@@ -43,7 +43,7 @@ public class PlayerList {
         return playerList.get(currentPlayerIndex - 1);
     }
 
-    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+    public void setFirstPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
 }

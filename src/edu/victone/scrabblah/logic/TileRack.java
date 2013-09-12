@@ -14,64 +14,37 @@ import java.util.Random;
 
 public class TileRack {
     static final int MAXSIZE = 7;
+    Random random;
 
     private List<Tile> rack;
-    private TileBag tileBag;
 
-    public TileRack(TileBag tileBag) {
-        this.tileBag = tileBag;
-
-        rack = new ArrayList<Tile>();
-        refillRack();
+    public TileRack() {
+        random = new Random(System.nanoTime());
+        rack = new ArrayList<Tile>(MAXSIZE);
     }
 
-    public List<Tile> getTiles() {
+    public List<Tile> getRack() {
         return rack;
     }
 
-    public void shuffle() {
-        Collections.shuffle(rack, new Random(System.nanoTime()));
-    }
-
-    public void refillRack() {
-        while (rack.size() < MAXSIZE) {
-            tileBag.shuffleBag();
-            Tile tile = tileBag.getTile();
-
-            if (tile != null) {
-                rack.add(tile);
-            } else
-                break;
-        }
-    }
-
     public void shuffleRack() {
-        Collections.shuffle(rack, new Random(System.nanoTime()));
+        Collections.shuffle(rack, random);
     }
 
-    public boolean removeTile(Tile st) {
-        if (rack.contains(st)) {
-            rack.remove(st);
+    public boolean addTile(Tile t) {
+        if (size() < MAXSIZE) {
+            rack.add(t);
             return true;
         }
         return false;
     }
 
-    public void swap(List<Tile> tilesToSwap) {
-        for (Tile st : tilesToSwap) {
-            if ( removeTile(st) ) {
-                bagTile(st);
-            }
+    public boolean removeTile(Tile t) {
+        if (rack.contains(t)) {
+            rack.remove(t);
+            return true;
         }
-        refillRack();
-    }
-
-    private void bagTile(Tile st) {
-        tileBag.add(st);
-    }
-
-    public int size() {
-        return rack.size();
+        return false;
     }
 
     public void dumpRack() { // don't invoke this
@@ -80,14 +53,16 @@ public class TileRack {
         }
     }
 
-    @Override
-    public String toString() {
-        String s = "";
-        for (Tile st : rack) {
-            s += st.getCharacter() + " ";
-        }
-        return s;
-
+    public int size() {
+        return rack.size();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("");
+        for (Tile t : rack) {
+            s.append(t.getCharacter() + " ");
+        }
+        return s.toString();
+    }
 }

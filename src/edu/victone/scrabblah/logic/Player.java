@@ -28,4 +28,8 @@ public abstract class Player {
     public String toString() {
         return "Player " + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
     }
+
+    public int getRank() {
+        return rank;
+    }
 }

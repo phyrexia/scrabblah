@@ -18,16 +18,17 @@ public class IOAdapter {
 
     public IOAdapter() {
         game = new GameEngine();
-        tileBag = new TileBag();
+        tileBag = new TileBag();   //ready to use
     }
 
     //Game Precondition Methods
     public void setNumberPlayers(int numPlayers) {
-
+        game.setNumberPlayers(numPlayers);
 
     }
 
     public boolean addPlayer(Player player) {
+
         return false;
     }
 

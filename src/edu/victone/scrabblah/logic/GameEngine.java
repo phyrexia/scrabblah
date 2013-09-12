@@ -7,10 +7,10 @@ import java.util.List;
  * User: vwilson
  * Date: 9/11/13
  * Time: 4:40 PM
- * To change this template use File | Settings | File Templates.
  */
 public class GameEngine {
     List<Player> playerList;
+    Board board;
 
     public GameEngine() {
 
@@ -25,8 +25,15 @@ public class GameEngine {
         return null;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     @Override
     public String toString() {
         return null;
+    }
+
+    public void setNumberPlayers(int numPlayers) {
     }
 }
