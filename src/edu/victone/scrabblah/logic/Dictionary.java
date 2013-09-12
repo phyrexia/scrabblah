@@ -19,9 +19,11 @@ public class Dictionary {
         Scanner scanner = new Scanner(dictionaryFile);
 
         dictionary = new ArrayList<String>();
+        long start = System.currentTimeMillis();
         while (scanner.hasNext()) {
             dictionary.add(scanner.next().toLowerCase());
         }
+        System.out.println("Read dictionary file in " + (System.currentTimeMillis() - start) + " seconds.");
     }
 
     public boolean contains(String s) {
