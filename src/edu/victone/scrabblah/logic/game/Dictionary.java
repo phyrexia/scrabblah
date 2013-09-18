@@ -2,9 +2,7 @@ package edu.victone.scrabblah.logic.game;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,12 +11,12 @@ import java.util.Scanner;
  * Time: 4:03 PM
  */
 public class Dictionary {
-    private static List<String> dictionary;
+    private static Set<String> dictionary;
 
     public Dictionary(File dictionaryFile) throws FileNotFoundException {
         Scanner scanner = new Scanner(dictionaryFile);
 
-        dictionary = new ArrayList<String>();
+        dictionary = new HashSet<String>();
         long start = System.currentTimeMillis();
         while (scanner.hasNext()) {
             dictionary.add(scanner.next().toUpperCase());
