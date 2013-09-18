@@ -1,6 +1,4 @@
-package edu.victone.scrabblah.logic;
-
-import edu.victone.scrabblah.logic.TileRack;
+package edu.victone.scrabblah.logic.player;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +22,14 @@ public abstract class Player {
         // tileRack = new TileRack();
     }
 
+    abstract public boolean playWord();
+
+    abstract public boolean swap();
+
+    abstract public boolean pass();
+
+    abstract public void resign();
+
     @Override
     public String toString() {
         return "Player " + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
@@ -31,5 +37,13 @@ public abstract class Player {
 
     public int getRank() {
         return rank;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

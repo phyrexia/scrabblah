@@ -1,4 +1,6 @@
-package edu.victone.scrabblah.logic;
+package edu.victone.scrabblah.logic.player;
+
+import edu.victone.scrabblah.logic.common.Tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
