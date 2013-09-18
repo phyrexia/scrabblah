@@ -23,6 +23,10 @@ public class Tile {
         return letter;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     private int getValue(Character c) {
         int val;
         switch (c.charValue()) {
@@ -76,12 +80,8 @@ public class Tile {
         return val;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     @Override
     public String toString() {
-        return letter + ": " + value;
+        return "" + letter + "" + value;
     }
 }
