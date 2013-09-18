@@ -1,4 +1,4 @@
-package edu.victone.scrabblah.logic;
+package edu.victone.scrabblah.logic.game;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,12 +21,12 @@ public class Dictionary {
         dictionary = new ArrayList<String>();
         long start = System.currentTimeMillis();
         while (scanner.hasNext()) {
-            dictionary.add(scanner.next().toLowerCase());
+            dictionary.add(scanner.next().toUpperCase());
         }
-        System.out.println("Read dictionary file in " + (System.currentTimeMillis() - start) + " seconds.");
+        System.out.println("Processed dictionary file in " + (System.currentTimeMillis() - start) + " ms.");
     }
 
     public boolean contains(String s) {
-        return dictionary.contains(s.toLowerCase());
+        return dictionary.contains(s.toUpperCase());
     }
 }
