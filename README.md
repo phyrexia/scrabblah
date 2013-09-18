@@ -26,7 +26,7 @@ B) Swap
 	3) Turn Ends  
   
 C) Play a Word  
-	1) Player places tiles on the board  
+	1) Player places tiles on the gameBoard
 	2) Player submits current placement of tiles  
 	3) Game checks for valid tile placement & valid words  
 	4) Score is computed and added to Player's score  

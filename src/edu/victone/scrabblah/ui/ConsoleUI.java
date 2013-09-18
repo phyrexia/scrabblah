@@ -47,12 +47,11 @@ public class ConsoleUI extends UserInterface {
 
         //display endgame
 
-        //printGoodbye();
+        printGoodbye();
     }
 
     private void printHeader() {
         System.out.println("*************************************");
-
     }
 
     private void printGreeting() {
@@ -64,17 +63,19 @@ public class ConsoleUI extends UserInterface {
     private void printGoodbye() {
         Player w = getWinner();
         printHeader();
-        System.out.println("Game Over! " + w.getName() + " wins with " + w.getScore() + " points!");
+        if (w != null) {
+            System.out.println("Game Over! " + w.getName() + " wins with " + w.getScore() + " points!");
+        } else {
+            System.out.println("Nobody won.  You must be debugging (or something bad has happened.)");
+        }
         printHeader();
     }
 
     private void printPlayerSummary() {
         printHeader();
-
+        System.out.println("PLAYERS:");
         for (Player p : gameState.getPlayerList()) {
-            //System.out.println("Player " + p.getRank() + ": " + p.getName() + "\tPoints: " + p.getScore());
             System.out.println(p);
-            printHeader();
         }
     }
 
