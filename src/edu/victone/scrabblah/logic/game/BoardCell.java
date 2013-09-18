@@ -1,4 +1,6 @@
-package edu.victone.scrabblah.logic;
+package edu.victone.scrabblah.logic.game;
+
+import edu.victone.scrabblah.logic.common.Tile;
 
 /**
  * Created with IntelliJ IDEA.
