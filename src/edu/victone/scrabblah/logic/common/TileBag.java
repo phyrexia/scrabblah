@@ -1,4 +1,4 @@
-package edu.victone.scrabblah.logic;
+package edu.victone.scrabblah.logic.common;
 
 import java.util.*;
 
