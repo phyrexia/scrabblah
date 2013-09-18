@@ -1,9 +1,9 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.AIPlayer;
-import edu.victone.scrabblah.logic.HumanPlayer;
-import edu.victone.scrabblah.logic.Player;
-import edu.victone.scrabblah.logic.PlayerList;
+import edu.victone.scrabblah.logic.player.AIPlayer;
+import edu.victone.scrabblah.logic.player.HumanPlayer;
+import edu.victone.scrabblah.logic.player.Player;
+import edu.victone.scrabblah.logic.game.PlayerList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +38,13 @@ public class TestDriver {
         }
 
         //System.out.print("playerListTest 2: ");
+        System.out.print("playerListTest 2: ");
+        PlayerList pl = new PlayerList(2);
+        pl.add(new HumanPlayer("Victor", 1));
+        pl.add(new HumanPlayer("Becca", 2));
+
+        System.out.println(pl.get(0));
+        System.out.println(pl.get(1));
         //playerList.setCurrentPlayerIndex(3);
 
 
@@ -51,5 +58,9 @@ public class TestDriver {
             //console mode
             System.out.println("Pass.");
         }
+    }
+
+    private static void playerListTest2() {
+
     }
 }
