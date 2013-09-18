@@ -4,8 +4,9 @@ scrabblah
 Scrabblah, a Scrabble Clone - UAB CIS466 Games Seminar
 
 Design Goals:  
-The game logic shall be totally encapsulated away from the UI/IO.  
-One user shall be able to play against AI.  
+The game logic shall be totally encapsulated away from the UI.  
+There shall be 2 to 4 players.  
+One user shall be able to play against AI players.  
 One user shall be able to play against another user on the same terminal.  
 The game rules shall mimic Scrabble in "most" ways.  
   
