@@ -206,7 +206,7 @@ public class ConsoleUI extends UserInterface {
         do {
             System.out.println("Enter the letter (# to quit: )");
             letter = scanner.next();
-            if (currentPlayer.getTileRack().toStringArray().contains(null)) ;
+            // if (currentPlayer.getTileRack().toStringArray().contains(null)) ;
         } while (true);
 
     }
