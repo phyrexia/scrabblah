@@ -13,6 +13,7 @@ import java.util.Iterator;
  */
 
 public class PlayerList implements Iterable<Player> {
+    //basically a fixed-size doubly-linked-list
     ArrayList<Player> playerList;
     private final int numPlayers;
     private int counter;
@@ -33,6 +34,13 @@ public class PlayerList implements Iterable<Player> {
         }
     }
 
+    public void setPointer(int newPointer) throws ArrayIndexOutOfBoundsException {
+        if (newPointer >= numPlayers || newPointer < 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        pointer = newPointer;
+    }
+
     public void incrementPointer() {
         if (pointer < numPlayers - 1) {
             pointer++;
@@ -43,6 +51,10 @@ public class PlayerList implements Iterable<Player> {
 
     public Player getCurrentPlayer() {
         return playerList.get(pointer);
+    }
+
+    public int size() {
+        return playerList.size();
     }
 
     @Override
