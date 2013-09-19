@@ -53,7 +53,12 @@ public class TileRack implements Iterable<Tile> {
     }
 
     public boolean contains(Tile t) {
-        return rack.contains(t);
+        for (Tile tile : rack) {
+            if (tile.getCharacter().equals(t.getCharacter())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
