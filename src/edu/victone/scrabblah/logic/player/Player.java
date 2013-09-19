@@ -28,6 +28,7 @@ public abstract class Player {
         return tileRack.addTile(t);
     }
 
+    //these abstract methods might not be strictly necessary.
     abstract public boolean playWord();
 
     abstract public boolean swap();
@@ -40,11 +41,6 @@ public abstract class Player {
         return tileRack;
     }
 
-    @Override
-    public String toString() {
-        return "Player " + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
-    }
-
     public int getRank() {
         return rank;
     }
@@ -55,5 +51,10 @@ public abstract class Player {
 
     public int getScore() {
         return score;
+    }
+
+    @Override
+    public String toString() {
+        return "P" + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
     }
 }
