@@ -29,7 +29,7 @@ public class TileBag {
         add('q', (reg ? 1 : 2)); //
         add('x', (reg ? 1 : 2)); //
         add('z', (reg ? 1 : 2)); //
-        add(' ', (reg ? 2 : 4)); //
+        //add('$', (reg ? 2 : 4)); //no blanks for now.
         add('b', (reg ? 2 : 4)); //
         add('c', (reg ? 2 : 6)); //
         add('f', (reg ? 2 : 4)); //
