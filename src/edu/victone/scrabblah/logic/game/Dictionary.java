@@ -10,6 +10,8 @@ import java.util.*;
  * Date: 9/11/13
  * Time: 4:03 PM
  */
+
+//TODO: Run this in its own thread
 public class Dictionary {
     private static Set<String> dictionary;
 
