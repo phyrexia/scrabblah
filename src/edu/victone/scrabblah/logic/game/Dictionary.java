@@ -11,22 +11,31 @@ import java.util.*;
  * Time: 4:03 PM
  */
 
-//TODO: Run this in its own thread
 public class Dictionary {
     private static Set<String> dictionary;
+    private static boolean isLoaded = false;
 
-    public Dictionary(File dictionaryFile) throws FileNotFoundException {
-        Scanner scanner = new Scanner(dictionaryFile);
-
+    public Dictionary(final File dictionaryFile) throws FileNotFoundException {
+        final long start = System.currentTimeMillis();
+        final Scanner scanner = new Scanner(dictionaryFile);
         dictionary = new HashSet<String>();
-        long start = System.currentTimeMillis();
-        while (scanner.hasNext()) {
-            dictionary.add(scanner.next().toUpperCase());
-        }
-        System.out.println("Processed dictionary file in " + (System.currentTimeMillis() - start) + " ms.");
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                while (scanner.hasNext()) {
+                    dictionary.add(scanner.next().toUpperCase());
+                }
+                System.out.println("(Processed dictionary file in " + (System.currentTimeMillis() - start) + " ms.)");
+                isLoaded = true;
+            }
+        });
+        t.start();
     }
 
     public boolean contains(String s) {
         return dictionary.contains(s.toUpperCase());
+    }
+
+    public boolean isLoaded() {
+        return isLoaded;
     }
 }
