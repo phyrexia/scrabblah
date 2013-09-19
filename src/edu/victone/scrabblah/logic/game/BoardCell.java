@@ -9,9 +9,9 @@ import edu.victone.scrabblah.logic.common.Tile;
  * Time: 3:47 PM
  */
 public class BoardCell {
-    int multiplier;
-    boolean affectsWord;
-    Tile tile;
+    private int multiplier;
+    private boolean affectsWord;
+    private Tile tile;
 
     public BoardCell(int multiplier, boolean affectsWord) {
         this.multiplier = multiplier;   //double or triple
@@ -19,7 +19,7 @@ public class BoardCell {
         tile = null;
     }
 
-    public boolean placeTile(Tile t) {
+    public boolean setTile(Tile t) {
         if (isEmpty()) {
             tile = t;
             return true;
@@ -46,5 +46,17 @@ public class BoardCell {
                 break;
         }
         return output;
+    }
+
+    public int getMultiplier() {
+        return multiplier;
+    }
+
+    public boolean affectsWord() {
+        return affectsWord;
+    }
+
+    public Tile getTile() {
+        return tile;
     }
 }
