@@ -52,6 +52,10 @@ public class TileRack implements Iterable<Tile> {
         return rack.size();
     }
 
+    public boolean contains(Tile t) {
+        return rack.contains(t);
+    }
+
     @Override
     public Iterator<Tile> iterator() {
         return rack.iterator();
@@ -59,13 +63,11 @@ public class TileRack implements Iterable<Tile> {
 
     @Override
     public String toString() {
-        String row = "|------TILE--RACK------|";
-        StringBuilder sb = new StringBuilder(row + "\n| ");
+        StringBuilder sb = new StringBuilder("Tile Rack: ");
 
         for (Tile t : rack) {
             sb.append(t + " ");
         }
-        sb.append("|\n" + row);
         return sb.toString();
     }
 }
