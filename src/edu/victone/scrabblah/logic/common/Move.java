@@ -7,5 +7,5 @@ package edu.victone.scrabblah.logic.common;
  * Time: 5:07 PM
  */
 public enum Move {
-    PLAY, PASS, SWAP, RESIGN;
+    PLAY, PASS, SWAP, RESIGN, SHUFFLE
 }
