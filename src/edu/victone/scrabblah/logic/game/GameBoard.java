@@ -1,5 +1,8 @@
 package edu.victone.scrabblah.logic.game;
 
+import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.common.Tile;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -27,7 +30,7 @@ public class GameBoard {
 
     public static final int MAXPLAYERS = 4;
 
-    private BoardCell[][] board = new BoardCell[15][15];
+    private BoardCell[][] boardCells = new BoardCell[15][15];
 
     public GameBoard() {
         initBoard();
@@ -39,19 +42,19 @@ public class GameBoard {
                 switch (cellValues[i][j]) {
                     case -1: //star cell
                     case 0:  //regular
-                        board[i][j] = new BoardCell(1, false);
+                        boardCells[i][j] = new BoardCell(1, false);
                         break;
                     case 1:  //dublet
-                        board[i][j] = new BoardCell(2, false);
+                        boardCells[i][j] = new BoardCell(2, false);
                         break;
                     case 2:  //triplet
-                        board[i][j] = new BoardCell(3, false);
+                        boardCells[i][j] = new BoardCell(3, false);
                         break;
                     case 3:  //dubword
-                        board[i][j] = new BoardCell(2, true);
+                        boardCells[i][j] = new BoardCell(2, true);
                         break;
                     case 4:  //tripword
-                        board[i][j] = new BoardCell(3, true);
+                        boardCells[i][j] = new BoardCell(3, true);
                         break;
                 }
             }
@@ -59,20 +62,23 @@ public class GameBoard {
         System.out.println("GameBoard initialized.");
     }
 
+    public BoardCell getCell(Coordinate coord) {
+        return boardCells[coord.getX()][coord.getY()];
+    }
+
     @Override
     public String toString() {
         String header = "  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15\n";
-        String row = " |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|\n";
+        String row = " |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|";
         StringBuilder sb = new StringBuilder(header);
-        sb.append(row);
+        sb.append(row + "\n");
 
         for (int i = 0; i < 15; i++) {
             sb.append((char) (i + 65));
             sb.append("|");
-            //sb.append( i < 10 ? (" " + i + "|") : ("" + i + "|") );
             for (int j = 0; j < 15; j++) {
                 //TODO: this
-                BoardCell bc = board[i][j];
+                BoardCell bc = boardCells[i][j];
                 if (bc.isEmpty()) {
                     switch (bc.getMultiplier()) {
                         case 1:
@@ -89,9 +95,11 @@ public class GameBoard {
                     sb.append(bc.getTile().toString());
                 }
             }
-            sb.append("\n");
-            sb.append(row);
+            sb.append((char) (i + 65));
+
+            sb.append("\n" + row + "\n");
         }
+        sb.append(header);
         return sb.toString();
     }
 }
