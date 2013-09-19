@@ -15,7 +15,7 @@ public class Dictionary {
     private static Set<String> dictionary;
     private static boolean isLoaded = false;
 
-    public Dictionary(final File dictionaryFile) throws FileNotFoundException {
+    public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
         final long start = System.currentTimeMillis();
         final Scanner scanner = new Scanner(dictionaryFile);
         dictionary = new HashSet<String>();
@@ -31,11 +31,11 @@ public class Dictionary {
         t.start();
     }
 
-    public boolean contains(String s) {
-        return dictionary.contains(s.toUpperCase());
+    public static boolean isLoaded() {
+        return isLoaded;
     }
 
-    public boolean isLoaded() {
-        return isLoaded;
+    public static boolean contains(String s) {
+        return dictionary.contains(s.toUpperCase());
     }
 }
