@@ -14,64 +14,39 @@ import java.util.Iterator;
 
 public class PlayerList implements Iterable<Player> {
     ArrayList<Player> playerList;
-    int currentNumPlayers;
-    int MAX_NUM_PLAYERS;
-    int currentPlayerIndex;
-    boolean fullyPopulated = false;
+    private final int numPlayers;
+    private int counter;
+    private int pointer;
 
     public PlayerList(int numPlayers) {
-        MAX_NUM_PLAYERS = numPlayers;
-        currentNumPlayers = 0;
+        this.numPlayers = numPlayers;
         playerList = new ArrayList<Player>(numPlayers);
-
-
     }
 
     public boolean add(Player p) {
-        if (currentNumPlayers < MAX_NUM_PLAYERS) {
+        if (counter < numPlayers) {
             playerList.add(p);
-            currentNumPlayers++;
+            counter++;
             return true;
         } else {
             return false;
         }
     }
 
-    public Player get(int i) {
-        return playerList.get(i);
-    }
-
-    public void setFirstPlayerIndex(int currentPlayerIndex) {
-        this.currentPlayerIndex = currentPlayerIndex;
-    }
-
-    public Player getCurrentPlayerIndex() {
-        return playerList.get(currentPlayerIndex - 1);
-    }
-
-    public Player getNextPlayer() {
-        Player nextPlayer = null;
-        if (currentPlayerIndex == MAX_NUM_PLAYERS) {
-            currentPlayerIndex = 1;
-            nextPlayer = playerList.get(0);
+    public void incrementPointer() {
+        if (pointer < numPlayers - 1) {
+            pointer++;
         } else {
-            nextPlayer = playerList.get(currentPlayerIndex++);
+            pointer = 0;
         }
-        return nextPlayer;
     }
 
-    public int getMaxNumberPlayers() {
-        return MAX_NUM_PLAYERS;
-    }
-
-
-    public int getCurrentNumPlayers() {
-        return currentNumPlayers;
+    public Player getCurrentPlayer() {
+        return playerList.get(pointer);
     }
 
     @Override
     public Iterator<Player> iterator() {
-        Iterator<Player> iter = playerList.iterator();
-        return iter;
+        return playerList.iterator();
     }
 }
