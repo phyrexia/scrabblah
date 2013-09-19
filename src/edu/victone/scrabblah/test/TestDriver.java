@@ -57,8 +57,4 @@ public class TestDriver {
             System.out.println("Pass.");
         }
     }
-
-    private static void playerListTest2() {
-
-    }
 }
