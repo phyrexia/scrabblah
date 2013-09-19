@@ -37,16 +37,14 @@ public class TestDriver {
             System.out.println("Pass.");
         }
 
-        //System.out.print("playerListTest 2: ");
         System.out.print("playerListTest 2: ");
         PlayerList pl = new PlayerList(2);
         pl.add(new HumanPlayer("Victor", 1));
         pl.add(new HumanPlayer("Becca", 2));
 
-        System.out.println(pl.get(0));
-        System.out.println(pl.get(1));
-        //playerList.setCurrentPlayerIndex(3);
-
+        System.out.println(pl.getCurrentPlayer());
+        pl.incrementPointer();
+        System.out.println(pl.getCurrentPlayer());
 
     }
 
