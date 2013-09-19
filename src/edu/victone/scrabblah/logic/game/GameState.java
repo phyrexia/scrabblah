@@ -1,7 +1,11 @@
 package edu.victone.scrabblah.logic.game;
 
+import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
 import edu.victone.scrabblah.logic.player.Player;
+
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,11 +14,8 @@ import edu.victone.scrabblah.logic.player.Player;
  * Time: 5:00 PM
  */
 
-//The "MODEL" of our Model-View-Controller
-
 public class GameState {
     private GameBoard gameBoard;
-    private GameEngine gameEngine;
     private PlayerList playerList;
     private TileBag tileBag;
 
@@ -23,9 +24,9 @@ public class GameState {
     private Player winner;
 
     public GameState() {
-        gameEngine = new GameEngine();
+        GameEngine.initialize();
         gameBoard = new GameBoard();
-
+        tileBag = new TileBag();
     }
 
     public GameBoard getGameBoard() {
@@ -36,46 +37,79 @@ public class GameState {
         playerList = new PlayerList(numPlayers);
     }
 
-    public int getNumberPlayers() {
-        return playerList.getMaxNumberPlayers();
-    }
-
     public boolean addPlayer(Player p) {
         return playerList.add(p);
+    }
+
+    public int getNumberPlayers() {
+        return playerList.size();
     }
 
     public PlayerList getPlayerList() {
         return playerList;
     }
 
-    public boolean ready() {
-        if (playerList != null) {
-            return true;
+    public boolean startGame() {
+        if (getPlayerList() == null) {
+            return false;
         }
-        return false;
+
+        getPlayerList().setPointer(new Random().nextInt(getNumberPlayers()));
+
+        for (Player p : getPlayerList()) {
+            for (int i = 0; i < 7; i++) {
+                p.addTile(getTile());
+            }
+        }
+        return true;
     }
 
-    public void startGame() {
+    private boolean placeTile(Tile t, Coordinate coord) {
+        if (!gameBoard.getCell(coord).isEmpty()) {
+            return false;
+        }
+        return gameBoard.getCell(coord).setTile(t);
+    }
 
+    private Tile removeTile(Coordinate coord) {
+        return null;
+    }
+
+    private void endTurn() {
+        turnCounter++;
+        playerList.incrementPointer();
+    }
+
+    private void lockOccupiedCells() {
+        //todo: implement me
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                gameBoard.getCell(new Coordinate(i, j)).lock();
+            }
+        }
     }
 
     public boolean isGameOver() {
-        //TODO: implement me
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        //  TODO: implement me
-        return null;
+        //TODO: implement me properly
+        return turnCounter > 10;
     }
 
     public Player getCurrentPlayer() {
-        //TODO: implement me
-        return null;
+        return playerList.getCurrentPlayer();
     }
 
     public Player getWinner() {
         return winner;
     }
+
+    public Tile getTile() {
+        return tileBag.getTile();
+    }
+
+    @Override
+    public String toString() {
+        //  TODO: implement me
+        return "A gamestate draws near.  Command?";
+    }
+
 }
