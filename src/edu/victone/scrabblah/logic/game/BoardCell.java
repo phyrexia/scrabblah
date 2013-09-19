@@ -12,6 +12,7 @@ public class BoardCell {
     private int multiplier;
     private boolean affectsWord;
     private Tile tile;
+    private boolean lock;
 
     public BoardCell(int multiplier, boolean affectsWord) {
         this.multiplier = multiplier;   //double or triple
@@ -25,6 +26,21 @@ public class BoardCell {
             return true;
         }
         return false;
+    }
+
+    public Tile recallTile() {
+        if (lock) {
+            return null;
+        } else {
+            Tile retVal = tile;
+            tile = null;
+            return retVal;
+        }
+    }
+
+    public void lock() {
+        if (tile != null)
+            lock = true;
     }
 
     public boolean isEmpty() {
