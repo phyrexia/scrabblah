@@ -56,17 +56,42 @@ public class GameBoard {
                 }
             }
         }
+        System.out.println("GameBoard initialized.");
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("");
+        String header = "  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15\n";
+        String row = " |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|\n";
+        StringBuilder sb = new StringBuilder(header);
+        sb.append(row);
 
         for (int i = 0; i < 15; i++) {
+            sb.append((char) (i + 65));
+            sb.append("|");
+            //sb.append( i < 10 ? (" " + i + "|") : ("" + i + "|") );
             for (int j = 0; j < 15; j++) {
                 //TODO: this
+                BoardCell bc = board[i][j];
+                if (bc.isEmpty()) {
+                    switch (bc.getMultiplier()) {
+                        case 1:
+                            sb.append("  |");
+                            break;
+                        case 2:
+                            sb.append(bc.affectsWord() ? "DW|" : "DL|");
+                            break;
+                        case 3:
+                            sb.append(bc.affectsWord() ? "TW|" : "TL|");
+                            break;
+                    }
+                } else {
+                    sb.append(bc.getTile().toString());
+                }
             }
+            sb.append("\n");
+            sb.append(row);
         }
-        return null;
+        return sb.toString();
     }
 }
