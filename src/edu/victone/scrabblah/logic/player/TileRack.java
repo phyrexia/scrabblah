@@ -63,8 +63,11 @@ public class TileRack {
     public String toString() {
         StringBuilder s = new StringBuilder("");
         for (Tile t : rack) {
-            s.append(t.getCharacter() + " ");
+            s.append(t + " ");
         }
+        s.append("\n1 :2 :3 :4 :5 :6 :7 ");
         return s.toString();
     }
+
+
 }
