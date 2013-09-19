@@ -22,30 +22,29 @@ public class GameEngine {
         }
     }
 
-    public static int computeScore(GameBoard gameBoard, Word word) {
-        return 0;
+    public static int computeScore(GameBoard oldBoard, GameBoard currentBoard) {
+        return 4;
     }
 
-    private static boolean isLegalWord(GameBoard gameBoard, Object potentialWord) {
-        //TODO: Object -> derived class
-        return false;
-    }
-
-    public static boolean isLegalWordPlacement(GameBoard b, Word w, int turn) {
-        if (!Dictionary.contains(w.toString())) {
-            return false;
-        }
-
-        if (turn == 1) {
-            if (false /* word doesn't touch center cell */) {
-                return false;
-            }
-        }
-
-        //TODO: find other words created by placement of w on b
-
-        //TODO: additional verification
-
+    private static boolean isLegalPlay(GameBoard oldBoard, GameBoard currentBoard) {
         return true;
     }
+
+//    public static boolean isLegalWordPlacement(GameBoard b, Word w, int turn) {
+//        if (!Dictionary.contains(w.toString())) {
+//            return false;
+//        }
+//
+//        if (turn == 1) {
+//            if (false /* word doesn't touch center cell */) {
+//                return false;
+//            }
+//        }
+//
+//        //TODO: find other words created by placement of w on b
+//
+//        //TODO: additional verification
+//
+//        return true;
+//    }
 }
