@@ -27,7 +27,7 @@ public class Tile {
         return value;
     }
 
-    private int getValue(Character c) {
+    public static int getValue(Character c) {
         int val;
         switch (c.charValue()) {
             case 'e':
