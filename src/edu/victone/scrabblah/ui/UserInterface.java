@@ -1,11 +1,13 @@
 package edu.victone.scrabblah.ui;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.game.GameState;
 import edu.victone.scrabblah.logic.player.Player;
 import edu.victone.scrabblah.logic.common.Word;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 public abstract class UserInterface {
     protected GameState gameState;
+    //TODO: the following array should be a collection so there are no duplicate names
     public static String[] playerNames = {"Charles B.", "Alan T.", "John V.N."};
 
     public UserInterface() {
@@ -36,19 +39,22 @@ public abstract class UserInterface {
         return gameState.addPlayer(player);
     }
 
-    abstract protected boolean startGame(); //engage
-    //figure out who goes first.  set firstplayer.
+    protected boolean startGame() {
+        return gameState.startGame();
+    }
 
-    //"CONTROL" - Gameplay Methods - these change state
+    //Gameplay Methods - these change state
 
     protected void turnLoop() {
         //display board, current player data, prompt for move
         while (!gameState.isGameOver()) {
-            playTurn(gameState.getCurrentPlayer());
+            playTurn(gameState.getNextPlayer());
         }
     }
 
     abstract protected void playTurn(Player p); //implement this in your derived *UI classes
+
+    protected abstract Move queryMove();
 
     abstract protected void pass(Player p); //player passes a turn
 
@@ -62,8 +68,6 @@ public abstract class UserInterface {
     abstract protected void resign(Player p); //player quits
 
     //Game State Getters
-
-    //"VIEW"
 
     public int getNumberPlayers() {
         return gameState.getNumberPlayers();
@@ -83,4 +87,5 @@ public abstract class UserInterface {
         //TODO: implement me
         return null;
     }
+
 }
