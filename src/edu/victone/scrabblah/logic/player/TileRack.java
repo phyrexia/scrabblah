@@ -2,10 +2,7 @@ package edu.victone.scrabblah.logic.player;
 
 import edu.victone.scrabblah.logic.common.Tile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +11,7 @@ import java.util.Random;
  * Time: 4:15 PM
  */
 
-public class TileRack {
+public class TileRack implements Iterable<Tile> {
     static final int MAXSIZE = 7;
     Random random;
 
@@ -23,10 +20,6 @@ public class TileRack {
     public TileRack() {
         random = new Random(System.nanoTime());
         rack = new ArrayList<Tile>(MAXSIZE);
-    }
-
-    public List<Tile> getRack() {
-        return rack;
     }
 
     public void shuffleRack() {
@@ -60,14 +53,19 @@ public class TileRack {
     }
 
     @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder("");
-        for (Tile t : rack) {
-            s.append(t + " ");
-        }
-        s.append("\n1 :2 :3 :4 :5 :6 :7 ");
-        return s.toString();
+    public Iterator<Tile> iterator() {
+        return rack.iterator();
     }
 
+    @Override
+    public String toString() {
+        String row = "|------TILE--RACK------|";
+        StringBuilder sb = new StringBuilder(row + "\n| ");
 
+        for (Tile t : rack) {
+            sb.append(t + " ");
+        }
+        sb.append("|\n" + row);
+        return sb.toString();
+    }
 }
