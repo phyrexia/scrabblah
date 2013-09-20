@@ -11,12 +11,8 @@ public class Tile {
     private int value;
 
     public Tile(Character c) {
-        letter = c;
-        value = getValue(c);
-    }
-
-    public Tile(char c) {
-        this(new Character(c));
+        letter = Character.toLowerCase(c);
+        value = Tile.getValue(c);
     }
 
     public Character getCharacter() {
