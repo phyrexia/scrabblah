@@ -18,8 +18,8 @@ import java.util.Random;
 
 public abstract class UserInterface {
     protected GameState gameState;
-    //TODO: the following array should be a collection so there are no duplicate names
-    public static String[] playerNames = {"Charles B.", "Alan T.", "John V.N."};
+    //TODO: the following array should be a collection so duplicate names can't occur
+    public static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
 
     public UserInterface() {
         gameState = new GameState();
@@ -27,65 +27,87 @@ public abstract class UserInterface {
 
     //Game Precondition Methods
 
-    abstract protected int queryNumberPlayers(); //get num players from user
+    protected abstract int queryNumberPlayers(); //get num players from user
 
-    abstract protected Player queryPlayerData(int rank); //get player data from user
+    protected abstract Player queryPlayerData(int rank); //get player data from user
 
-    protected void setNumberPlayers(int numPlayers) {
+    protected final void setNumberPlayers(int numPlayers) {
         gameState.setNumberPlayers(numPlayers);
     }
 
-    protected boolean addPlayerToGame(Player player) {
+    protected final boolean addPlayerToGame(Player player) {
         return gameState.addPlayer(player);
     }
 
-    protected boolean startGame() {
+    protected final boolean startGame() {
         return gameState.startGame();
     }
 
     //Gameplay Methods - these change state
 
-    protected void turnLoop() {
+    protected final void turnLoop() {
         //display board, current player data, prompt for move
-        while (!gameState.isGameOver()) {
-            playTurn(gameState.getNextPlayer());
+        while (!gameState.isGameOver()) { //while the game is not over...
+            //it's up to the gameState/gameEngine to determine
+            //if a valid move has been made, and to increment the
+            //player pointer.
+            playTurn(gameState.getCurrentPlayer());
         }
     }
 
-    abstract protected void playTurn(Player p); //implement this in your derived *UI classes
+    protected abstract Move queryMoveType(); //implement this too
 
-    protected abstract Move queryMove();
+    protected abstract void playTurn(Player p); //implement this in your derived *UI classes
 
     abstract protected void pass(Player p); //player passes a turn
 
     abstract protected void swap(Player p); //player swaps some tiles
 
-    abstract protected boolean play(Player player, Word word, Coordinate coord, boolean orientation);
+    protected final void shuffle(Player p) {
+        //player shuffles rack
+
+        p.getTileRack().shuffleRack();
+    }
+
+    protected final boolean play(Player player, Word word, Coordinate coord, boolean orientation)
     //player attempts to play word at point, aligned orientation-wise.
     //if it's a valid move, makes the move, and returns true
     //if it's not a valid move, doesn't make the move, and returns false
+    {
+        // return
+        return false;
+    }
 
     abstract protected void resign(Player p); //player quits
 
     //Game State Getters
 
-    public int getNumberPlayers() {
+    public boolean attemptEndTurn() {
+        return gameState.endTurn();
+    }
+
+    public String getGameStatus() {
+        //return gameState.getStatus();
+        return "game status.";
+    }
+
+    protected final int getNumberPlayers() {
         return gameState.getNumberPlayers();
     }
 
-    public Player getCurrentPlayer() {
+    protected final Player getCurrentPlayer() {
         return gameState.getCurrentPlayer();
     }
 
-    protected boolean isGameOver() {
+    protected final boolean isGameOver() {
         return gameState.isGameOver();
     }
 
-    abstract protected void displayGame();
+    // abstract protected void displayGame();
 
-    protected Player getWinner() {
-        //TODO: implement me
-        return null;
+    protected final Player getWinner() {
+        //this method might be unnecessary
+        return gameState.getWinner();
     }
 
 }
