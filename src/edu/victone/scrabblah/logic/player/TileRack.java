@@ -35,9 +35,11 @@ public class TileRack implements Iterable<Tile> {
     }
 
     public boolean removeTile(Tile t) {
-        if (rack.contains(t)) {
-            rack.remove(t);
-            return true;
+        for (Tile tile : rack) {
+            if (tile.getCharacter().equals(t.getCharacter())) {
+                rack.remove(tile);
+                return true;
+            }
         }
         return false;
     }
