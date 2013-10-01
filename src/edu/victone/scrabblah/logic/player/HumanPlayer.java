@@ -17,21 +17,20 @@ public class HumanPlayer extends Player {
 
     @Override
     public boolean playWord() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public boolean swap() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public boolean pass() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public void resign() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
