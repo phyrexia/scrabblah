@@ -77,7 +77,6 @@ public class GameBoard {
             sb.append((char) (i + 65));
             sb.append("|");
             for (int j = 0; j < 15; j++) {
-                //TODO: this
                 BoardCell bc = boardCells[i][j];
                 if (bc.isEmpty()) {
                     switch (bc.getMultiplier()) {
@@ -92,7 +91,7 @@ public class GameBoard {
                             break;
                     }
                 } else {
-                    sb.append(bc.getTile().toString());
+                    sb.append(bc.getTile().toString() + "|");
                 }
             }
             sb.append((char) (i + 65));
