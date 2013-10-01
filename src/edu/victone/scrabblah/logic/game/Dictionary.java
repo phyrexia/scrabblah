@@ -24,7 +24,7 @@ public class Dictionary {
                 while (scanner.hasNext()) {
                     dictionary.add(scanner.next().toUpperCase());
                 }
-                System.out.println("(Processed dictionary file in " + (System.currentTimeMillis() - start) + " ms.)");
+                System.out.println("(Processed dictionary file in " + (System.currentTimeMillis() - start) + "ms.)");
                 isLoaded = true;
             }
         });
