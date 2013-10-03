@@ -47,6 +47,18 @@ public class BoardCell {
         return (tile == null);
     }
 
+    public int getMultiplier() {
+        return multiplier;
+    }
+
+    public boolean affectsWord() {
+        return affectsWord;
+    }
+
+    public Tile getTile() {
+        return tile;
+    }
+
     @Override
     public String toString() {
         String output = "";
@@ -62,17 +74,5 @@ public class BoardCell {
                 break;
         }
         return output;
-    }
-
-    public int getMultiplier() {
-        return multiplier;
-    }
-
-    public boolean affectsWord() {
-        return affectsWord;
-    }
-
-    public Tile getTile() {
-        return tile;
     }
 }
