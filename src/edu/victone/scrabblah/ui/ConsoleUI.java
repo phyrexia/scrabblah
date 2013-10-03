@@ -3,11 +3,11 @@ package edu.victone.scrabblah.ui;
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.common.Tile;
-import edu.victone.scrabblah.logic.common.Word;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.HumanPlayer;
 import edu.victone.scrabblah.logic.player.Player;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -17,8 +17,6 @@ import java.util.Scanner;
  * Date: 9/11/13
  * Time: 7:32 PM
  */
-
-//TODO: refactor scanner input for error-catching
 
 public class ConsoleUI extends UserInterface {
     Scanner scanner;
@@ -38,7 +36,6 @@ public class ConsoleUI extends UserInterface {
             addPlayerToGame(queryPlayerData(i));
         }
 
-
         //verifyPlayerData(); //??
 
         startGame();
@@ -46,7 +43,6 @@ public class ConsoleUI extends UserInterface {
         turnLoop(); //loops until game is over
 
         //DEBUG
-
         //END DEBUG
 
         //Player winner = gameState.getWinner();
@@ -77,7 +73,7 @@ public class ConsoleUI extends UserInterface {
 
     private void printGreeting() {
         printHeader();
-        System.out.println("Scrabblah - UAB CS466 - Games Seminar\n(c) Victor Wilson 2013");
+        System.out.println("Scrabblah - UAB CS496 - Games Seminar\n(c) Victor Wilson 2013");
         //printHeader();
     }
 
@@ -103,12 +99,16 @@ public class ConsoleUI extends UserInterface {
 
     @Override
     protected int queryNumberPlayers() {
-        //todo refactor for error catching
-        int n;
+        int n = -1;
         printHeader();
         do {
             System.out.print("How many players? (2-4): ");
-            n = scanner.nextInt();
+            try {
+                n = scanner.nextInt();
+
+            } catch (Exception e) {
+                System.out.println("Please enter a number.");
+            }
             if (n < 2 || n > 4) {
                 System.out.println("Please enter either 2, 3, or 4.");
             }
@@ -172,6 +172,23 @@ public class ConsoleUI extends UserInterface {
                 return Move.RESIGN;
             case 'h':
                 return Move.SHUFFLE;
+            case 'e':
+                return Move.ENDTURN;
+            case 'q':
+                String input = null;
+                do {
+                    System.out.print("Are you sure you want to exit? (y/n): ");
+                    input = scanner.next().toLowerCase();
+                    if (input.equals("y")) {
+                        System.out.println("Terminating.");
+                        System.exit(0);
+                    } else if (input.equals("n")) {
+                        break;
+                    }
+
+                } while (!input.equals("y") && !input.equals("n"));
+                return Move.DONOTHING;
+
             default:
                 //throw new Exception("Bad move input.");
                 return null;
@@ -191,23 +208,109 @@ public class ConsoleUI extends UserInterface {
                 queryPlay(currentPlayer);
                 break;
             case SWAP:
+                querySwap(currentPlayer);
                 break;
             case PASS:
                 break;
             case RESIGN:
+                //currentPlayer quits
+                break;
+            case SHUFFLE:
+                currentPlayer.getTileRack().shuffleRack();
+                break;
+            case ENDTURN:
+                //do something to end the turn.
+                if (!attemptEndTurn()) {
+
+                }
+                break;
+            case DONOTHING:
                 break;
         }
+        //attemptEndTurn();
+    }
+
+    private void querySwap(Player currentPlayer) {
+        String input = null;
+        Character c;
+        Tile t = null;
+        ArrayList<Tile> arrList = new ArrayList<Tile>();
+
+        do {
+            System.out.print("Enter the tile to swap(# to finish): ");
+            input = scanner.next().toLowerCase();
+            if (input.length() > 1) {
+                System.out.println("Please enter a single letter.");
+                continue;
+            }
+            c = input.charAt(0);
+            t = new Tile(c);
+            if (!currentPlayer.getTileRack().contains(t)) {
+                System.out.println("Your rack does not contain " + c.toString() + ".  Enter a valid letter.");
+            }
+        } while (!currentPlayer.getTileRack().contains(t));
+
+        arrList.add(t);
+
+        //remove tiles in arrList from currentPlayer.tileRack
+
+        //end turn
     }
 
     private void queryPlay(Player currentPlayer) {
         printHeader();
         System.out.println(currentPlayer.getTileRack());
-        String letter;
+        String input;
+        Tile t = null;
         do {
-            System.out.println("Enter the letter (# to quit: )");
-            letter = scanner.next();
-            // if (currentPlayer.getTileRack().toStringArray().contains(null)) ;
-        } while (true);
+            System.out.print("Enter the letter (# to finish): ");
+            input = scanner.next().toLowerCase();
+            if (input.length() > 1) {
+                System.out.println("Please enter a single letter.");
+                continue;
+            }
+            Character c = input.charAt(0);
+            t = new Tile(c);
+
+
+            if (!currentPlayer.getTileRack().contains(t)) {
+                System.out.println("Your rack does not contain " + c.toString() + ".  Enter a valid letter.");
+            }
+        } while (!currentPlayer.getTileRack().contains(t));
+
+        Integer x = null, y = null;
+        boolean validX = false, validY = false;
+
+        do {
+            System.out.print("Enter the horizontal coordinate: ");
+            input = scanner.next().toUpperCase();
+            x = (int) input.charAt(0) - 65;
+            if (input.length() == 1 && x >= 0 && x <= 14) {
+                validX = true;
+            } else {
+                System.out.println("Please enter a character between A and O.");
+            }
+        } while (!validX);
+
+        do {
+            System.out.print("Enter the vertical coordinate: ");
+            input = scanner.next().toUpperCase();
+            y = (int) input.charAt(0) - 65;
+            if (input.length() == 1 && y >= 0 && y <= 14) {
+                validY = true;
+            } else {
+                System.out.println("Please enter a character between A and O.");
+            }
+        } while (!validY);
+
+        Coordinate coord = new Coordinate(x, y);
+
+        if (gameState.getGameBoard().getCell(coord).isEmpty()) {
+            System.out.println(currentPlayer.getTileRack().removeTile(t));
+            gameState.placeTile(t, coord);
+        } else {
+            System.out.println("Please choose an unoccupied cell.");
+        }
 
     }
 
@@ -219,17 +322,7 @@ public class ConsoleUI extends UserInterface {
     public void swap(Player p) {
     }
 
-  /*  @Override
-    public boolean play(Player player, Tile tile, Coordinate coord, boolean orientation) {
-        return false;
-    }
-    */
-
     @Override
     public void resign(Player p) {
     }
-
-//    @Override
-//    protected void displayGame() {
-//    }
 }
