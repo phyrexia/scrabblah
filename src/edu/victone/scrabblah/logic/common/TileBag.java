@@ -76,7 +76,7 @@ public class TileBag {
         }
     }
 
-    private void add(Tile t) {
+    public void add(Tile t) {
         //add a preconstructed tile to the tileBag.
         //this is only used when a user swaps tiles.
         tileBag.add(t);
