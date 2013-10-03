@@ -43,6 +43,10 @@ public class BoardCell {
             lock = true;
     }
 
+    public boolean isLocked() {
+        return lock;
+    }
+
     public boolean isEmpty() {
         return (tile == null);
     }
