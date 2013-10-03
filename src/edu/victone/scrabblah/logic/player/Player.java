@@ -53,6 +53,10 @@ public abstract class Player {
         return score;
     }
 
+    public void addScore(int delta) {
+        score += delta;
+    }
+
     @Override
     public String toString() {
         return "P" + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
