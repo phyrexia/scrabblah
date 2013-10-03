@@ -3,6 +3,9 @@ package edu.victone.scrabblah.logic.game;
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -27,13 +30,28 @@ public class GameBoard {
                     {0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0},
                     {4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4}};
 
-
-    public static final int MAXPLAYERS = 4;
-
     private BoardCell[][] boardCells = new BoardCell[15][15];
 
     public GameBoard() {
         initBoard();
+    }
+
+    public GameBoard(GameBoard gb) {
+        initBoard();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (boardCells[i][j].isEmpty()) {
+                    continue;
+                } else {
+                    Coordinate coord = new Coordinate(i, j);
+                    boardCells[i][j].setTile(new Tile(gb.getCell(coord).getTile().getCharacter()));
+                    if (gb.getCell(coord).isLocked()) {
+                        boardCells[i][j].lock();
+                    }
+                }
+
+            }
+        }
     }
 
     private void initBoard() {
@@ -64,6 +82,26 @@ public class GameBoard {
 
     public BoardCell getCell(Coordinate coord) {
         return boardCells[coord.getY()][coord.getX()];
+    }
+
+    public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
+        ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
+
+        retVal.add(getCell(new Coordinate(coord.getX() + 1, coord.getY())));
+        retVal.add(getCell(new Coordinate(coord.getX() - 1, coord.getY())));
+        retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() + 1)));
+        retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() - 1)));
+
+        return retVal;
+    }
+
+    public int getNumOccupiedCells() {
+        int ctr = 0;
+        for (int i = 0; i < 15; i++)
+            for (int j = 0; j < 15; j++)
+                if (!boardCells[i][j].isEmpty())
+                    ctr++;
+        return ctr;
     }
 
     @Override
