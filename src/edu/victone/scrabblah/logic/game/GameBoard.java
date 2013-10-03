@@ -63,12 +63,12 @@ public class GameBoard {
     }
 
     public BoardCell getCell(Coordinate coord) {
-        return boardCells[coord.getX()][coord.getY()];
+        return boardCells[coord.getY()][coord.getX()];
     }
 
     @Override
     public String toString() {
-        String header = "  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15\n";
+        String header = "  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O\n";
         String row = " |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|";
         StringBuilder sb = new StringBuilder(header);
         sb.append(row + "\n");
