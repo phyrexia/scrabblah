@@ -1,6 +1,4 @@
-package edu.victone.scrabblah.logic.game;
-
-import edu.victone.scrabblah.logic.player.Player;
+package edu.victone.scrabblah.logic.player;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +43,9 @@ public class PlayerList implements Iterable<Player> {
             index++;
         } else {
             index = 0;
+        }
+        if (getCurrentPlayer().hasResigned()) {
+            incrementIndex();
         }
     }
 
