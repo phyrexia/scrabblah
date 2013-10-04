@@ -1,7 +1,6 @@
 package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
-import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
 import edu.victone.scrabblah.logic.player.TileRack;
 
@@ -26,9 +25,9 @@ public class GameEngine {
         }
     }
 
-    public static boolean isLegalState(GameState state) throws Exception {
+    public static boolean isLegalState(GameState state) throws IllegalStateException {
         if (!Dictionary.isLoaded()) {
-            throw new Exception("GameEngine not initialized.");
+            throw new IllegalStateException("Dictionary not initialized.");
         }
 
         if (state.getPlayerList() == null) {
@@ -122,7 +121,7 @@ public class GameEngine {
                         }
                         if (board.getCell(c).isEmpty()) { //if the next tile is empty we're done
                             if (word.length() > 1)
-                                words.add(word.toString());
+                                words.add(word.toString().toUpperCase());
                         }
 
                         bc = board.getCell(c);
@@ -140,6 +139,7 @@ public class GameEngine {
         }
         //end debug
 
+        //ensure all the words on the board are words in the dictionary
         for (String s : words) {
             if (!Dictionary.contains(s)) {
                 String sDisplay = s.substring(0, 1).toUpperCase() + s.substring(1);
@@ -156,8 +156,22 @@ public class GameEngine {
         return 42;
     }
 
-    public static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack) {
+    public static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack, float skillLevel) {
         //this may be one of the most difficult methods of the game
+
+        //we are gonna brute force the shit out of this, because we can.
+        //threading???
+
+        if (skillLevel < 0 || skillLevel > 1)
+            throw new NumberFormatException("Skill Level must be between 0 and 1.");
+
+        ArrayList<Word> possibleWords = new ArrayList<Word>();
+
+
+        for (int numPlayedTiles = 1; numPlayedTiles <= 7; numPlayedTiles++) {
+            //play anagrams from length 1 played tile to length 7 played tile
+
+        }
         return null;
     }
 }
