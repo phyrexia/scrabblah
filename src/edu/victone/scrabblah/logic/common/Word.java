@@ -16,11 +16,23 @@ public class Word {
     String word;
     boolean orientation;
     Coordinate head;
+    int score;
+    boolean locked = false;
 
     public Word(Coordinate head, boolean orientation, String word) {
         this.head = head;
         this.orientation = orientation;
         this.word = word;
+    }
+
+    public void setScore(int s) {
+        if (locked) {
+            throw new UnsupportedOperationException();
+        } else score = s;
+    }
+
+    public boolean lock() {
+        return (locked ? false : (locked = true));
     }
 
     @Override
