@@ -13,44 +13,43 @@ import java.util.Iterator;
  */
 
 public class PlayerList implements Iterable<Player> {
-    //basically a fixed-size doubly-linked-list
+    //basically a fixed-size doubly-linked-list with an index
     ArrayList<Player> playerList;
     private final int numPlayers;
     private int counter;
-    private int pointer;
+    private int index;
 
     public PlayerList(int numPlayers) {
         this.numPlayers = numPlayers;
         playerList = new ArrayList<Player>(numPlayers);
     }
 
-    public boolean add(Player p) {
+    public void addPlayer(Player p) {
         if (counter < numPlayers) {
             playerList.add(p);
             counter++;
-            return true;
         } else {
-            return false;
-        }
-    }
-
-    public void setPointer(int newPointer) throws ArrayIndexOutOfBoundsException {
-        if (newPointer >= numPlayers || newPointer < 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        pointer = newPointer;
     }
 
-    public void incrementPointer() {
-        if (pointer < numPlayers - 1) {
-            pointer++;
+    public void setIndex(int newIndex) throws ArrayIndexOutOfBoundsException {
+        if (newIndex >= numPlayers || newIndex < 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        index = newIndex;
+    }
+
+    public void incrementIndex() {
+        if (index < numPlayers - 1) {
+            index++;
         } else {
-            pointer = 0;
+            index = 0;
         }
     }
 
     public Player getCurrentPlayer() {
-        return playerList.get(pointer);
+        return playerList.get(index);
     }
 
     public int size() {
