@@ -10,8 +10,10 @@ public class Coordinate {
     private int x, y;
 
     public Coordinate(int x, int y) {
-        if ((x < 0) || (x > 14) || (y < 0) || (y > 14)) {
-            throw new NullPointerException("Illegal Coordinate value");
+        if ((x < 0) || (x > 14)) {
+            throw new NullPointerException("Illegal X Coordinate value: " + x);
+        } else if ((y < 0) || (y > 14)) {
+            throw new NullPointerException("Illegal Y Coordinate value: " + y);
         } else {
             this.x = x;
             this.y = y;
@@ -24,5 +26,10 @@ public class Coordinate {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + x + ", y: " + y;
     }
 }
