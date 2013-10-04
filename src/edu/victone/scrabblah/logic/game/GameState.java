@@ -1,6 +1,7 @@
 package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.player.PlayerList;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
 import edu.victone.scrabblah.logic.player.Player;
@@ -38,8 +39,8 @@ public class GameState {
         playerList = new PlayerList(numPlayers);
     }
 
-    public boolean addPlayer(Player p) {
-        return playerList.add(p);
+    public void addPlayer(Player p) {
+        playerList.addPlayer(p);
     }
 
     public int getNumberPlayers() {
@@ -55,11 +56,11 @@ public class GameState {
             return false;
         }
 
-        getPlayerList().setPointer(new Random().nextInt(getNumberPlayers()));
+        getPlayerList().setIndex(new Random().nextInt(getNumberPlayers()));
 
         for (Player p : getPlayerList()) {
             for (int i = 0; i < 7; i++) {
-                p.addTile(tileBag.getTile());
+                p.getTileRack().addTile(tileBag.getTile());
             }
         }
         return true;
@@ -88,11 +89,10 @@ public class GameState {
         while (p.getTileRack().size() < 7) {
             p.getTileRack().addTile(tileBag.getTile());
         }
-        oldBoard = new GameBoard(gameBoard);
 
-        playerList.incrementPointer();
+        playerList.incrementIndex();
         turnCounter++;
-
+        oldBoard = new GameBoard(gameBoard);
         return true;
     }
 
@@ -123,8 +123,16 @@ public class GameState {
         return r;
     }
 
+    public boolean errorPresent() {
+        return errorMessage != null;
+    }
+
     @Override
     public String toString() {
         return "A gamestate draws near.  Command?";
+    }
+
+    public TileBag getTileBag() {
+        return tileBag;
     }
 }

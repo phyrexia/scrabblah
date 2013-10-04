@@ -20,7 +20,6 @@ import java.util.Scanner;
 
 public class ConsoleUI extends UserInterface {
     Scanner scanner;
-    boolean errorPresent = false;
 
     public ConsoleUI() {
         super();
@@ -46,7 +45,7 @@ public class ConsoleUI extends UserInterface {
         //DEBUG
         //END DEBUG
 
-        //Player winner = gameState.getWinner();
+        Player winner = gameState.getWinner();
 
         //display endgame
 
@@ -197,9 +196,8 @@ public class ConsoleUI extends UserInterface {
         System.out.print(gameState.getGameBoard());
         System.out.println("Current Player: " + currentPlayer);
         System.out.println(currentPlayer.getTileRack());
-        if (errorPresent) {
+        if (gameState.errorPresent()) {
             System.out.println(gameState.getErrorMessage());
-            errorPresent = false;
         }
 
         switch (queryMoveType()) {
@@ -216,9 +214,7 @@ public class ConsoleUI extends UserInterface {
                 currentPlayer.getTileRack().shuffleRack();
                 break;
             case ENDTURN:
-                if (!endTurn()) {
-                    errorPresent = true;
-                }
+                endTurn();
                 break;
             case DONOTHING:
                 break;
@@ -249,7 +245,6 @@ public class ConsoleUI extends UserInterface {
             if (!c.equals('#')) out.add(t);
         } while (!c.equals('#'));
 
-        //ArrayList<Tile> in = gameState.getTileBag().swapTiles(out);
         currentPlayer.getTileRack().addTiles(gameState.getTileBag().swapTiles(out));
     }
 
