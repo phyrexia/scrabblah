@@ -16,15 +16,16 @@ import java.util.Random;
 
 public class GameState {
     private GameBoard gameBoard;
+    private GameBoard oldBoard;
     private PlayerList playerList;
     private TileBag tileBag;
+    private Player winner = null;
 
-    private boolean initialized = false;
-    private int turnCounter = 0;
-    private Player winner;
+    private int turnCounter = 1;
+    private String errorMessage;
 
     public GameState() {
-        GameEngine.initialize();
+        GameEngine.loadDictionary();
         gameBoard = new GameBoard();
         tileBag = new TileBag();
     }
@@ -58,35 +59,41 @@ public class GameState {
 
         for (Player p : getPlayerList()) {
             for (int i = 0; i < 7; i++) {
-                p.addTile(getTile());
+                p.addTile(tileBag.getTile());
             }
         }
         return true;
     }
 
-    private boolean placeTile(Tile t, Coordinate coord) {
+    public boolean placeTile(Tile t, Coordinate coord) {
         if (!gameBoard.getCell(coord).isEmpty()) {
             return false;
         }
         return gameBoard.getCell(coord).setTile(t);
     }
 
-    private Tile removeTile(Coordinate coord) {
-        return null;
+    public Tile removeTile(Coordinate coord) {
+        return gameBoard.getCell(coord).recallTile();
     }
 
-    private void endTurn() {
-        turnCounter++;
-        playerList.incrementPointer();
-    }
-
-    private void lockOccupiedCells() {
-        //todo: implement me
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                gameBoard.getCell(new Coordinate(i, j)).lock();
-            }
+    public boolean endTurn() {
+        if (!GameEngine.isLegalState(this)) {
+            return false;
         }
+        gameBoard.lockOccupiedCells();
+
+        Player p = getCurrentPlayer();
+        p.addScore(GameEngine.computeScore(oldBoard, gameBoard));
+
+        while (p.getTileRack().size() < 7) {
+            p.getTileRack().addTile(tileBag.getTile());
+        }
+        oldBoard = new GameBoard(gameBoard);
+
+        playerList.incrementPointer();
+        turnCounter++;
+
+        return true;
     }
 
     public boolean isGameOver() {
@@ -102,14 +109,22 @@ public class GameState {
         return winner;
     }
 
-    public Tile getTile() {
-        return tileBag.getTile();
+    public int getTurn() {
+        return turnCounter;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getErrorMessage() {
+        String r = errorMessage;
+        errorMessage = null;
+        return r;
     }
 
     @Override
     public String toString() {
-        //  TODO: implement me
         return "A gamestate draws near.  Command?";
     }
-
 }
