@@ -33,8 +33,8 @@ public abstract class UserInterface {
         gameState.setNumberPlayers(numPlayers);
     }
 
-    protected final boolean addPlayerToGame(Player player) {
-        return gameState.addPlayer(player);
+    protected final void addPlayerToGame(Player player) {
+        gameState.addPlayer(player);
     }
 
     protected final boolean startGame() {
