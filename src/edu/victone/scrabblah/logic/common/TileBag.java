@@ -56,7 +56,6 @@ public class TileBag {
     }
 
     public ArrayList<Tile> swapTiles(ArrayList<Tile> tilesToSwap) {
-        ArrayList<Tile> tilesToReturn;
         int n = tilesToSwap.size();
 
         for (Tile t : tilesToSwap) {

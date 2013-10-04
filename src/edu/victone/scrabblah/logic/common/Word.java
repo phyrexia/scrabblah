@@ -32,7 +32,7 @@ public class Word {
     }
 
     public boolean lock() {
-        return (locked ? false : (locked = true));
+        return (!locked && (locked = true));
     }
 
     @Override
