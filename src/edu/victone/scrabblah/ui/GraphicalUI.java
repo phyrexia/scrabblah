@@ -1,8 +1,11 @@
 package edu.victone.scrabblah.ui;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.player.Player;
 import edu.victone.scrabblah.logic.common.Word;
+
+import javax.swing.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,56 +17,32 @@ public class GraphicalUI extends UserInterface {
 
     @Override
     protected int queryNumberPlayers() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     @Override
     protected Player queryPlayerData(int rank) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected boolean addPlayerToGame(Player player) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected boolean startGame() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected void turnLoop() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     protected void playTurn(Player p) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected Move queryMoveType() {
+        return null;
     }
 
     @Override
     protected void pass(Player p) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected void swap(Player p) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected boolean play(Player player, Word word, Coordinate coord, boolean orientation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected void resign(Player p) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected void displayGame() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
