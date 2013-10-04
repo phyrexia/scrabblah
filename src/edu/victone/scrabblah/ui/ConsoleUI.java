@@ -146,32 +146,30 @@ public class ConsoleUI extends UserInterface {
     @Override
     protected Move queryMoveType() {
         String m = null;
-        boolean notValid;
+        boolean invalidMoveType;
         do {
-            System.out.print("(P)lay a tile\ns(H)uffle Rack\n(S)wap tiles\n(E)nd Turn\n(R)ecall Tiles\n(Q)uit\nEnter your move: ");
+            System.out.print("(P)lay a tile\ns(H)uffle Rack\n(S)wap tiles\n(R)ecall Tiles\n(E)nd Turn\n(Q)uit\nEnter your move: ");
             m = scanner.next().toLowerCase();
-            notValid = !m.equals("p") &&
+            invalidMoveType = !m.equals("p") &&
                     !m.equals("h") &&
                     !m.equals("s") &&
-                    !m.equals("e") &&
                     !m.equals("r") &&
+                    !m.equals("e") &&
                     !m.equals("q");
-            if (notValid) {
+            if (invalidMoveType) {
                 System.out.println("Invalid entry.  Please try again.");
             }
-        } while (notValid);
+        } while (invalidMoveType);
 
         switch (m.charAt(0)) {
             case 'p':
                 return Move.PLAY;
-            case 's':
-                return Move.SWAP;
-            case 'a':
-                return Move.PASS;
-            case 'r':
-                return Move.RESIGN;
             case 'h':
                 return Move.SHUFFLE;
+            case 's':
+                return Move.SWAP;
+            case 'r':
+                return Move.RESIGN;
             case 'e':
                 return Move.ENDTURN;
             case 'q':
@@ -182,10 +180,7 @@ public class ConsoleUI extends UserInterface {
                     if (input.equals("y")) {
                         System.out.println("Terminating.");
                         System.exit(0);
-                    } else if (input.equals("n")) {
-                        break;
                     }
-
                 } while (!input.equals("y") && !input.equals("n"));
                 return Move.DONOTHING;
 
@@ -210,8 +205,8 @@ public class ConsoleUI extends UserInterface {
             case SWAP:
                 querySwap(currentPlayer);
                 break;
-            case PASS:
-                break;
+            //case PASS:
+            //  break;
             case RESIGN:
                 //currentPlayer quits
                 break;
@@ -219,18 +214,17 @@ public class ConsoleUI extends UserInterface {
                 currentPlayer.getTileRack().shuffleRack();
                 break;
             case ENDTURN:
-                //do something to end the turn.
-                if (!attemptEndTurn()) {
-
+                if (!endTurn()) {
+                    System.out.println(gameState.getErrorMessage());
                 }
                 break;
             case DONOTHING:
                 break;
         }
-        //attemptEndTurn();
     }
 
     private void querySwap(Player currentPlayer) {
+        //todo: finish implementing querySwap
         String input = null;
         Character c;
         Tile t = null;
