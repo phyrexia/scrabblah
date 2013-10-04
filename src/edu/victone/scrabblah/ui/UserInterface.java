@@ -69,20 +69,13 @@ public abstract class UserInterface {
         p.getTileRack().shuffleRack();
     }
 
-    protected final boolean play(Player player, Word word, Coordinate coord, boolean orientation)
-    //player attempts to play word at point, aligned orientation-wise.
-    //if it's a valid move, makes the move, and returns true
-    //if it's not a valid move, doesn't make the move, and returns false
-    {
-        // return
-        return false;
-    }
+    //abstract protected void recall(Player p);
 
     abstract protected void resign(Player p); //player quits
 
     //Game State Getters
 
-    public boolean attemptEndTurn() {
+    public boolean endTurn() {
         return gameState.endTurn();
     }
 
