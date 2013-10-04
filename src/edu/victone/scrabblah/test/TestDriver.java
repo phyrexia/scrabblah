@@ -22,29 +22,7 @@ public class TestDriver {
     }
 
     private static void playerListTest() {
-        System.out.print("playerListTest 1: ");
-        PlayerList playerList = new PlayerList(3);
-        Player p = new HumanPlayer("Ace", 1);
-        playerList.add(p);
-        p = new HumanPlayer("Bob", 2);
-        playerList.add(p);
-        p = new AIPlayer("Computer", 3);
-        playerList.add(p);
-        boolean test = playerList.add(p);
-        if (test) {
-            System.out.println("Fail.");
-        } else {
-            System.out.println("Pass.");
-        }
 
-        System.out.print("playerListTest 2: ");
-        PlayerList pl = new PlayerList(2);
-        pl.add(new HumanPlayer("Victor", 1));
-        pl.add(new HumanPlayer("Becca", 2));
-
-        System.out.println(pl.getCurrentPlayer());
-        pl.incrementPointer();
-        System.out.println(pl.getCurrentPlayer());
 
     }
 
