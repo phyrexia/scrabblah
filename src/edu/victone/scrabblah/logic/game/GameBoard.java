@@ -86,11 +86,44 @@ public class GameBoard {
 
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
         ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
+        boolean n = true, s = true, e = true, w = true;
 
-        retVal.add(getCell(new Coordinate(coord.getX() + 1, coord.getY())));
-        retVal.add(getCell(new Coordinate(coord.getX() - 1, coord.getY())));
-        retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() + 1)));
-        retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() - 1)));
+        if (coord.getX() == 0) {
+            w = false;
+        }
+        if (coord.getX() == 14) {
+            e = false;
+        }
+        if (coord.getY() == 0) {
+            n = false;
+        }
+        if (coord.getY() == 14) {
+            s = false;
+        }
+
+        if (n) {
+            retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() - 1)));
+        } else {
+            retVal.add(null);
+        }
+
+        if (s) {
+            retVal.add(getCell(new Coordinate(coord.getX(), coord.getY() + 1)));
+        } else {
+            retVal.add(null);
+        }
+
+        if (e) {
+            retVal.add(getCell(new Coordinate(coord.getX() + 1, coord.getY())));
+        } else {
+            retVal.add(null);
+        }
+
+        if (w) {
+            retVal.add(getCell(new Coordinate(coord.getX() - 1, coord.getY())));
+        } else {
+            retVal.add(null);
+        }
 
         return retVal;
     }
