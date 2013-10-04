@@ -18,8 +18,6 @@ import java.util.Random;
 
 public abstract class UserInterface {
     protected GameState gameState;
-    //TODO: the following array should be a collection so duplicate names can't occur
-    public static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
 
     public UserInterface() {
         gameState = new GameState();
