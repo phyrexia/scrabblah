@@ -8,6 +8,8 @@ package edu.victone.scrabblah.logic.player;
  */
 
 public class AIPlayer extends Player {
+    public static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
+
     public AIPlayer(String name, int rank) {
         super(name, rank);
         isHuman = false;
@@ -15,21 +17,20 @@ public class AIPlayer extends Player {
 
     @Override
     public boolean playWord() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public boolean swap() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public boolean pass() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     @Override
     public void resign() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
