@@ -1,10 +1,5 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.player.AIPlayer;
-import edu.victone.scrabblah.logic.player.HumanPlayer;
-import edu.victone.scrabblah.logic.player.Player;
-import edu.victone.scrabblah.logic.game.PlayerList;
-
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson

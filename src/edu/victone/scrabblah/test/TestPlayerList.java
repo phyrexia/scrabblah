@@ -1,6 +1,6 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.game.PlayerList;
+import edu.victone.scrabblah.logic.player.PlayerList;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.HumanPlayer;
 import edu.victone.scrabblah.logic.player.Player;
@@ -16,25 +16,26 @@ public class TestPlayerList {
         System.out.print("playerListTest 1: ");
         PlayerList playerList = new PlayerList(3);
         Player p = new HumanPlayer("Ace", 1);
-        playerList.add(p);
+        playerList.addPlayer(p);
         p = new HumanPlayer("Bob", 2);
-        playerList.add(p);
+        playerList.addPlayer(p);
         p = new AIPlayer("Computer", 3);
-        playerList.add(p);
-        boolean test = playerList.add(p);
-        if (test) {
-            System.out.println("Fail.");
-        } else {
-            System.out.println("Pass.");
+        playerList.addPlayer(p);
+        try {
+            playerList.addPlayer(p);
+            System.out.println("Pass");
+        } catch (Exception e) {
+            System.out.println("Fail");
         }
+
 
         System.out.print("playerListTest 2: ");
         PlayerList pl = new PlayerList(2);
-        pl.add(new HumanPlayer("Victor", 1));
-        pl.add(new HumanPlayer("Rotciv", 2));
+        pl.addPlayer(new HumanPlayer("Victor", 1));
+        pl.addPlayer(new HumanPlayer("Rotciv", 2));
 
         System.out.println(pl.getCurrentPlayer());
-        pl.incrementPointer();
+        pl.incrementIndex();
         System.out.println(pl.getCurrentPlayer());
     }
 }
