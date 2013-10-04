@@ -20,6 +20,7 @@ import java.util.Scanner;
 
 public class ConsoleUI extends UserInterface {
     Scanner scanner;
+    boolean errorPresent = false;
 
     public ConsoleUI() {
         super();
@@ -96,7 +97,6 @@ public class ConsoleUI extends UserInterface {
         }
     }
 
-
     @Override
     protected int queryNumberPlayers() {
         int n = -1;
@@ -138,7 +138,7 @@ public class ConsoleUI extends UserInterface {
                 }
             } while (name.equals(""));
         } else {
-            name = UserInterface.playerNames[new Random().nextInt(UserInterface.playerNames.length)];
+            name = AIPlayer.playerNames[new Random().nextInt(AIPlayer.playerNames.length)];
         }
         return (type.toLowerCase().equals("y") ? new HumanPlayer(name, rank) : new AIPlayer(name, rank));
     }
@@ -197,6 +197,10 @@ public class ConsoleUI extends UserInterface {
         System.out.print(gameState.getGameBoard());
         System.out.println("Current Player: " + currentPlayer);
         System.out.println(currentPlayer.getTileRack());
+        if (errorPresent) {
+            System.out.println(gameState.getErrorMessage());
+            errorPresent = false;
+        }
 
         switch (queryMoveType()) {
             case PLAY:
@@ -205,17 +209,15 @@ public class ConsoleUI extends UserInterface {
             case SWAP:
                 querySwap(currentPlayer);
                 break;
-            //case PASS:
-            //  break;
             case RESIGN:
-                //currentPlayer quits
+                currentPlayer.resign();
                 break;
             case SHUFFLE:
                 currentPlayer.getTileRack().shuffleRack();
                 break;
             case ENDTURN:
                 if (!endTurn()) {
-                    System.out.println(gameState.getErrorMessage());
+                    errorPresent = true;
                 }
                 break;
             case DONOTHING:
@@ -224,11 +226,10 @@ public class ConsoleUI extends UserInterface {
     }
 
     private void querySwap(Player currentPlayer) {
-        //todo: finish implementing querySwap
         String input = null;
-        Character c;
+        Character c = '$';
         Tile t = null;
-        ArrayList<Tile> arrList = new ArrayList<Tile>();
+        ArrayList<Tile> out = new ArrayList<Tile>();
 
         do {
             System.out.print("Enter the tile to swap(# to finish): ");
@@ -237,18 +238,19 @@ public class ConsoleUI extends UserInterface {
                 System.out.println("Please enter a single letter.");
                 continue;
             }
+
             c = input.charAt(0);
             t = new Tile(c);
-            if (!currentPlayer.getTileRack().contains(t)) {
+            if (!currentPlayer.getTileRack().contains(t) && !c.equals('#')) {
                 System.out.println("Your rack does not contain " + c.toString() + ".  Enter a valid letter.");
+                continue;
             }
-        } while (!currentPlayer.getTileRack().contains(t));
+            currentPlayer.getTileRack().removeTile(t);
+            if (!c.equals('#')) out.add(t);
+        } while (!c.equals('#'));
 
-        arrList.add(t);
-
-        //remove tiles in arrList from currentPlayer.tileRack
-
-        //end turn
+        //ArrayList<Tile> in = gameState.getTileBag().swapTiles(out);
+        currentPlayer.getTileRack().addTiles(gameState.getTileBag().swapTiles(out));
     }
 
     private void queryPlay(Player currentPlayer) {
