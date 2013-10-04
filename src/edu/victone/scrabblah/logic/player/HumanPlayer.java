@@ -29,8 +29,4 @@ public class HumanPlayer extends Player {
     public boolean pass() {
         return false;
     }
-
-    @Override
-    public void resign() {
-    }
 }

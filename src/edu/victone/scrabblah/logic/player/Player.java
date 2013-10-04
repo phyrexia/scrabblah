@@ -13,6 +13,7 @@ public abstract class Player {
     private String name;
     private int rank;
     protected boolean isHuman;
+    private boolean resigned = false;
 
     private TileRack tileRack;
 
@@ -24,9 +25,11 @@ public abstract class Player {
         tileRack = new TileRack();
     }
 
+    /*
     public boolean addTile(Tile t) {
         return tileRack.addTile(t);
     }
+    */
 
     //these abstract methods might not be strictly necessary.
     abstract public boolean playWord();
@@ -35,7 +38,13 @@ public abstract class Player {
 
     abstract public boolean pass();
 
-    abstract public void resign();
+    public void resign() {
+        resigned = true;
+    }
+
+    public boolean hasResigned() {
+        return resigned;
+    }
 
     public TileRack getTileRack() {
         return tileRack;
