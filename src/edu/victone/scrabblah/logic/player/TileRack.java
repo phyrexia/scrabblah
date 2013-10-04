@@ -34,6 +34,16 @@ public class TileRack implements Iterable<Tile> {
         return false;
     }
 
+    public void addTiles(ArrayList<Tile> tiles) {
+        if (size() + tiles.size() > 7) {
+            throw new IllegalStateException();
+        } else {
+            for (Tile t : tiles) {
+                addTile(t);
+            }
+        }
+    }
+
     public boolean removeTile(Tile t) {
         for (Tile tile : rack) {
             if (tile.getCharacter().equals(t.getCharacter())) {
