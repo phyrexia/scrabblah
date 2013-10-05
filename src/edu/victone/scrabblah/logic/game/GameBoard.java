@@ -77,7 +77,6 @@ public class GameBoard {
                 }
             }
         }
-        System.out.println("GameBoard initialized.");
     }
 
     public BoardCell getCell(Coordinate coord) {
@@ -139,8 +138,8 @@ public class GameBoard {
 
     @Override
     public String toString() {
-        String header = "  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O\n";
-        String row = " |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|";
+        String header = "   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O\n";
+        String row = " |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|";
         StringBuilder sb = new StringBuilder(header);
         sb.append(row + "\n");
 
@@ -152,17 +151,17 @@ public class GameBoard {
                 if (bc.isEmpty()) {
                     switch (bc.getMultiplier()) {
                         case 1:
-                            sb.append("  |");
+                            sb.append("   |");
                             break;
                         case 2:
-                            sb.append(bc.affectsWord() ? "DW|" : "DL|");
+                            sb.append(bc.affectsWord() ? "DW |" : "DL |");
                             break;
                         case 3:
-                            sb.append(bc.affectsWord() ? "TW|" : "TL|");
+                            sb.append(bc.affectsWord() ? "TW |" : "TL |");
                             break;
                     }
                 } else {
-                    sb.append(bc.getTile().toString() + "|");
+                    sb.append(bc.getTile().toString() + " |");
                 }
             }
             sb.append((char) (i + 65));
