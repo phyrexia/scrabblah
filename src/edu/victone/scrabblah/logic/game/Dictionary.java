@@ -35,7 +35,21 @@ public class Dictionary {
         return isLoaded;
     }
 
+    private static boolean recursiveContains(String s, ArrayList<String> list) {
+        //infinite
+        return dictionary.contains(s) && recursiveContains(list.remove(0), list);
+    }
+
     public static boolean contains(String s) {
         return dictionary.contains(s.toUpperCase());
+    }
+
+    public static boolean contains(ArrayList<String> strings) {
+        for (String string : strings) { //lolwut
+            if (contains(string)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
