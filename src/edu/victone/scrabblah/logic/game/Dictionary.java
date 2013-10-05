@@ -12,10 +12,9 @@ import java.util.*;
  */
 
 public class Dictionary {
-    private static Set<String> dictionary;
-    private static boolean isLoaded = false;
+    private Set<String> dictionary;
 
-    public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
+    public Dictionary(File dictionaryFile) throws FileNotFoundException {
         final long start = System.currentTimeMillis();
         final Scanner scanner = new Scanner(dictionaryFile);
         dictionary = new HashSet<String>();
@@ -25,31 +24,24 @@ public class Dictionary {
                     dictionary.add(scanner.next().toUpperCase());
                 }
                 System.out.println("(Processed dictionary file in " + (System.currentTimeMillis() - start) + "ms.)");
-                isLoaded = true;
             }
         });
         t.start();
     }
 
-    public static boolean isLoaded() {
-        return isLoaded;
-    }
-
-    private static boolean recursiveContains(String s, ArrayList<String> list) {
-        //infinite
-        return dictionary.contains(s) && recursiveContains(list.remove(0), list);
-    }
-
-    public static boolean contains(String s) {
-        return dictionary.contains(s.toUpperCase());
-    }
-
-    public static boolean contains(ArrayList<String> strings) {
-        for (String string : strings) { //lolwut
-            if (contains(string)) {
-                return false;
-            }
+    public boolean contains(String s) {
+        if (!dictionary.contains(s.toUpperCase())) {
+            return false;
         }
         return true;
+    }
+
+    public int contains(ArrayList<String> strings) {
+        for (String s : strings) {
+            if (!contains(s)) {
+                return strings.indexOf(s);
+            }
+        }
+        return -1;
     }
 }
