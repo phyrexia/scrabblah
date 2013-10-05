@@ -7,7 +7,7 @@ package edu.victone.scrabblah.logic.common;
  * Time: 7:13 PM
  */
 public class Coordinate {
-    private int x, y;
+    private Integer x, y;
 
     public Coordinate(int x, int y) {
         if ((x < 0) || (x > 14)) {
@@ -20,16 +20,41 @@ public class Coordinate {
         }
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 
     @Override
     public String toString() {
         return "x: " + x + ", y: " + y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final Coordinate other = (Coordinate) obj;
+        if (x != other.getX() || y != other.getY()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + this.x;
+        hash = 53 * hash + this.y;
+        return hash;
     }
 }
