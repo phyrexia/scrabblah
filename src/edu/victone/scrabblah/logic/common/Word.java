@@ -36,6 +36,14 @@ public class Word {
         return (!locked && (locked = true));
     }
 
+    public Coordinate getHead() {
+        return head;
+    }
+
+    public boolean getOrientation() {
+        return orientation;
+    }
+
     public String getWord() {
         return word;
     }
@@ -50,13 +58,25 @@ public class Word {
 
     @Override
     public boolean equals(Object o) {
-        //todo: word.equals(Object o)
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        final Word w = (Word) o;
+        if (getWord() == w.getWord() &&
+                getOrientation() == w.getOrientation() &&
+                getHead() == w.getHead()) {
+            return true;
+        }
         return false;
     }
 
     @Override
     public int hashCode() {
-        //todo: word.hashCode()
-        return 42;
+        int hash = 3;
+        hash *= 53 * hash + word.hashCode();
+        hash *= 53 * hash + head.hashCode();
+        hash *= 53 * (orientation ? 1 : 2);
+        return hash;
     }
 }
