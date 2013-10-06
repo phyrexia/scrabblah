@@ -9,7 +9,6 @@ package edu.victone.scrabblah.test;
 
 public class TestDriver {
     public static void main(String[] args) {
-
         argTest(args);
 
         playerListTest();
