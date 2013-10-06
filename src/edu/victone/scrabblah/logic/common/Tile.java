@@ -80,4 +80,24 @@ public class Tile {
     public String toString() {
         return "" + letter + (value != 10 ? value : "τ");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        final Tile t = (Tile) o;
+        if (getCharacter() == t.getCharacter()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (int) letter.charValue();
+        return hash;
+    }
 }
