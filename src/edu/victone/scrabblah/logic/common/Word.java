@@ -29,10 +29,15 @@ public class Word {
         if (locked) {
             throw new UnsupportedOperationException();
         } else score = s;
+        lock();
     }
 
     public boolean lock() {
         return (!locked && (locked = true));
+    }
+
+    public String getWord() {
+        return word;
     }
 
     @Override
