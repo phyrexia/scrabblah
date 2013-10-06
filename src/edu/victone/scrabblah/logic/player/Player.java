@@ -9,34 +9,20 @@ import edu.victone.scrabblah.logic.common.Tile;
  * Time: 4:10 PM
  */
 
-public abstract class Player {
-    private String name;
-    private int rank;
-    protected boolean isHuman;
-    private boolean resigned = false;
+public class Player {
+    protected String name;
+    protected int rank;
+    protected int score = 0;
 
-    private TileRack tileRack;
+    protected TileRack tileRack;
 
-    private int score = 0;
+    protected boolean resigned = false;
 
     public Player(String name, int rank) {
         this.name = name;
         this.rank = rank;
         tileRack = new TileRack();
     }
-
-    /*
-    public boolean addTile(Tile t) {
-        return tileRack.addTile(t);
-    }
-    */
-
-    //these abstract methods might not be strictly necessary.
-    abstract public boolean playWord();
-
-    abstract public boolean swap();
-
-    abstract public boolean pass();
 
     public void resign() {
         resigned = true;
@@ -68,6 +54,6 @@ public abstract class Player {
 
     @Override
     public String toString() {
-        return "P" + rank + ": " + name + " (" + (isHuman ? "human" : "machine") + ") - Score: " + score;
+        return "P" + rank + ": " + name + " (human) - Score: " + score;
     }
 }
