@@ -64,7 +64,7 @@ public class TileBag {
 
         shuffleBag();
 
-        return getTiles(n);
+        return removeTiles(n);
     }
 
     private void add(Character c, int frequency) {
@@ -92,15 +92,15 @@ public class TileBag {
         Collections.shuffle(tileBag, random);
     }
 
-    public ArrayList<Tile> getTiles(int numTiles) {
+    public ArrayList<Tile> removeTiles(int numTiles) {
         ArrayList<Tile> tileList = new ArrayList<Tile>(numTiles);
         for (int i = 1; i <= numTiles; i++) {
-            tileList.add(getTile());
+            tileList.add(removeTile());
         }
         return tileList;
     }
 
-    public Tile getTile() { //removes and returns a tile from the list
+    public Tile removeTile() { //removes and returns a tile from the list
         if (tileBag.size() == 0) {
             return null;
         }
@@ -124,7 +124,6 @@ public class TileBag {
             if (i != tileBag.size() - 1)
                 sb.append(", ");
         }
-
         return sb.toString();
     }
 }
