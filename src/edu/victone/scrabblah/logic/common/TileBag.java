@@ -100,7 +100,7 @@ public class TileBag {
         return tileList;
     }
 
-    public Tile removeTile() { //removes and returns a tile from the list
+    public Tile removeTile() { //removes a tile from the list and returns it
         if (tileBag.size() == 0) {
             return null;
         }
