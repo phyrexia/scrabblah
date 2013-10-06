@@ -29,7 +29,7 @@ public class TileBag {
         add('q', (reg ? 1 : 2)); //
         add('x', (reg ? 1 : 2)); //
         add('z', (reg ? 1 : 2)); //
-        //add('$', (reg ? 2 : 4)); //no blanks for now.
+        //add('_', (reg ? 2 : 4)); //no blanks for now.
         add('b', (reg ? 2 : 4)); //
         add('c', (reg ? 2 : 6)); //
         add('f', (reg ? 2 : 4)); //
@@ -75,7 +75,7 @@ public class TileBag {
         }
     }
 
-    public void add(Tile t) {
+    private void add(Tile t) {
         //add a preconstructed tile to the tileBag.
         //this is only used when a user swaps tiles.
         tileBag.add(t);
