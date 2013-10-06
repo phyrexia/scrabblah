@@ -2,6 +2,7 @@ package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
+import edu.victone.scrabblah.logic.common.Word;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class GameBoard {
                     {4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4}};
 
     private BoardCell[][] boardCells = new BoardCell[15][15];
+    private ArrayList<Word> wordList;
 
     public GameBoard() {
         initBoard();
@@ -39,16 +41,13 @@ public class GameBoard {
         initBoard();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (boardCells[i][j].isEmpty()) {
-                    continue;
-                } else {
+                if (!boardCells[i][j].isEmpty()) {
                     Coordinate coord = new Coordinate(i, j);
-                    boardCells[i][j].setTile(new Tile(gb.getCell(coord).getTile().getCharacter()));
+                    boardCells[i][j].setTile(new Tile(gb.getCell(coord).getTile()));
                     if (gb.getCell(coord).isLocked()) {
                         boardCells[i][j].lock();
                     }
                 }
-
             }
         }
     }
@@ -102,6 +101,21 @@ public class GameBoard {
         return ctr;
     }
 
+    public void lockOccupiedCells() {
+        for (int i = 0; i < 15; i++)
+            for (int j = 0; j < 15; j++)
+                getCell(new Coordinate(i, j)).lock();
+
+    }
+
+    public void setWordList(ArrayList<Word> wordList) {
+        this.wordList = wordList;
+    }
+
+    public ArrayList<Word> getWordList() {
+        return wordList;
+    }
+
     @Override
     public String toString() {
         String header = "   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O\n";
@@ -134,12 +148,5 @@ public class GameBoard {
         }
         sb.append(header);
         return sb.toString();
-    }
-
-    public void lockOccupiedCells() {
-        for (int i = 0; i < 15; i++)
-            for (int j = 0; j < 15; j++)
-                getCell(new Coordinate(i, j)).lock();
-
     }
 }
