@@ -42,4 +42,16 @@ public class Word {
         sb.append(head.print() + "; " + head);
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        //todo: word.equals(Object o)
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        //todo: word.hashCode()
+        return 42;
+    }
 }
