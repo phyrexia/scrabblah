@@ -177,7 +177,6 @@ public class GameEngine {
         //we are gonna brute force the shit out of this, because we can.
         //threading???
 
-
         if (skillLevel == null) {
             skillLevel = 1.0;
         }
@@ -186,12 +185,8 @@ public class GameEngine {
             throw new IllegalArgumentException("Skill Level must be between 0 and 1.");
         }
 
-        ArrayList<Word> possibleWords = new ArrayList<Word>();
+        ArrayList<Word> possiblePlays = new ArrayList<Word>();
 
-        HashMap<Integer, ArrayList<Coordinate>> startingZone = new HashMap<Integer, ArrayList<Coordinate>>();
-        for (int i = 1; i < 8; i++) {
-            startingZone.put(i, new ArrayList<Coordinate>());
-        }
 
         //TODO: generate startingZone
 
@@ -201,7 +196,7 @@ public class GameEngine {
 
         //this does...something
         for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
-            for (Coordinate coord : startingZone.get(numPlayedTiles)) {
+            for (Coordinate coord : getStartingCoordinates(gameBoard, numPlayedTiles)) {
 
             }
         }
