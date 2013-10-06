@@ -23,11 +23,25 @@ public abstract class UserInterface {
         gameState = new GameState();
     }
 
-    //Game Precondition Methods
+    protected abstract void displayGame();
 
     protected abstract int queryNumberPlayers(); //get num players from user
 
     protected abstract Player queryPlayerData(int rank); //get player data from user
+
+    protected abstract Move queryMoveType(); //implement this too
+
+    protected abstract void playTurn(Player p); //implement this in your derived *UI classes
+
+    protected abstract void pass(Player p); //player passes a turn
+
+    protected abstract void swap(Player p); //player swaps some tiles
+
+    protected abstract void querySwap(Player currentPlayer);
+
+    protected abstract void queryPlay(Player currentPlayer);
+
+    protected abstract void resign(Player p); //player quits
 
     protected final void setNumberPlayers(int numPlayers) {
         gameState.setNumberPlayers(numPlayers);
@@ -41,45 +55,10 @@ public abstract class UserInterface {
         return gameState.startGame();
     }
 
-    //Gameplay Methods - these change state
-
     protected final void turnLoop() {
-        //display board, current player data, prompt for move
         while (!gameState.isGameOver()) { //while the game is not over...
-            //it's up to the gameState/gameEngine to determine
-            //if a valid move has been made, and to increment the
-            //player pointer.
             playTurn(gameState.getCurrentPlayer());
         }
-    }
-
-    protected abstract Move queryMoveType(); //implement this too
-
-    protected abstract void playTurn(Player p); //implement this in your derived *UI classes
-
-    abstract protected void pass(Player p); //player passes a turn
-
-    abstract protected void swap(Player p); //player swaps some tiles
-
-    protected final void shuffle(Player p) {
-        //player shuffles rack
-
-        p.getTileRack().shuffleRack();
-    }
-
-    //abstract protected void recall(Player p);
-
-    abstract protected void resign(Player p); //player quits
-
-    //Game State Getters
-
-    public boolean endTurn() {
-        return gameState.endTurn();
-    }
-
-    public String getGameStatus() {
-        //return gameState.getStatus();
-        return "game status.";
     }
 
     protected final int getNumberPlayers() {
@@ -94,11 +73,15 @@ public abstract class UserInterface {
         return gameState.isGameOver();
     }
 
-    // abstract protected void displayGame();
-
     protected final Player getWinner() {
-        //this method might be unnecessary
         return gameState.getWinner();
     }
 
+    protected final void shuffle(Player p) {
+        p.getTileRack().shuffleRack();
+    }
+
+    protected final boolean endTurn() {
+        return gameState.endTurn();
+    }
 }
