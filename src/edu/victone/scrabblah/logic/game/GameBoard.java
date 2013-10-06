@@ -4,7 +4,6 @@ import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -154,10 +153,10 @@ public class GameBoard {
                             sb.append("   |");
                             break;
                         case 2:
-                            sb.append(bc.affectsWord() ? "DW |" : "DL |");
+                            sb.append(bc.isWordMultiplier() ? "DW |" : "DL |");
                             break;
                         case 3:
-                            sb.append(bc.affectsWord() ? "TW |" : "TL |");
+                            sb.append(bc.isWordMultiplier() ? "TW |" : "TL |");
                             break;
                     }
                 } else {
