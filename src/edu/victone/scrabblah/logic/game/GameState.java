@@ -6,6 +6,8 @@ import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
 import edu.victone.scrabblah.logic.player.Player;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 /**
@@ -26,7 +28,12 @@ public class GameState {
     private String errorMessage;
 
     public GameState() {
-        GameEngine.loadDictionary();
+        try {
+            GameEngine.setDictionary(new Dictionary(new File("sowpods.txt")));
+        } catch (FileNotFoundException e) {
+            System.err.println("Fatal Error: Dictionary File Not Found.");
+            System.exit(1);
+        }
         gameBoard = new GameBoard();
         tileBag = new TileBag();
     }
