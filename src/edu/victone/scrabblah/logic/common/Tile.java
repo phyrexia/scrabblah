@@ -7,6 +7,11 @@ package edu.victone.scrabblah.logic.common;
  * Time: 4:11 PM
  */
 public class Tile {
+
+    //So, it occurs to me that I could just use a Character,
+    //move several of these methods into GameEngine,
+    //and eliminate this class completely.
+
     private Character letter;
     private int value;
 
@@ -78,7 +83,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "" + letter + (value != 10 ? value : "τ");
+        return "" + letter + "" + value;
     }
 
     @Override
