@@ -10,13 +10,13 @@ import edu.victone.scrabblah.logic.common.Tile;
  */
 public class BoardCell {
     private int multiplier;
-    private boolean affectsWord;
+    private boolean isWordMultiplier;
     private Tile tile;
     private boolean lock;
 
-    public BoardCell(int multiplier, boolean affectsWord) {
+    public BoardCell(int multiplier, boolean isWordMultiplier) {
         this.multiplier = multiplier;   //double or triple
-        this.affectsWord = affectsWord; //letter or word
+        this.isWordMultiplier = isWordMultiplier; //letter or word
         tile = null;
     }
 
@@ -55,8 +55,8 @@ public class BoardCell {
         return multiplier;
     }
 
-    public boolean affectsWord() {
-        return affectsWord;
+    public boolean isWordMultiplier() {
+        return isWordMultiplier;
     }
 
     public Tile getTile() {
@@ -71,10 +71,10 @@ public class BoardCell {
                 output = "  ";
                 break;
             case 2:
-                output = (affectsWord ? "DW" : "DL");
+                output = (isWordMultiplier ? "DW" : "DL");
                 break;
             case 3:
-                output = (affectsWord ? "TW" : "TL");
+                output = (isWordMultiplier ? "TW" : "TL");
                 break;
         }
         return output;
