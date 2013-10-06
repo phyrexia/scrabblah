@@ -52,6 +52,11 @@ public class ConsoleUI extends UserInterface {
         printGoodbye();
     }
 
+    @Override
+    protected void displayGame() {
+
+    }
+
     private void printHeader() {
         System.out.println("******************************************************************");
     }
