@@ -1,6 +1,7 @@
 package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
+import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
 import edu.victone.scrabblah.logic.player.TileRack;
 
@@ -81,16 +82,18 @@ public class GameEngine {
         //end debug
 
         //ensure all the words on the board are words in the dictionary
-        ArrayList<String> wordTempStringArray = new ArrayList<String>();
+        ArrayList<String> temp = new ArrayList<String>();
         for (Word w : words) {
-            wordTempStringArray.add(w.getWord());
+            temp.add(w.getWord());
         }
-        int n = dictionary.indexOfNonWord(wordTempStringArray);
+        int n = dictionary.indexOfBadString(temp);
         if (n != -1) {
             String sDisplay = words.get(n).toString().substring(0, 1).toUpperCase() + words.get(n).toString().substring(1);
             gameState.setErrorMessage(sDisplay + " is not a valid word.");
             return false;
         }
+
+        //gameBoard.setWordList
 
         //if all of these tests have passed, then we are golden.
         return true;
@@ -98,7 +101,6 @@ public class GameEngine {
 
     private static ArrayList<Word> getWordsOnBoard(GameBoard gameBoard) {
         ArrayList<Word> wordsOnBoard = new ArrayList<Word>();
-
         StringBuilder stringBuilder;
         Coordinate coord;
         Word word;
@@ -132,6 +134,7 @@ public class GameEngine {
     }
 
     public static int computeScore(GameBoard oldBoard, GameBoard currentBoard) {
+        int score = 0;
         if (oldBoard == null) { //first turn case
             oldBoard = new GameBoard();
         }
@@ -141,10 +144,33 @@ public class GameEngine {
         ArrayList<Word> newWords = getWordsOnBoard(currentBoard);
         newWords.removeAll(oldWords);
 
-        //align cell multipliers with tile coords
+        for (Word w : newWords) {
+            score += computeWordScore(w, currentBoard);
+        }
+        return score;
+    }
 
-        //TODO: finish implementing computeScore
-        return 42;
+    private static int computeWordScore(Word w, GameBoard gameBoard) {
+        int wordMultiplier = 1;
+        int wordScore = 0;
+        int x = w.getHead().getX();
+        int y = w.getHead().getY();
+
+        char[] charArr = w.getWord().toCharArray();
+        for (int i = 0; i < charArr.length; i++) {
+            int tileMultiplier = 1;
+            BoardCell boardCell = gameBoard.getCell(new Coordinate(
+                    (w.getOrientation() ? x + i : x), (w.getOrientation() ? y : y + i)));
+            int multiplier = boardCell.getMultiplier();
+
+            if (boardCell.isWordMultiplier()) {
+                wordMultiplier *= multiplier;
+            } else {
+                tileMultiplier = multiplier;
+            }
+            wordScore += (Tile.getValue(charArr[i]) * tileMultiplier);
+        }
+        return wordScore * wordMultiplier;
     }
 
     public static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
