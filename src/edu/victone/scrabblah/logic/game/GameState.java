@@ -67,7 +67,7 @@ public class GameState {
 
         for (Player p : getPlayerList()) {
             for (int i = 0; i < 7; i++) {
-                p.getTileRack().addTile(tileBag.getTile());
+                p.getTileRack().addTile(tileBag.removeTile());
             }
         }
         return true;
@@ -94,7 +94,7 @@ public class GameState {
         p.addScore(GameEngine.computeScore(oldBoard, gameBoard));
 
         while (p.getTileRack().size() < 7) {
-            p.getTileRack().addTile(tileBag.getTile());
+            p.getTileRack().addTile(tileBag.removeTile());
         }
 
         playerList.incrementIndex();
