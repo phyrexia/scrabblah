@@ -97,7 +97,7 @@ public class GameEngine {
     }
 
     private static ArrayList<Word> getWordsOnBoard(GameBoard gameBoard) {
-        ArrayList<Word> wordsFromBoard = new ArrayList<Word>();
+        ArrayList<Word> wordsOnBoard = new ArrayList<Word>();
 
         StringBuilder stringBuilder;
         Coordinate coord;
@@ -119,7 +119,7 @@ public class GameEngine {
                             if (gameBoard.getCell(coord).isEmpty()) { //if the next tile is empty we're done
                                 if (stringBuilder.length() > 1) { //one letter does not a word make
                                     word = new Word(head, a == 0 ? Word.HORIZONTAL : Word.VERTICAL, stringBuilder.toString());
-                                    wordsFromBoard.add(word);
+                                    wordsOnBoard.add(word);
                                 }
                             }
                             boardCell = gameBoard.getCell(coord);
@@ -128,7 +128,7 @@ public class GameEngine {
                 }
             }
         }
-        return wordsFromBoard;
+        return wordsOnBoard;
     }
 
     public static int computeScore(GameBoard oldBoard, GameBoard currentBoard) {
@@ -183,7 +183,6 @@ public class GameEngine {
     }
 
     private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
-
         HashSet<Coordinate> startingCoordinates = new HashSet<Coordinate>();
         for (int i = 0; i < 15; i++) {
             for (int x = 0; x < 15; x++) {
