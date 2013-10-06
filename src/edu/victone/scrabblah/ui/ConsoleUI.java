@@ -53,7 +53,7 @@ public class ConsoleUI extends UserInterface {
     }
 
     private void printHeader() {
-        System.out.println("***********************************************");
+        System.out.println("******************************************************************");
     }
 
     private static void clearConsole() {
