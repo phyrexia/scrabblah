@@ -23,7 +23,7 @@ public class Dictionary {
                 while (scanner.hasNext()) {
                     dictionary.add(scanner.next().toUpperCase());
                 }
-                System.out.println("(Processed dictionary file in " + (System.currentTimeMillis() - start) + "ms.)");
+                System.out.println("\n(Processed dictionary file in " + (System.currentTimeMillis() - start) + "ms.)");
             }
         });
         t.start();
@@ -36,7 +36,10 @@ public class Dictionary {
         return true;
     }
 
-    public int contains(ArrayList<String> strings) {
+    public int indexOfNonWord(ArrayList<String> strings) {
+        //returns the index of the first string in the list that
+        //is not in the dictionary,
+        //or -1 if all words are in the dictionary
         for (String s : strings) {
             if (!contains(s)) {
                 return strings.indexOf(s);
