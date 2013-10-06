@@ -37,7 +37,9 @@ public class Word {
 
     @Override
     public String toString() {
-        //todo: implement Word.toString()
-        return null;
+        StringBuilder sb = new StringBuilder(word);
+        sb.append(orientation ? " horizontal at " : " vertical at ");
+        sb.append(head.print() + "; " + head);
+        return sb.toString();
     }
 }
