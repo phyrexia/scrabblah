@@ -6,6 +6,7 @@ import edu.victone.scrabblah.logic.player.TileRack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -181,9 +182,9 @@ public class GameEngine {
         return null;
     }
 
-    private static ArrayList<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
+    private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
 
-        ArrayList<Coordinate> startingCoordinates = new ArrayList<Coordinate>();
+        HashSet<Coordinate> startingCoordinates = new HashSet<Coordinate>();
         for (int i = 0; i < 15; i++) {
             for (int x = 0; x < 15; x++) {
 
