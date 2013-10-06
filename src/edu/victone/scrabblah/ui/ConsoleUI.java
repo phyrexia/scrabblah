@@ -4,7 +4,6 @@ import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.player.AIPlayer;
-import edu.victone.scrabblah.logic.player.HumanPlayer;
 import edu.victone.scrabblah.logic.player.Player;
 
 import java.util.ArrayList;
@@ -144,7 +143,7 @@ public class ConsoleUI extends UserInterface {
         } else {
             name = AIPlayer.playerNames[new Random().nextInt(AIPlayer.playerNames.length)];
         }
-        return (type.toLowerCase().equals("y") ? new HumanPlayer(name, rank) : new AIPlayer(name, rank));
+        return (type.toLowerCase().equals("y") ? new Player(name, rank) : new AIPlayer(name, rank));
     }
 
     @Override
