@@ -11,9 +11,9 @@ public class Coordinate {
 
     public Coordinate(int x, int y) {
         if ((x < 0) || (x > 14)) {
-            throw new NullPointerException("Illegal X Coordinate value: " + x);
+            throw new IllegalArgumentException("Illegal X Coordinate value: " + x);
         } else if ((y < 0) || (y > 14)) {
-            throw new NullPointerException("Illegal Y Coordinate value: " + y);
+            throw new IllegalArgumentException("Illegal Y Coordinate value: " + y);
         } else {
             this.x = x;
             this.y = y;
