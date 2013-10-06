@@ -121,7 +121,8 @@ public class GameBoard {
         String header = "   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O\n";
         String row = " |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|";
         StringBuilder sb = new StringBuilder(header);
-        sb.append(row + "\n");
+        sb.append(row);
+        sb.append("\n");
         for (int i = 0; i < 15; i++) {
             sb.append((char) (i + 65));
             sb.append("|");
@@ -140,11 +141,14 @@ public class GameBoard {
                             break;
                     }
                 } else {
-                    sb.append(bc.getTile().toString() + " |");
+                    sb.append(bc.getTile().toString());
+                    sb.append(" |");
                 }
             }
             sb.append((char) (i + 65));
-            sb.append("\n" + row + "\n");
+            sb.append("\n");
+            sb.append(row);
+            sb.append("\n");
         }
         sb.append(header);
         return sb.toString();
