@@ -28,9 +28,16 @@ public class Coordinate {
         return y;
     }
 
+    public String print() {
+        //todo: why doesn't this work?
+        Character xChar = (char) (x + 48);
+        Character yChar = (char) (y + 48);
+        return ("(" + xChar + "," + yChar + ")");
+    }
+
     @Override
     public String toString() {
-        return "x: " + x + ", y: " + y;
+        return "(" + x + ", " + y + ")";
     }
 
     @Override
