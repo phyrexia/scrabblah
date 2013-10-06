@@ -56,7 +56,7 @@ public class ConsoleUI extends UserInterface {
         System.out.println("******************************************************************");
     }
 
-    private static void clearConsole() {
+    private void clearConsole() {
         try {
             String os = System.getProperty("os.name");
             if (os.contains("Windows")) {
@@ -118,7 +118,7 @@ public class ConsoleUI extends UserInterface {
     @Override
     protected Player queryPlayerData(int rank) {
         printHeader();
-        String type = "";
+        String type = new String();
         do {
             System.out.print("Is Player " + rank + " a human player? (Y/n): ");
             type = scanner.next();
@@ -127,7 +127,7 @@ public class ConsoleUI extends UserInterface {
             }
         } while (!type.toLowerCase().equals("y") && !type.toLowerCase().equals("n"));
 
-        String name = "";
+        String name = new String();
         if (type.toLowerCase().equals("y")) {
             do {
                 System.out.print("Player " + rank + " Name: ");
@@ -144,7 +144,7 @@ public class ConsoleUI extends UserInterface {
 
     @Override
     protected Move queryMoveType() {
-        String m = null;
+        String m;
         boolean invalidMoveType;
         do {
             System.out.print("(P)lay a tile\ns(H)uffle Rack\n(S)wap tiles\n(R)ecall Tiles\n(E)nd Turn\n(Q)uit\nEnter your move: ");
@@ -208,10 +208,11 @@ public class ConsoleUI extends UserInterface {
                 querySwap(currentPlayer);
                 break;
             case RESIGN:
+                //todo: this is wrong
                 currentPlayer.resign();
                 break;
             case SHUFFLE:
-                currentPlayer.getTileRack().shuffleRack();
+                shuffle(currentPlayer);
                 break;
             case ENDTURN:
                 endTurn();
@@ -221,7 +222,8 @@ public class ConsoleUI extends UserInterface {
         }
     }
 
-    private void querySwap(Player currentPlayer) {
+    @Override
+    protected void querySwap(Player currentPlayer) {
         String input = null;
         Character c = '$';
         Tile t = null;
@@ -248,7 +250,8 @@ public class ConsoleUI extends UserInterface {
         currentPlayer.getTileRack().addTiles(gameState.getTileBag().swapTiles(out));
     }
 
-    private void queryPlay(Player currentPlayer) {
+    @Override
+    protected void queryPlay(Player currentPlayer) {
         printHeader();
         System.out.println(currentPlayer.getTileRack());
         String input;
