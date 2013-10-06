@@ -20,6 +20,10 @@ public class Tile {
         value = Tile.getValue(c);
     }
 
+    public Tile(Tile t) {
+        this(t.getCharacter());
+    }
+
     public Character getCharacter() {
         return letter;
     }
