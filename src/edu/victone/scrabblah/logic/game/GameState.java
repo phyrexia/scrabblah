@@ -29,7 +29,7 @@ public class GameState {
 
     public GameState() {
         try {
-            GameEngine.setDictionary(new Dictionary(new File("sowpods.txt")));
+            GameEngine.setDictionary(new File("sowpods.txt"));
         } catch (FileNotFoundException e) {
             System.err.println("Fatal Error: Dictionary File Not Found.");
             System.exit(1);
