@@ -16,6 +16,11 @@ import javax.swing.*;
 public class GraphicalUI extends UserInterface {
 
     @Override
+    protected void displayGame() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     protected int queryNumberPlayers() {
         return 0;
     }
@@ -43,6 +48,16 @@ public class GraphicalUI extends UserInterface {
     }
 
     @Override
-    protected void resign(Player p) {
+    protected void querySwap(Player currentPlayer) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void queryPlay(Player currentPlayer) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void queryResignation(Player p) {
     }
 }

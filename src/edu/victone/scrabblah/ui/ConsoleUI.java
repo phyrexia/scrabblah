@@ -193,7 +193,7 @@ public class ConsoleUI extends UserInterface {
         }
     }
 
-    @Override
+    @Override //GUI might not be able to override
     protected void playTurn(Player currentPlayer) {
         clearConsole();
         printPlayerSummary();
@@ -212,11 +212,10 @@ public class ConsoleUI extends UserInterface {
                 querySwap(currentPlayer);
                 break;
             case RESIGN:
-                //todo: this is wrong
-                currentPlayer.resign();
+                queryResignation(currentPlayer);
                 break;
             case SHUFFLE:
-                shuffle(currentPlayer);
+                currentPlayer.getTileRack().shuffleRack();
                 break;
             case ENDTURN:
                 endTurn();
@@ -321,6 +320,7 @@ public class ConsoleUI extends UserInterface {
     }
 
     @Override
-    public void resign(Player p) {
+    public void queryResignation(Player p) {
+        //are you sure you want to queryResignation?
     }
 }

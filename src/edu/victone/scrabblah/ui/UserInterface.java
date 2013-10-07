@@ -41,7 +41,7 @@ public abstract class UserInterface {
 
     protected abstract void queryPlay(Player currentPlayer);
 
-    protected abstract void resign(Player p); //player quits
+    protected abstract void queryResignation(Player p); //player quits
 
     protected final void setNumberPlayers(int numPlayers) {
         gameState.setNumberPlayers(numPlayers);
