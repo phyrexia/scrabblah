@@ -15,6 +15,7 @@ import java.util.*;
 
 public class Dictionary implements Iterable<String> {
     private Set<String> dictionary;
+    private long timeToInit;
 
     public Dictionary(File dictionaryFile) throws FileNotFoundException {
         final long start = System.currentTimeMillis();
@@ -25,10 +26,14 @@ public class Dictionary implements Iterable<String> {
                 while (scanner.hasNext()) {
                     dictionary.add(scanner.next().toUpperCase());
                 }
-                System.out.println("\n(Processed dictionary file in " + (System.currentTimeMillis() - start) + "ms.)");
+                timeToInit = (System.currentTimeMillis() - start);
             }
         });
         t.start();
+    }
+
+    public long getTimeToInit() {
+        return timeToInit;
     }
 
     public boolean contains(Word w) {
@@ -55,9 +60,6 @@ public class Dictionary implements Iterable<String> {
     }
 
     public int indexOfBadString(ArrayList<String> strings) {
-        //returns the index of the first string in the list that
-        //is not in the dictionary,
-        //or -1 if all string are in the dictionary
         for (String s : strings) {
             if (!contains(s)) {
                 return strings.indexOf(s);
