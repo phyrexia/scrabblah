@@ -13,7 +13,7 @@ import java.util.*;
  * Time: 4:03 PM
  */
 
-public class Dictionary {
+public class Dictionary implements Iterable<String> {
     private Set<String> dictionary;
 
     public Dictionary(File dictionaryFile) throws FileNotFoundException {
@@ -64,5 +64,10 @@ public class Dictionary {
             }
         }
         return -1;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return dictionary.iterator();
     }
 }
