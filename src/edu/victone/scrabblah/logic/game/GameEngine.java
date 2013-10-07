@@ -5,9 +5,12 @@ import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
 import edu.victone.scrabblah.logic.player.TileRack;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.concurrent.Callable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,11 +18,29 @@ import java.util.HashSet;
  * Date: 9/11/13
  * Time: 4:40 PM
  */
-public class GameEngine {
+public class GameEngine { //rules, etc
     public static Dictionary dictionary;
+    public static HashSet<String> anagramClasses;
 
-    public static void setDictionary(Dictionary dictionary) {
-        GameEngine.dictionary = dictionary;
+    public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
+        dictionary = new Dictionary(dictionaryFile);
+        generateAnagramClasses(dictionary);
+    }
+
+    private static void generateAnagramClasses(final Dictionary d) {
+        anagramClasses = new HashSet<String>();
+        final long start = System.currentTimeMillis();
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                for (String s : d) {
+                    char[] ac = s.toCharArray();
+                    Arrays.sort(s.toCharArray());
+                    anagramClasses.add(new String(ac));
+                }
+                System.out.println("Generated anagrams in " + (System.currentTimeMillis() - start));
+            }
+        });
+        t.start();
     }
 
     public static boolean isLegalState(GameState gameState) {
@@ -71,7 +92,6 @@ public class GameEngine {
 
         //get all words on the board.
         ArrayList<Word> words = getWordsOnBoard(gameBoard);
-        //ArrayList<Word> words = getWordsOnBoard(gameBoard);
 
         //DEBUG
         //todo: remove this GameEngine debug code
@@ -93,7 +113,7 @@ public class GameEngine {
             return false;
         }
 
-        //gameBoard.setWordList
+        gameBoard.setWordList(words);
 
         //if all of these tests have passed, then we are golden.
         return true;
@@ -174,7 +194,6 @@ public class GameEngine {
     }
 
     public static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
-        //we are gonna brute force the shit out of this, because we can.
         //threading???
 
         if (skillLevel == null) {
@@ -187,20 +206,36 @@ public class GameEngine {
 
         ArrayList<Word> possiblePlays = new ArrayList<Word>();
 
-
-        //TODO: generate startingZone
-
         ArrayList<ArrayList<String>> anagrams = new ArrayList<ArrayList<String>>();
 
-        //todo: generate anagrams
-
-        //this does...something
+        //TODO: generate startingZone
         for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
             for (Coordinate coord : getStartingCoordinates(gameBoard, numPlayedTiles)) {
 
             }
         }
+
+        //todo: generate anagrams
+
         return null;
+    }
+
+    private static ArrayList<String> getAnagrams(ArrayList<Character> word) {
+        //recursion!
+        ArrayList<String> anagrams = new ArrayList<String>();
+        if (word.size() == 1) {
+            //anagrams.add();
+        }
+
+        for (int i = 0; i < word.size(); i++) {
+
+        }
+
+
+        //add all possible anagrams which are in the dictionary
+        //(or not heh)
+
+        return anagrams;
     }
 
     private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
