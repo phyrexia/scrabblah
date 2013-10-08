@@ -27,6 +27,7 @@ public class Dictionary implements Iterable<String> {
                     dictionary.add(scanner.next().toUpperCase());
                 }
                 timeToInit = (System.currentTimeMillis() - start);
+                System.out.println("Processed dictionary file in " + timeToInit + "ms.");
             }
         });
         t.start();
