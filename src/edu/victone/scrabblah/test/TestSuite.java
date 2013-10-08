@@ -7,7 +7,7 @@ package edu.victone.scrabblah.test;
  * Time: 5:02 PM
  */
 
-public class TestDriver {
+public class TestSuite {
     public static void main(String[] args) {
         argTest(args);
 
