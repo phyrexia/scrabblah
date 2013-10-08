@@ -29,7 +29,7 @@ public class GameState {
 
     public GameState() {
         try {
-            GameEngine.setDictionary(new File("sowpods.txt"));
+            GameEngine.loadDictionary(new File("sowpods.txt"));
         } catch (FileNotFoundException e) {
             System.err.println("Fatal Error: Dictionary File Not Found.");
             System.exit(1);
@@ -42,6 +42,14 @@ public class GameState {
         return gameBoard;
     }
 
+    public TileBag getTileBag() {
+        return tileBag;
+    }
+
+    public PlayerList getPlayerList() {
+        return playerList;
+    }
+
     public void setNumberPlayers(int numPlayers) {
         playerList = new PlayerList(numPlayers);
     }
@@ -52,10 +60,6 @@ public class GameState {
 
     public int getNumberPlayers() {
         return playerList.size();
-    }
-
-    public PlayerList getPlayerList() {
-        return playerList;
     }
 
     public boolean startGame() {
@@ -137,9 +141,5 @@ public class GameState {
     @Override
     public String toString() {
         return "A gamestate draws near.  Command?";
-    }
-
-    public TileBag getTileBag() {
-        return tileBag;
     }
 }
