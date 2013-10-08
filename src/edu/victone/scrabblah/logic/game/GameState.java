@@ -8,6 +8,7 @@ import edu.victone.scrabblah.logic.player.Player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -107,13 +108,31 @@ public class GameState {
         return true;
     }
 
-    public boolean isGameOver() {
-        //TODO: implement me properly
-        return turnCounter > 10;
-    }
-
     public Player getCurrentPlayer() {
         return playerList.getCurrentPlayer();
+    }
+
+    public boolean isGameOver() {
+        if (tileBag.isEmpty()) {
+            for (Player p : playerList) {
+                if (p.getTileRack().size() == 0) {
+                    setWinner(p);
+                    return true;
+                }
+            }
+        } else {
+            //if all but one player has resigned, the player that has not resigned is the winner.
+            ArrayList<Player> activePlayers = playerList.getActivePlayers();
+            if (playerList.getActivePlayers().size() == 1) {
+                setWinner(activePlayers.get(0));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setWinner(Player p) {
+        winner = p;
     }
 
     public Player getWinner() {
