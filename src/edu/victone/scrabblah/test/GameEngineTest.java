@@ -8,7 +8,7 @@ import edu.victone.scrabblah.logic.game.GameState;
  * Date: 10/3/13
  * Time: 8:24 PM
  */
-public class TestGameEngine {
+public class GameEngineTest {
 
     public static void main(String args[]) {
         GameState gs = new GameState();

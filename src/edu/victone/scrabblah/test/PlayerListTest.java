@@ -10,7 +10,7 @@ import edu.victone.scrabblah.logic.player.Player;
  * Date: 10/3/13
  * Time: 10:36 PM
  */
-public class TestPlayerList {
+public class PlayerListTest {
     public static void main(String args[]) {
         System.out.print("playerListTest 1: ");
         PlayerList playerList = new PlayerList(3);
