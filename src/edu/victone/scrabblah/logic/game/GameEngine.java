@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.concurrent.Callable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,24 +20,29 @@ import java.util.concurrent.Callable;
  */
 public class GameEngine { //rules, etc
     public static Dictionary dictionary;
-    public static HashSet<String> anagramClasses;
+    public static HashMap<String, HashSet<String>> anagrams;
 
     public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
         dictionary = new Dictionary(dictionaryFile);
-        generateAnagramClasses(dictionary);
+        getAnagrams(dictionary);
     }
 
-    private static void generateAnagramClasses(final Dictionary d) {
-        anagramClasses = new HashSet<String>();
+    private static void getAnagrams(final Dictionary someDictionary) {
+        //anagram classes (the key) represent what class of word we can make with a given set of tiles.
+        //the anagrams themselves (the associated value, a hashset) are the words we can make
         final long start = System.currentTimeMillis();
         Thread t = new Thread(new Runnable() {
             public void run() {
-                for (String s : d) {
-                    char[] ac = s.toCharArray();
-                    Arrays.sort(s.toCharArray());
-                    anagramClasses.add(new String(ac));
+                for (String string : someDictionary) {
+                    char[] charArr = string.toCharArray();
+                    Arrays.sort(string.toCharArray());
+                    String sortedString = new String(charArr);
+                    if (!anagrams.containsKey(sortedString)) {
+                        anagrams.put(sortedString, new HashSet<String>());
+                    }
+                    anagrams.get(sortedString).add(string);
                 }
-                System.out.println("Generated anagrams in " + (System.currentTimeMillis() - start));
+                System.out.println("Generated anagrams in " + (System.currentTimeMillis() - start) + "ms.");
             }
         });
         t.start();
@@ -220,8 +225,9 @@ public class GameEngine { //rules, etc
         return null;
     }
 
-    private static ArrayList<String> getAnagrams(ArrayList<Character> word) {
+    private static ArrayList<String> getAnagramTree(Object someDataStruct) {
         //recursion!
+        ArrayList<String> word = null;
         ArrayList<String> anagrams = new ArrayList<String>();
         if (word.size() == 1) {
             //anagrams.add();
