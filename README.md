@@ -1,7 +1,7 @@
 scrabblah
 =========
 
-Scrabblah, a Scrabble Clone - UAB CIS466 Games Seminar
+Scrabblah, a Scrabble Clone - UAB CIS496 Games Seminar
 
 Design Goals:  
 The game logic shall be totally encapsulated away from the UI.  
