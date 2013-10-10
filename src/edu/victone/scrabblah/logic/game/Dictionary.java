@@ -16,15 +16,20 @@ import java.util.*;
 public class Dictionary implements Iterable<String> {
     private Set<String> dictionary;
     private long timeToInit;
+    private SubstringDB substringTrees;
 
     public Dictionary(File dictionaryFile) throws FileNotFoundException {
         final long start = System.currentTimeMillis();
         final Scanner scanner = new Scanner(dictionaryFile);
+
         dictionary = new HashSet<String>();
+        substringTrees = new SubstringDB();
         Thread t = new Thread(new Runnable() {
             public void run() {
                 while (scanner.hasNext()) {
-                    dictionary.add(scanner.next().toUpperCase());
+                    String input = scanner.next().toUpperCase();
+                    dictionary.add(input);
+                    substringTrees.add(input);
                 }
                 timeToInit = (System.currentTimeMillis() - start);
                 System.out.println("Processed dictionary file in " + timeToInit + "ms.");
