@@ -79,14 +79,14 @@ public class GameState {
     }
 
     public boolean placeTile(Tile t, Coordinate coord) {
-        if (!gameBoard.getCell(coord).isEmpty()) {
+        if (!gameBoard.getCellAt(coord).isEmpty()) {
             return false;
         }
-        return gameBoard.getCell(coord).setTile(t);
+        return gameBoard.getCellAt(coord).setTile(t);
     }
 
     public Tile removeTile(Coordinate coord) {
-        return gameBoard.getCell(coord).recallTile();
+        return gameBoard.getCellAt(coord).recallTile();
     }
 
     public boolean endTurn() {
