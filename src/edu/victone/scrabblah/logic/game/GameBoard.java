@@ -43,8 +43,8 @@ public class GameBoard {
             for (int j = 0; j < 15; j++) {
                 if (!boardCells[i][j].isEmpty()) {
                     Coordinate coord = new Coordinate(i, j);
-                    boardCells[i][j].setTile(new Tile(gb.getCell(coord).getTile()));
-                    if (gb.getCell(coord).isLocked()) {
+                    boardCells[i][j].setTile(new Tile(gb.getCellAt(coord).getTile()));
+                    if (gb.getCellAt(coord).isLocked()) {
                         boardCells[i][j].lock();
                     }
                 }
@@ -77,17 +77,17 @@ public class GameBoard {
         }
     }
 
-    public BoardCell getCell(Coordinate coord) {
+    public BoardCell getCellAt(Coordinate coord) {
         return boardCells[coord.getY()][coord.getX()];
     }
 
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
         ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
 
-        retVal.add(getCell(coord.getY() != 0 ? new Coordinate(coord.getX(), coord.getY() - 1) : null));
-        retVal.add(getCell(coord.getY() != 14 ? new Coordinate(coord.getX(), coord.getY() + 1) : null));
-        retVal.add(getCell(coord.getX() != 14 ? new Coordinate(coord.getX() + 1, coord.getY()) : null));
-        retVal.add(getCell(coord.getX() != 0 ? new Coordinate(coord.getX() - 1, coord.getY()) : null));
+        retVal.add(getCellAt(coord.getY() < 0 ? new Coordinate(coord.getX(), coord.getY() - 1) : null));
+        retVal.add(getCellAt(coord.getY() > 14 ? new Coordinate(coord.getX(), coord.getY() + 1) : null));
+        retVal.add(getCellAt(coord.getX() > 14 ? new Coordinate(coord.getX() + 1, coord.getY()) : null));
+        retVal.add(getCellAt(coord.getX() < 0 ? new Coordinate(coord.getX() - 1, coord.getY()) : null));
 
         return retVal;
     }
@@ -104,7 +104,7 @@ public class GameBoard {
     public void lockOccupiedCells() {
         for (int i = 0; i < 15; i++)
             for (int j = 0; j < 15; j++)
-                getCell(new Coordinate(i, j)).lock();
+                getCellAt(new Coordinate(i, j)).lock();
 
     }
 
@@ -142,7 +142,7 @@ public class GameBoard {
                     }
                 } else {
                     sb.append(bc.getTile().toString());
-                    sb.append(" |");
+                    sb.append(bc.getTile().toString().length() == 2 ? " |" : "|");
                 }
             }
             sb.append((char) (i + 65));
