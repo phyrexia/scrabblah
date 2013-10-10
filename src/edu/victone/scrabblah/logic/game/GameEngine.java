@@ -90,11 +90,7 @@ public class GameEngine { //rules, etc
         //end debug
 
         //ensure all the words on the board are words in the dictionary
-        ArrayList<String> temp = new ArrayList<String>();
-        for (Word w : words) {
-            temp.add(w.getWord());
-        }
-        int n = dictionary.indexOfBadString(temp);
+        int n = dictionary.indexOfBadWord(words);
         if (n != -1) {
             String sDisplay = words.get(n).toString().substring(0, 1).toUpperCase() + words.get(n).toString().substring(1);
             gameState.setErrorMessage(sDisplay + " is not a valid word.");
@@ -118,9 +114,6 @@ public class GameEngine { //rules, etc
                 boardCell = gameBoard.getCellAt(coord);
                 if (!boardCell.isEmpty()) {
                     neighbors = gameBoard.getCellNeighbors(coord);
-                    for (BoardCell bc : neighbors) {
-                        if (bc.isEmpty()) System.out.println("Empty cell");
-                    }
                     //all tiles must have at least one tile neighbor
                     if ((neighbors.get(0) == null || neighbors.get(0).isEmpty()) &&
                             (neighbors.get(1) == null || neighbors.get(1).isEmpty()) &&
