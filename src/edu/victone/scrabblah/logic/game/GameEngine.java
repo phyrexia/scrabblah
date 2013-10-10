@@ -61,7 +61,7 @@ public class GameEngine { //rules, etc
 
         //first turn must include center cell
         GameBoard gameBoard = gameState.getGameBoard();
-        if (gameState.getTurn() == 1 && gameBoard.getCell(new Coordinate(7, 7)).isEmpty()) {
+        if (gameState.getTurn() == 1 && gameBoard.getCellAt(new Coordinate(7, 7)).isEmpty()) {
             gameState.setErrorMessage("On the first turn, the center cell must be occupied.");
             return false;
         }
@@ -75,22 +75,21 @@ public class GameEngine { //rules, etc
         //are all letters contiguous?
         ArrayList<BoardCell> neighbors;
         BoardCell boardCell;
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                Coordinate coord = new Coordinate(i, j);
-                boardCell = gameBoard.getCell(coord);
-                if (boardCell.isEmpty()) {
-                    continue;
-                }
-                neighbors = gameBoard.getCellNeighbors(coord);
-
-
-                if (neighbors.get(0) == null &&
-                        neighbors.get(1) == null &&
-                        neighbors.get(2) == null &&
-                        neighbors.get(3) == null) {
-                    gameState.setErrorMessage("Invalid tile placement.");
-                    return false;
+        Coordinate coord;
+        for (int y = 0; y < 15; y++) {
+            for (int x = 0; x < 15; x++) {
+                coord = new Coordinate(x, y);
+                boardCell = gameBoard.getCellAt(coord);
+                if (!boardCell.isEmpty()) {
+                    neighbors = gameBoard.getCellNeighbors(coord);
+                    //all tiles must have at least one tile neighbor
+                    if (neighbors.get(0) == null &&
+                            neighbors.get(1) == null &&
+                            neighbors.get(2) == null &&
+                            neighbors.get(3) == null) {
+                        gameState.setErrorMessage("Invalid tile placement.");
+                        return false;
+                    }
                 }
             }
         }
@@ -134,8 +133,8 @@ public class GameEngine { //rules, etc
         for (int a = 0; a < 2; a++) {
             for (int i = 0; i < 15; i++) {
                 for (int j = 0; j < 15; j++) {
-                    coord = new Coordinate(j, i);
-                    BoardCell boardCell = gameBoard.getCell(coord);
+                    coord = a == 0 ? new Coordinate(j, i) : new Coordinate(i, j);
+                    BoardCell boardCell = gameBoard.getCellAt(coord);
 
                     while (!boardCell.isEmpty()) { //catch the first letter
                         Coordinate head = coord;
@@ -143,14 +142,14 @@ public class GameEngine { //rules, etc
                         do {
                             stringBuilder.append(boardCell.getTile().getCharacter()); //add a letter
                             coord = a == 0 ? new Coordinate(++j, i) : new Coordinate(i, ++j); //the next tile
-                            if (gameBoard.getCell(coord).isEmpty()) { //if the next tile is empty we're done
+                            if (gameBoard.getCellAt(coord).isEmpty()) { //if the next tile is empty we're done
                                 if (stringBuilder.length() > 1) { //one letter does not a word make
                                     word = new Word(head, a == 0 ? Word.HORIZONTAL : Word.VERTICAL, stringBuilder.toString());
                                     wordsOnBoard.add(word);
                                 }
                             }
-                            boardCell = gameBoard.getCell(coord);
-                        } while (!gameBoard.getCell(coord).isEmpty());
+                            boardCell = gameBoard.getCellAt(coord);
+                        } while (!gameBoard.getCellAt(coord).isEmpty());
                     }
                 }
             }
@@ -184,7 +183,7 @@ public class GameEngine { //rules, etc
         char[] charArr = w.getWord().toCharArray();
         for (int i = 0; i < charArr.length; i++) {
             int tileMultiplier = 1;
-            BoardCell boardCell = gameBoard.getCell(new Coordinate(
+            BoardCell boardCell = gameBoard.getCellAt(new Coordinate(
                     (w.getOrientation() ? x + i : x), (w.getOrientation() ? y : y + i)));
             int multiplier = boardCell.getMultiplier();
 
