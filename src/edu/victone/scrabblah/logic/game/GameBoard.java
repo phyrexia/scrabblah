@@ -84,10 +84,10 @@ public class GameBoard {
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
         ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
 
-        retVal.add(getCellAt(coord.getY() < 0 ? new Coordinate(coord.getX(), coord.getY() - 1) : null));
-        retVal.add(getCellAt(coord.getY() > 14 ? new Coordinate(coord.getX(), coord.getY() + 1) : null));
-        retVal.add(getCellAt(coord.getX() > 14 ? new Coordinate(coord.getX() + 1, coord.getY()) : null));
-        retVal.add(getCellAt(coord.getX() < 0 ? new Coordinate(coord.getX() - 1, coord.getY()) : null));
+        retVal.add(coord.getY() > 0 ? getCellAt(new Coordinate(coord.getX(), coord.getY() - 1)) : null);
+        retVal.add(coord.getY() < 14 ? getCellAt(new Coordinate(coord.getX(), coord.getY() + 1)) : null);
+        retVal.add(coord.getX() < 14 ? getCellAt(new Coordinate(coord.getX() + 1, coord.getY())) : null);
+        retVal.add(coord.getX() > 0 ? getCellAt(new Coordinate(coord.getX() - 1, coord.getY())) : null);
 
         return retVal;
     }
