@@ -36,6 +36,6 @@ public class SubstringDB {
     }
 
     public boolean contains(StringBuilder sb) {
-
+        return false;
     }
 }
