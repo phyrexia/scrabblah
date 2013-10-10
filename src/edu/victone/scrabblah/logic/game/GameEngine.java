@@ -73,25 +73,9 @@ public class GameEngine { //rules, etc
         }
 
         //are all letters contiguous?
-        ArrayList<BoardCell> neighbors;
-        BoardCell boardCell;
-        Coordinate coord;
-        for (int y = 0; y < 15; y++) {
-            for (int x = 0; x < 15; x++) {
-                coord = new Coordinate(x, y);
-                boardCell = gameBoard.getCellAt(coord);
-                if (!boardCell.isEmpty()) {
-                    neighbors = gameBoard.getCellNeighbors(coord);
-                    //all tiles must have at least one tile neighbor
-                    if (neighbors.get(0) == null &&
-                            neighbors.get(1) == null &&
-                            neighbors.get(2) == null &&
-                            neighbors.get(3) == null) {
-                        gameState.setErrorMessage("Invalid tile placement.");
-                        return false;
-                    }
-                }
-            }
+        if (!lettersAreContiguous(gameState)) {
+            gameState.setErrorMessage("Invalid tile placement.");
+            return false;
         }
 
         //get all words on the board.
@@ -120,6 +104,33 @@ public class GameEngine { //rules, etc
         gameBoard.setWordList(words);
 
         //if all of these tests have passed, then we are golden.
+        return true;
+    }
+
+    private static boolean lettersAreContiguous(GameState gameState) {
+        GameBoard gameBoard = gameState.getGameBoard();
+        ArrayList<BoardCell> neighbors;
+        BoardCell boardCell;
+        Coordinate coord;
+        for (int y = 0; y < 15; y++) {
+            for (int x = 0; x < 15; x++) {
+                coord = new Coordinate(x, y);
+                boardCell = gameBoard.getCellAt(coord);
+                if (!boardCell.isEmpty()) {
+                    neighbors = gameBoard.getCellNeighbors(coord);
+                    for (BoardCell bc : neighbors) {
+                        if (bc.isEmpty()) System.out.println("Empty cell");
+                    }
+                    //all tiles must have at least one tile neighbor
+                    if ((neighbors.get(0) == null || neighbors.get(0).isEmpty()) &&
+                            (neighbors.get(1) == null || neighbors.get(1).isEmpty()) &&
+                            (neighbors.get(2) == null || neighbors.get(2).isEmpty()) &&
+                            (neighbors.get(3) == null || neighbors.get(3).isEmpty())) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 
