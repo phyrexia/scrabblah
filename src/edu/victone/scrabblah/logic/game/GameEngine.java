@@ -228,21 +228,11 @@ public class GameEngine { //rules, etc
         return null;
     }
 
-    private static ArrayList<String> getAnagramTree(Object someDataStruct) {
-        //recursion!
-        ArrayList<String> word = null;
-        ArrayList<String> anagrams = new ArrayList<String>();
-        if (word.size() == 1) {
-            //anagrams.add();
-        }
+    private static ArrayList<String> generateAnagramTree(String string) {
+        ArrayList<String> anagrams = null;
+        AnagramTree someTree = new AnagramTree(string);
 
-        for (int i = 0; i < word.size(); i++) {
-
-        }
-
-
-        //add all possible anagrams which are in the dictionary
-        //(or not heh)
+        //???
 
         return anagrams;
     }
