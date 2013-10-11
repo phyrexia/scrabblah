@@ -42,11 +42,21 @@ public class Dictionary implements Iterable<String> {
                     if (!anagrams.containsKey(sortedString)) {
                         anagrams.put(sortedString, new HashSet<String>());
                     }
-
                     anagrams.get(sortedString).add(input);
                     dictionary.add(input);
                     substrings.add(input);
                 }
+                //todo: pass through anagrams and remove keys with value.size() == 1
+                HashSet<String> toRemove = new HashSet<String>();
+                for (String s : anagrams.keySet()) {
+                    if (anagrams.get(s).size() == 1) {
+                        toRemove.add(s);
+                    }
+                }
+                for (String s : toRemove) {
+                    anagrams.remove(s);
+                }
+
                 timeToInit = (System.currentTimeMillis() - start);
                 System.err.println("Processed dictionary file in " + timeToInit + "ms.");
             }
