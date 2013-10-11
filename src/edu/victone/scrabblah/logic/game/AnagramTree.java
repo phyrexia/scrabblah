@@ -10,10 +10,9 @@ import java.util.*;
  */
 public class AnagramTree {
     private Character node;
-    private ArrayList<AnagramTree> children;
+    private HashSet<AnagramTree> children;
     private AnagramTree parent;
-
-    private boolean divisible;
+    private ArrayList<String> anagrams;
 
     private String root;
 
@@ -32,13 +31,17 @@ public class AnagramTree {
 
     private AnagramTree(Character node, ArrayList<Character> charArray, AnagramTree parent) {
         this.parent = parent;
+        if (parent == null) {
+            System.out.println("this parent is null");
+            anagrams = new ArrayList<String>();
+        }
         //if getThisSubString() is not parseable into the DB, die
         //actually we want to keep from ever even constructing the child though
         //getSubstring();
         if (node == null && charArray != null) { //head case
             this.node = null;
             StringBuilder rootBuilder = new StringBuilder();
-            children = new ArrayList<AnagramTree>();
+            children = new HashSet<AnagramTree>();
             for (Character c : charArray) {
                 ArrayList<Character> grandkids = new ArrayList<Character>(charArray);
                 rootBuilder.append(c);
@@ -48,7 +51,8 @@ public class AnagramTree {
             root = rootBuilder.toString();
         } else if (node != null && charArray != null) { //"f, oobar"
             this.node = node;
-            children = new ArrayList<AnagramTree>();
+            //if getSubString()) {
+            children = new HashSet<AnagramTree>();
             for (Character c : charArray) {
                 //construct a new parent and the grandkids
                 ArrayList<Character> grandkids = new ArrayList<Character>(charArray);
@@ -56,10 +60,12 @@ public class AnagramTree {
                 AnagramTree child;
                 child = new AnagramTree(c, grandkids.size() == 0 ? null : grandkids, this);
                 children.add(child);
+            //}
             }
         } else if (node != null && charArray == null) { //"r"
             this.node = node;
             children = null;
+            passUpstream(getSubstring());
 
         } else {
             throw new IllegalArgumentException();
@@ -71,21 +77,32 @@ public class AnagramTree {
     private String getSubstring() {
         if (parent == null) return "";
         //debuggery
-        //String s = parent.getSubstring() + getValue();
+        //String s = parent.getSubstring() + getNode();
         //System.out.println(this + ": " + s);
-        return parent.getSubstring() + getValue();
+        return parent.getSubstring() + getNode();
     }
 
-    public String getValue() {
-        return node == null ? "" : node.toString();
+    private void passUpstream(String string) {
+        if (parent == null) {
+            anagrams.add(string);
+        } else {
+            parent.passUpstream(string);
+        }
+    }
 
+    public ArrayList<String> getAnagrams() {
+        return anagrams;
+    }
+
+    public String getNode() {
+        return node == null ? "" : node.toString();
     }
 
     public boolean hasChildren() {
         return children != null;
     }
 
-    public ArrayList<AnagramTree> getChildren() {
+    public HashSet<AnagramTree> getChildren() {
         return children;
     }
 }
