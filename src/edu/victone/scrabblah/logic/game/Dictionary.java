@@ -13,28 +13,45 @@ import java.util.*;
  * Time: 4:03 PM
  */
 
+//anagram class creation adds about 300ms to thread execution time
+
 public class Dictionary implements Iterable<String> {
     private Set<String> dictionary;
+    private Map<String, HashSet<String>> anagrams;
+    private SubstringDB substrings;
+
     private long timeToInit;
-    private SubstringDB substringTrees;
 
     public Dictionary(File dictionaryFile) throws FileNotFoundException {
         final long start = System.currentTimeMillis();
         final Scanner scanner = new Scanner(dictionaryFile);
 
         dictionary = new HashSet<String>();
-        substringTrees = new SubstringDB();
+        anagrams = new HashMap<String, HashSet<String>>();
+        substrings = new SubstringDB();
+
+        final int numCores = Runtime.getRuntime().availableProcessors();
+
         Thread t = new Thread(new Runnable() {
             public void run() {
                 while (scanner.hasNext()) {
                     String input = scanner.next().toUpperCase();
+                    char[] charArr = input.toCharArray();
+                    Arrays.sort(input.toCharArray());
+                    String sortedString = new String(charArr);
+                    if (!anagrams.containsKey(sortedString)) {
+                        anagrams.put(sortedString, new HashSet<String>());
+                    }
+
+                    anagrams.get(sortedString).add(input);
                     dictionary.add(input);
-                    substringTrees.add(input);
+                    substrings.add(input);
                 }
                 timeToInit = (System.currentTimeMillis() - start);
-                System.out.println("Processed dictionary file in " + timeToInit + "ms.");
+                System.err.println("Processed dictionary file in " + timeToInit + "ms.");
             }
         });
+
         t.start();
     }
 
@@ -51,27 +68,6 @@ public class Dictionary implements Iterable<String> {
             return false;
         }
         return true;
-    }
-
-    public int indexOfBadWord(ArrayList<Word> words) {
-        //returns the index of the first Word in the list that
-        //is not in the dictionary,
-        //or -1 if all words are in the dictionary
-        for (Word w : words) {
-            if (!contains(w.getWord())) {
-                return words.indexOf(w);
-            }
-        }
-        return -1;
-    }
-
-    public int indexOfBadString(ArrayList<String> strings) {
-        for (String s : strings) {
-            if (!contains(s)) {
-                return strings.indexOf(s);
-            }
-        }
-        return -1;
     }
 
     @Override
