@@ -13,7 +13,10 @@ import java.util.*;
  * Time: 4:03 PM
  */
 
-//anagram class creation adds about 300ms to thread execution time
+//anagram class creation adds about 500ms to thread execution time
+//and fwiw i can't remember why i was so gung-ho about adding it
+//as I am writing the complimentary SubstringTree and AnagramTree
+//classes
 
 public class Dictionary implements Iterable<String> {
     private Set<String> dictionary;
@@ -62,6 +65,9 @@ public class Dictionary implements Iterable<String> {
         });
 
         t.start();
+        //while this is technically multithreading, and runs pleasantly in the background
+        //while the user enters data, i would like two (or more) threads working in a
+        //producer-consumer pattern.
     }
 
     public long getTimeToInit() {
