@@ -46,7 +46,6 @@ public class Dictionary implements Iterable<String> {
                     dictionary.add(input);
                     substrings.add(input);
                 }
-                //todo: pass through anagrams and remove keys with value.size() == 1
                 HashSet<String> toRemove = new HashSet<String>();
                 for (String s : anagrams.keySet()) {
                     if (anagrams.get(s).size() == 1) {
