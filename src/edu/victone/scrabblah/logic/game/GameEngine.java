@@ -20,32 +20,9 @@ import java.util.HashSet;
  */
 public class GameEngine { //rules, etc
     public static Dictionary dictionary;
-    public static HashMap<String, HashSet<String>> anagrams;
 
     public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
         dictionary = new Dictionary(dictionaryFile);
-        getAnagrams(dictionary);
-    }
-
-    private static void getAnagrams(final Dictionary someDictionary) {
-        //anagram classes (the key) represent what class of word we can make with a given set of tiles.
-        //the anagrams themselves (the associated value, a hashset) are the words we can make
-        final long start = System.currentTimeMillis();
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                for (String string : someDictionary) {
-                    char[] charArr = string.toCharArray();
-                    Arrays.sort(string.toCharArray());
-                    String sortedString = new String(charArr);
-                    if (!anagrams.containsKey(sortedString)) {
-                        anagrams.put(sortedString, new HashSet<String>());
-                    }
-                    anagrams.get(sortedString).add(string);
-                }
-                System.out.println("Generated anagrams in " + (System.currentTimeMillis() - start) + "ms.");
-            }
-        });
-        t.start();
     }
 
     public static boolean isLegalState(GameState gameState) {
@@ -59,15 +36,16 @@ public class GameEngine { //rules, etc
             return false;
         }
 
+        //are all cells locked?
+
         //first turn must include center cell
-        GameBoard gameBoard = gameState.getGameBoard();
-        if (gameState.getTurn() == 1 && gameBoard.getCellAt(new Coordinate(7, 7)).isEmpty()) {
+        if (gameState.getTurn() == 1 && gameState.getGameBoard().getCellAt(new Coordinate(7, 7)).isEmpty()) {
             gameState.setErrorMessage("On the first turn, the center cell must be occupied.");
             return false;
         }
 
         //if first word played is a one-letter word
-        if (gameBoard.getNumOccupiedCells() == 1) {
+        if (gameState.getGameBoard().getNumOccupiedCells() == 1) {
             gameState.setErrorMessage("Single-letter words are not allowed.");
             return false;
         }
@@ -79,25 +57,25 @@ public class GameEngine { //rules, etc
         }
 
         //get all words on the board.
-        ArrayList<Word> words = getWordsOnBoard(gameBoard);
+        ArrayList<Word> words = getWordsOnBoard(gameState.getGameBoard());
 
         //DEBUG
         //todo: remove this GameEngine debug code
         System.out.println("words size: " + words.size());
-        for (Word s : words) {
-            System.out.println("words from board: " + s);
+        for (Word word : words) {
+            System.out.println("words from board: " + word);
         }
         //end debug
 
         //ensure all the words on the board are words in the dictionary
-        int n = dictionary.indexOfBadWord(words);
+        int n = indexOfBadWord(words);
         if (n != -1) {
             String sDisplay = words.get(n).toString().substring(0, 1).toUpperCase() + words.get(n).toString().substring(1);
             gameState.setErrorMessage(sDisplay + " is not a valid word.");
             return false;
         }
 
-        gameBoard.setWordList(words);
+        gameState.getGameBoard().setWordList(words);
 
         //if all of these tests have passed, then we are golden.
         return true;
@@ -161,6 +139,27 @@ public class GameEngine { //rules, etc
         return wordsOnBoard;
     }
 
+    public static int indexOfBadWord(ArrayList<Word> words) {
+        //returns the index of the first Word in the list that
+        //is not in the dictionary,
+        //or -1 if all words are in the dictionary
+        for (Word w : words) {
+            if (!dictionary.contains(w.getWord())) {
+                return words.indexOf(w);
+            }
+        }
+        return -1;
+    }
+
+    public int indexOfBadString(ArrayList<String> strings) {
+        for (String s : strings) {
+            if (!dictionary.contains(s)) {
+                return strings.indexOf(s);
+            }
+        }
+        return -1;
+    }
+
     public static int computeScore(GameBoard oldBoard, GameBoard currentBoard) {
         int score = 0;
         if (oldBoard == null) { //first turn case
@@ -168,9 +167,9 @@ public class GameEngine { //rules, etc
         }
 
         //get words that are on cb but not ob.
-        ArrayList<Word> oldWords = getWordsOnBoard(oldBoard);
-        ArrayList<Word> newWords = getWordsOnBoard(currentBoard);
-        newWords.removeAll(oldWords);
+        //ArrayList<Word> oldWords = getWordsOnBoard(oldBoard);
+        ArrayList<Word> newWords = currentBoard.getWordList();
+        newWords.removeAll(oldBoard.getWordList());
 
         for (Word w : newWords) {
             score += computeWordScore(w, currentBoard);
@@ -214,7 +213,9 @@ public class GameEngine { //rules, etc
 
         ArrayList<Word> possiblePlays = new ArrayList<Word>();
 
-        ArrayList<ArrayList<String>> anagrams = new ArrayList<ArrayList<String>>();
+        ArrayList<String> anagrams = generateAnagramTree(null); //tiles
+
+        //todo: generate anagrams
 
         //TODO: generate startingZone
         for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
@@ -223,18 +224,13 @@ public class GameEngine { //rules, etc
             }
         }
 
-        //todo: generate anagrams
 
         return null;
     }
 
     private static ArrayList<String> generateAnagramTree(String string) {
-        ArrayList<String> anagrams = null;
         AnagramTree someTree = new AnagramTree(string);
-
-        //???
-
-        return anagrams;
+        return someTree.getAnagrams();
     }
 
     private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
