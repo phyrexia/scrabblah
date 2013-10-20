@@ -1,6 +1,6 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.game.AnagramTreeNode;
+import edu.victone.scrabblah.logic.game.AnagramTree;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,16 +11,15 @@ import edu.victone.scrabblah.logic.game.AnagramTreeNode;
 public class AnagramTreeNodeTest {
 
     public AnagramTreeNodeTest() {
-        String s = "FOOBAR";
-        AnagramTreeNode tree = new AnagramTreeNode(s);
-        System.out.println(tree.getChildren().size());
-        for (AnagramTreeNode atn : tree.getChildren()) {
-            System.out.println(atn.getValue());
-        }
-    }
+        final long start = System.currentTimeMillis();
+        AnagramTree tree = new AnagramTree("FOOBAR");
+        //before pruning has been implemented,
+        // 720 anagrams in 25ms
 
-    public void traverseTree(AnagramTreeNode atn) {
-        //System.out.println()
+        System.out.println(tree.getChildren().size());
+
+        System.out.println("generated " + tree.getAnagrams().size() + " anagrams in " + (System.currentTimeMillis() - start) + "ms");
+        //for (String s : tree.getAnagrams()) System.out.println(s);
     }
 
     public static void main(String[] args) {
