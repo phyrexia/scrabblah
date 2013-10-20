@@ -8,8 +8,6 @@ import edu.victone.scrabblah.logic.player.TileRack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -51,7 +49,7 @@ public class GameEngine { //rules, etc
         }
 
         //are all letters contiguous?
-        if (!lettersAreContiguous(gameState)) {
+        if (!areLettersContiguous(gameState)) {
             gameState.setErrorMessage("Invalid tile placement.");
             return false;
         }
@@ -81,7 +79,7 @@ public class GameEngine { //rules, etc
         return true;
     }
 
-    private static boolean lettersAreContiguous(GameState gameState) {
+    private static boolean areLettersContiguous(GameState gameState) {
         GameBoard gameBoard = gameState.getGameBoard();
         ArrayList<BoardCell> neighbors;
         BoardCell boardCell;
