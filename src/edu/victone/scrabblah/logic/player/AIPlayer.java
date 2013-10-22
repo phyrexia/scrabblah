@@ -17,6 +17,7 @@ public class AIPlayer extends Player {
 
     public AIPlayer(String name, int rank, double skillLevel) {
         super(name, rank);
+        this.skillLevel = skillLevel;
 
     }
 
