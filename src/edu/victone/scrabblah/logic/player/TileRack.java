@@ -13,12 +13,11 @@ import java.util.*;
 
 public class TileRack implements Iterable<Tile> {
     static final int MAXSIZE = 7;
-    Random random;
+    private static Random random = new Random(System.nanoTime());;
 
     private List<Tile> rack;
 
     public TileRack() {
-        random = new Random(System.nanoTime());
         rack = new ArrayList<Tile>(MAXSIZE);
     }
 
