@@ -40,7 +40,7 @@ public class Dictionary implements Iterable<String> {
                 while (scanner.hasNext()) {
                     String input = scanner.next().toUpperCase();
                     char[] charArr = input.toCharArray();
-                    Arrays.sort(input.toCharArray());
+                    Arrays.sort(charArr);
                     String sortedString = new String(charArr);
                     if (!anagrams.containsKey(sortedString)) {
                         anagrams.put(sortedString, new HashSet<String>());
