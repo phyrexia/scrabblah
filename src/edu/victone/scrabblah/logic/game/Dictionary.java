@@ -50,6 +50,7 @@ public class Dictionary implements Iterable<String> {
         AnagramConsumer anagramConsumer = new AnagramConsumer(anagramClassWorkPool, anagrams);
         new Thread(anagramConsumer).start();
         SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
+        new Thread(substringConsumer).start();
     }
 
     public boolean contains(Word w) {
