@@ -16,13 +16,17 @@ public class AnagramTree {
 
     private String root;
 
+    //1) add current substring to each node
+    //2) replace object fields with primitives where possible to decrease JVM overhead
+    //2a) look into Trove, Javolution, Guava collections libraries for primitive support
+
     public AnagramTree(String s) {
         this(null, AnagramTree.stringToSortedCharArray(s), null);
     }
 
     private static ArrayList<Character> stringToSortedCharArray(String s) {
         ArrayList<Character> charArray = new ArrayList<Character>();
-        for (Character c : s.toCharArray()) {
+        for (Character c : s.toUpperCase().toCharArray()) {
             charArray.add(c);
         }
         Collections.sort(charArray);
@@ -65,6 +69,7 @@ public class AnagramTree {
         } else if (node != null && charArray == null) { //"r"
             this.node = node;
             children = null;
+            //if substring not in worddb, don't passUpstream
             passUpstream(getSubstring());
 
         } else {
