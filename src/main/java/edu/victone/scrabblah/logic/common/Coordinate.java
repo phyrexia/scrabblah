@@ -6,8 +6,9 @@ package edu.victone.scrabblah.logic.common;
  * Date: 9/17/13
  * Time: 7:13 PM
  */
+
 public class Coordinate {
-    private Integer x, y;
+    private final Integer x, y;
 
     public Coordinate(int x, int y) {
         if ((x < 0) || (x > 14)) {
@@ -29,7 +30,6 @@ public class Coordinate {
     }
 
     public String print() {
-        //todo: why doesn't this work?
         Character xChar = (char) (x + 48);
         Character yChar = (char) (y + 48);
         return ("(" + xChar + "," + yChar + ")");
@@ -41,16 +41,16 @@ public class Coordinate {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object o) {
+        if (o == null) {
             return false;
         }
 
-        if (getClass() != obj.getClass()) {
+        if (getClass() != o.getClass()) {
             return false;
         }
 
-        final Coordinate other = (Coordinate) obj;
+        final Coordinate other = (Coordinate) o;
         if (x != other.getX() || y != other.getY()) {
             return false;
         }
@@ -59,9 +59,13 @@ public class Coordinate {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash *= 53 * hash + this.x;
-        hash *= 53 * hash + this.y;
-        return hash;
+        return java.util.Objects.hash(x,y);
+    }
+
+    public static void main(String... args) {
+        Coordinate a = new Coordinate(4, 4);
+        Coordinate b = new Coordinate(4, 4);
+
+        System.out.println( a.equals(b) ? "pass" : "fail" );
     }
 }
