@@ -110,6 +110,7 @@ public class GameEngine { //rules, etc
         Word word;
 
         //find words
+        //could this be expressed more concisely?
         for (int a = 0; a < 2; a++) {
             for (int i = 0; i < 15; i++) {
                 for (int j = 0; j < 15; j++) {
@@ -162,10 +163,10 @@ public class GameEngine { //rules, etc
         int score = 0;
         if (oldBoard == null) { //first turn case
             oldBoard = new GameBoard();
+            oldBoard.setWordList(new ArrayList<Word>());
         }
 
         //get words that are on cb but not ob.
-        //ArrayList<Word> oldWords = getWordsOnBoard(oldBoard);
         ArrayList<Word> newWords = currentBoard.getWordList();
         newWords.removeAll(oldBoard.getWordList());
 

@@ -113,6 +113,7 @@ public class GameBoard {
     }
 
     public ArrayList<Word> getWordList() {
+        //watch out.  could be null.
         return wordList;
     }
 
