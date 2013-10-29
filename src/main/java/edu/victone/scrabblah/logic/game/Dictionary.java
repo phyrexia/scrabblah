@@ -17,15 +17,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Time: 4:03 PM
  */
 
-//anagram class creation adds about 500ms to thread execution time
-//and fwiw i can't remember why i was so gung-ho about adding it
-//as I am writing the complimentary SubstringTree and AnagramTree
-//classes
-    //it does allow us an extra place to check the anagramtree nodes.
-
-public class Dictionary implements Iterable<String> {
+public class Dictionary {
     private HashSet<String> dictionary;
-    private HashMap<String, HashSet<String>> anagrams;
+    //private HashMap<String, HashSet<String>> anagrams;
     private SubstringDB substrings;
 
     private LinkedBlockingQueue<String> anagramClassWorkPool;
@@ -38,31 +32,22 @@ public class Dictionary implements Iterable<String> {
         final Scanner scanner = new Scanner(dictionaryFile);
 
         dictionary = new HashSet<String>();
-        anagrams = new HashMap<String, HashSet<String>>();
+        //anagrams = new HashMap<String, HashSet<String>>();
         substrings = new SubstringDB();
 
-        anagramClassWorkPool = new LinkedBlockingQueue<String>(); //for later
+        //anagramClassWorkPool = new LinkedBlockingQueue<String>(); //for later
         substringWorkPool = new LinkedBlockingQueue<String>(); //for later
 
         Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool, anagramClassWorkPool);
         new Thread(producer).start();
 
-        AnagramConsumer anagramConsumer = new AnagramConsumer(anagramClassWorkPool, anagrams);
-        new Thread(anagramConsumer).start();
+        //AnagramConsumer anagramConsumer = new AnagramConsumer(anagramClassWorkPool, anagrams);
+        //new Thread(anagramConsumer).start();
         SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
         new Thread(substringConsumer).start();
     }
 
-    public boolean contains(Word w) {
-        return contains(w.getWord());
-    }
-
     public boolean contains(String s) {
         return dictionary.contains(s.toUpperCase());
-    }
-
-    @Override
-    public Iterator<String> iterator() {
-        return dictionary.iterator();
     }
 }
