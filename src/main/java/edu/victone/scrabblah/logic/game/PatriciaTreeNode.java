@@ -9,33 +9,33 @@ import java.util.Set;
  * Date: 10/10/13
  * Time: 12:39 AM
  */
-public class SubstringTree {
+public class PatriciaTreeNode {
     //the substring tree for a single letter of the alphabet
 
     Character head; //might not really be neccessary
 
-    Set<SubstringTree> children;
+    Set<PatriciaTreeNode> children;
 
     String currentSubstring;
 
     int depth;
 
     //head constructor
-    public SubstringTree(char c) {
-        children = new HashSet<SubstringTree>();
+    public PatriciaTreeNode(char c) {
+        children = new HashSet<PatriciaTreeNode>();
         depth = 0;
         head = c;
     }
 
     //leaf constructor
-    public SubstringTree(CharSequence cs, int depth) {
+    public PatriciaTreeNode(CharSequence cs, int depth) {
         currentSubstring = cs.subSequence(0,depth).toString(); ;
 
     }
 
     public void add(CharSequence cs) {
        // if (children.contains(cs.s))
-        children.add(new SubstringTree(cs, 0));
+        children.add(new PatriciaTreeNode(cs, 0));
 
     }
 

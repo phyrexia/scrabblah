@@ -8,20 +8,21 @@ import java.util.HashMap;
  * Date: 10/8/13
  * Time: 3:29 AM
  */
-public class SubstringDB {
-    HashMap<Character, SubstringTree> trees;
+public class PatriciaTrie {
+    HashMap<Character, PatriciaTreeNode> trees;
     int size;
 
-    public SubstringDB() {
-        trees = new HashMap<Character, SubstringTree>(52, .5f);
+    public PatriciaTrie() {
+        trees = new HashMap<Character, PatriciaTreeNode>(52, .5f);
         for (int i = 65; i < 91; i++) {
-            trees.put((char) i, new SubstringTree((char) i));
+            trees.put((char) i, new PatriciaTreeNode((char) i));
         }
         size = 0;
     }
 
     public void add(CharSequence cs) {
-        trees.get(cs.charAt(0)).add(cs);        //dump word to that hashmap
+        trees.get(cs.charAt(0)).add(cs);
+        //dump word to that hashmap
         size++;
     }
 

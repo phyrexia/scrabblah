@@ -1,7 +1,5 @@
 package edu.victone.scrabblah.logic.game;
 
-import edu.victone.scrabblah.logic.common.Word;
-import edu.victone.scrabblah.logic.game.concurrent.AnagramConsumer;
 import edu.victone.scrabblah.logic.game.concurrent.Producer;
 import edu.victone.scrabblah.logic.game.concurrent.SubstringConsumer;
 
@@ -20,7 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Dictionary {
     private HashSet<String> dictionary;
     //private HashMap<String, HashSet<String>> anagrams;
-    private SubstringDB substrings;
+    private PatriciaTrie substrings;
 
     private LinkedBlockingQueue<String> anagramClassWorkPool;
     private LinkedBlockingQueue<String> substringWorkPool;
@@ -31,9 +29,9 @@ public class Dictionary {
         final long start = System.currentTimeMillis();
         final Scanner scanner = new Scanner(dictionaryFile);
 
-        dictionary = new HashSet<String>();
+        dictionary = new HashSet<String>(360000);
         //anagrams = new HashMap<String, HashSet<String>>();
-        substrings = new SubstringDB();
+        substrings = new PatriciaTrie();
 
         //anagramClassWorkPool = new LinkedBlockingQueue<String>(); //for later
         substringWorkPool = new LinkedBlockingQueue<String>(); //for later

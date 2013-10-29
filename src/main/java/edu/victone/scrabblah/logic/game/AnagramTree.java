@@ -9,6 +9,7 @@ import java.util.*;
  * Time: 8:15 PM
  */
 public class AnagramTree {
+    //Complete, but unoptimized.
     private Character node;
     private HashSet<AnagramTree> children;
     private AnagramTree parent;

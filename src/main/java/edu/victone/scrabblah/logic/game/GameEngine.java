@@ -162,6 +162,7 @@ public class GameEngine { //rules, etc
         int score = 0;
         if (oldBoard == null) { //first turn case
             oldBoard = new GameBoard();
+            oldBoard.setWordList(new ArrayList<Word>());
         }
 
         //get words that are on cb but not ob.
