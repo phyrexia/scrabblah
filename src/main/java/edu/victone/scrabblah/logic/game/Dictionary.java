@@ -39,12 +39,12 @@ public class Dictionary {
         substringWorkPool = new LinkedBlockingQueue<String>(); //for later
 
         Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool, anagramClassWorkPool);
-        new Thread(producer).start();
-
-        //AnagramConsumer anagramConsumer = new AnagramConsumer(anagramClassWorkPool, anagrams);
-        //new Thread(anagramConsumer).start();
         SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
+        //AnagramConsumer anagramConsumer = new AnagramConsumer(anagramClassWorkPool, anagrams);
+
+        new Thread(producer).start();
         new Thread(substringConsumer).start();
+        //new Thread(anagramConsumer).start();
     }
 
     public boolean contains(String s) {
