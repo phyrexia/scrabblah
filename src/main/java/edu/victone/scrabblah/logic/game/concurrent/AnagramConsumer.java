@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AnagramConsumer implements Runnable {
     private LinkedBlockingQueue<String> anagramClassWorkPool;
-    HashMap<String, HashSet<String>> anagrams;
+    private HashMap<String, HashSet<String>> anagrams;
 
     public AnagramConsumer(LinkedBlockingQueue<String> anagramClassWorkPool,
                            HashMap<String, HashSet<String>> anagrams) {
@@ -25,26 +25,25 @@ public class AnagramConsumer implements Runnable {
     @Override
     public void run() {
         long start = System.currentTimeMillis();
-        System.out.println("start ac: " + start);
-        String input = null;
-        while (true) { //hax
+        String input = "";
+        while (true) {
             try {
-                input = anagramClassWorkPool.poll(50, TimeUnit.MILLISECONDS);
-                if (input == null) {
-                    System.out.println("Breaking after adding " + anagrams.size() + " anagrams.");
-                    break; //which will break out lol
-                }
-                char[] charArr = input.toCharArray();
-                Arrays.sort(charArr);
-                String sortedString = new String(charArr);
-                if (!anagrams.containsKey(sortedString)) {
-                    anagrams.put(sortedString, new HashSet<String>());
-                }
-                anagrams.get(sortedString).add(input);
+                input = anagramClassWorkPool.take();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
+            if (input.equals("@")) {
+                System.out.println("Breaking after adding " + anagrams.size() + " anagrams.");
+                break;
+            }
+            char[] charArr = input.toCharArray();
+            Arrays.sort(charArr);
+            String sortedString = new String(charArr);
+            if (!anagrams.containsKey(sortedString)) {
+                anagrams.put(sortedString, new HashSet<String>());
+            }
+            anagrams.get(sortedString).add(input);
         }
-        System.out.println("Dictionary Anagrams processed in " + (System.currentTimeMillis() - start) + "ms.");
+        System.out.println("Anagrams processed in " + (System.currentTimeMillis() - start) + "ms.");
     }
 }

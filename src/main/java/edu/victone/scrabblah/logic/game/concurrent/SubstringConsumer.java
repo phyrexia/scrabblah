@@ -2,10 +2,9 @@ package edu.victone.scrabblah.logic.game.concurrent;
 
 import edu.victone.scrabblah.logic.game.SubstringDB;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,25 +17,24 @@ public class SubstringConsumer implements Runnable {
     SubstringDB substrings;
 
     public SubstringConsumer(LinkedBlockingQueue<String> substringWorkPool, SubstringDB substrings) {
-        this.substringWorkPool = substringWorkPool;
-        this.substrings = substrings;
+        this.substringWorkPool = Preconditions.checkNotNull(substringWorkPool);
+        this.substrings = Preconditions.checkNotNull(substrings);
     }
 
     @Override
     public void run() {
-        String input;
-        while (true) { //hax!
+        String input = "";
+        while (true) {
             try {
-                input = substringWorkPool.poll(50, TimeUnit.MILLISECONDS);
-                if (input == null) {
-                    System.out.println("Breaking after adding " + substrings.size() + " words to sst.");
-                    break;
-                }
-                substrings.add(input);
+                input = substringWorkPool.take();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (input.equals("@")) {
+                System.out.println("Consumer Breaking after adding " + substrings.size() + " words to sst.");
+                break;
+            }
+            substrings.add(input);
         }
-
     }
 }
