@@ -105,8 +105,6 @@ public class Tile {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash *= 53 * hash + (int) letter.charValue();
-        return hash;
+        return java.util.Objects.hash(letter);
     }
 }
