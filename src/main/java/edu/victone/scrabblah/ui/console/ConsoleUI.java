@@ -309,7 +309,6 @@ public class ConsoleUI extends UserInterface {
         } else {
             System.out.println("Please choose an unoccupied cell.");
         }
-
     }
 
     @Override

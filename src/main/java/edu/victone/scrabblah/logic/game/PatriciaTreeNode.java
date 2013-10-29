@@ -12,6 +12,10 @@ import java.util.Set;
 public class PatriciaTreeNode {
     //the substring tree for a single letter of the alphabet
 
+    //this is really a trie and implementations exist.
+    //may use ardverk's patricia trie
+    //or may roll my own
+
     Character head; //might not really be neccessary
 
     Set<PatriciaTreeNode> children;
