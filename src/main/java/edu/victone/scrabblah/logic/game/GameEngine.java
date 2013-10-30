@@ -57,13 +57,11 @@ public class GameEngine { //rules, etc
         //get all words on the board.
         ArrayList<Word> words = getWordsOnBoard(gameState.getGameBoard());
 
-        //DEBUG
         //todo: remove this GameEngine debug code
         System.out.println("words size: " + words.size());
         for (Word word : words) {
             System.out.println("words from board: " + word);
         }
-        //end debug
 
         //ensure all the words on the board are words in the dictionary
         int n = indexOfBadWord(words);
