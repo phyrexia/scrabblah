@@ -5,7 +5,9 @@ import edu.victone.scrabblah.logic.game.concurrent.SubstringConsumer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -15,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Time: 4:03 PM
  */
 
-public class Dictionary {
+public class Dictionary implements Iterable<String> {
     private HashSet<String> dictionary;
     //private HashMap<String, HashSet<String>> anagrams;
     private PatriciaTrie substrings;
@@ -47,5 +49,25 @@ public class Dictionary {
 
     public boolean contains(String s) {
         return dictionary.contains(s.toUpperCase());
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return dictionary.iterator();
+    }
+
+    public static void main(String... args) {
+        Dictionary d = null;
+        try {
+            d = new Dictionary(new File("sowpods.txt"));
+        } catch (FileNotFoundException e) {
+            System.out.println("FAIL: fnf");
+            //System.exit(1);
+        }
+
+
+        for (String s : d) {
+            System.out.println(d);
+        }
     }
 }
