@@ -148,7 +148,7 @@ public class GameEngine { //rules, etc
         return -1;
     }
 
-    public int indexOfBadString(ArrayList<String> strings) {
+    public static int indexOfBadString(ArrayList<String> strings) {
         for (String s : strings) {
             if (!dictionary.contains(s)) {
                 return strings.indexOf(s);
@@ -231,6 +231,7 @@ public class GameEngine { //rules, etc
     }
 
     private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
+        //todo
         HashSet<Coordinate> startingCoordinates = new HashSet<Coordinate>();
         for (int i = 0; i < 15; i++) {
             for (int x = 0; x < 15; x++) {
