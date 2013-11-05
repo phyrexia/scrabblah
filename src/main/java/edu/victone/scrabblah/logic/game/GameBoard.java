@@ -77,6 +77,41 @@ public class GameBoard {
         }
     }
 
+    private static ArrayList<Word> getWordsOnBoard(GameBoard gameBoard) {
+        ArrayList<Word> wordsOnBoard = new ArrayList<Word>();
+        StringBuilder stringBuilder;
+        Coordinate coord;
+        Word word;
+
+        //find words
+        //could this be expressed more concisely?
+        //cause it's sort of a bear. but also sort of awesome?
+        for (int a = 0; a < 2; a++) {
+            for (int i = 0; i < 15; i++) {
+                for (int j = 0; j < 15; j++) {
+                    coord = a == 0 ? new Coordinate(j, i) : new Coordinate(i, j);
+                    BoardCell boardCell = gameBoard.getCellAt(coord);
+                    while (!boardCell.isEmpty()) { //catch the first letter
+                        Coordinate head = coord;
+                        stringBuilder = new StringBuilder();
+                        do {
+                            stringBuilder.append(boardCell.getTile().getCharacter()); //add a letter
+                            coord = a == 0 ? new Coordinate(++j, i) : new Coordinate(i, ++j); //the next tile
+                            if (gameBoard.getCellAt(coord).isEmpty()) { //if the next tile is empty we're done
+                                if (stringBuilder.length() > 1) { //one letter does not a word make
+                                    word = new Word(head, a == 0 ? Word.HORIZONTAL : Word.VERTICAL, stringBuilder.toString());
+                                    wordsOnBoard.add(word);
+                                }
+                            }
+                            boardCell = gameBoard.getCellAt(coord);
+                        } while (!gameBoard.getCellAt(coord).isEmpty());
+                    }
+                }
+            }
+        }
+        return wordsOnBoard;
+    }
+
     public BoardCell getCellAt(Coordinate coord) {
         return boardCells[coord.getY()][coord.getX()];
     }
@@ -105,16 +140,10 @@ public class GameBoard {
         for (int i = 0; i < 15; i++)
             for (int j = 0; j < 15; j++)
                 getCellAt(new Coordinate(i, j)).lock();
-
-    }
-
-    public void setWordList(ArrayList<Word> wordList) {
-        this.wordList = wordList;
     }
 
     public ArrayList<Word> getWordList() {
-        //watch out.  could be null.
-        return wordList;
+        return wordList == null ? wordList = getWordsOnBoard(this) : wordList;
     }
 
     @Override
@@ -125,7 +154,7 @@ public class GameBoard {
         sb.append(row);
         sb.append("\n");
         for (int i = 0; i < 15; i++) {
-            sb.append((char) (i + 65));
+            sb.append(new Integer(i+1).toString());
             sb.append("|");
             for (int j = 0; j < 15; j++) {
                 BoardCell bc = boardCells[i][j];
