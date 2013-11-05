@@ -1,6 +1,7 @@
 package edu.victone.scrabblah.logic.game.concurrent;
 
 import com.google.common.base.Preconditions;
+import edu.victone.scrabblah.logic.game.PatriciaTrie;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SubstringConsumer implements Runnable {
     LinkedBlockingQueue<String> substringWorkPool;
-    edu.victone.scrabblah.logic.game.PatriciaTrie substrings;
+    PatriciaTrie substrings;
 
     public SubstringConsumer(LinkedBlockingQueue<String> substringWorkPool, edu.victone.scrabblah.logic.game.PatriciaTrie substrings) {
         this.substringWorkPool = Preconditions.checkNotNull(substringWorkPool);
