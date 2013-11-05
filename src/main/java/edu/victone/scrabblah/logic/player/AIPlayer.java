@@ -29,11 +29,6 @@ public class AIPlayer extends Player {
 
     }
 
-    @Override
-    public String toString() {
-        return "P" + rank + ": " + name + " (AI) - Score: " + score;
-    }
-
     public void takeTurn() {
 
     }
@@ -82,5 +77,10 @@ public class AIPlayer extends Player {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "P" + rank + ": " + name + " (AI) - Score: " + score;
     }
 }
