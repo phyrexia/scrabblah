@@ -14,20 +14,17 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Producer implements Runnable {
     private LinkedBlockingQueue<String> substringWorkPool;
-    //private LinkedBlockingQueue<String> anagramClassWorkPool;
 
     private Scanner scanner;
     private HashSet<String> dictionary;
 
     public Producer(File dictionaryFile,
                     HashSet<String> dictionary,
-                    LinkedBlockingQueue<String> substringWorkPool,
-                    LinkedBlockingQueue<String> anagramClassWorkPool) throws FileNotFoundException {
+                    LinkedBlockingQueue<String> substringWorkPool) throws FileNotFoundException {
         scanner = new Scanner(dictionaryFile);
 
         this.dictionary = dictionary;
         this.substringWorkPool = substringWorkPool;
-        //this.anagramClassWorkPool = anagramClassWorkPool;
     }
 
     @Override
@@ -37,10 +34,8 @@ public class Producer implements Runnable {
             String input = scanner.next().toUpperCase();
             dictionary.add(input);
             substringWorkPool.offer(input);
-            //anagramClassWorkPool.offer(input);
         }
-        substringWorkPool.offer("@");
-        //anagramClassWorkPool.offer("@");
+        substringWorkPool.offer("@"); //eof marker
         System.out.println("producer finished in " + (System.currentTimeMillis() - start) + "ms.");
     }
 }
