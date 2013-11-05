@@ -92,7 +92,7 @@ public class TileBag {
         Collections.shuffle(tileBag, random);
     }
 
-    public ArrayList<Tile> removeTiles(int numTiles) {
+    private ArrayList<Tile> removeTiles(int numTiles) {
         ArrayList<Tile> tileList = new ArrayList<Tile>(numTiles);
         for (int i = 1; i <= numTiles; i++) {
             tileList.add(removeTile());
