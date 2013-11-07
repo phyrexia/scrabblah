@@ -7,6 +7,7 @@ import edu.victone.scrabblah.logic.game.GameBoard;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,8 @@ import java.util.HashSet;
  */
 
 public class AIPlayer extends Player {
-    public static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
+    private static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
+    private static Random random = new Random();
     private double skillLevel;
 
     public AIPlayer(String name, int rank) {
@@ -82,5 +84,9 @@ public class AIPlayer extends Player {
     @Override
     public String toString() {
         return "P" + rank + ": " + name + " (AI) - Score: " + score;
+    }
+
+    public static String getRandomName() {
+        return playerNames[random.nextInt(playerNames.length)];
     }
 }
