@@ -1,12 +1,8 @@
-package edu.victone.scrabblah.ui.gui;
+package edu.victone.scrabblah.ui.deprecated.gui;
 
-import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.player.Player;
-import edu.victone.scrabblah.logic.common.Word;
-import edu.victone.scrabblah.ui.UserInterface;
-
-import javax.swing.*;
+import edu.victone.scrabblah.ui.deprecated.UserInterface;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +10,8 @@ import javax.swing.*;
  * Date: 9/11/13
  * Time: 7:46 PM
  */
+
+@Deprecated
 public class GraphicalUI extends UserInterface {
 
     @Override

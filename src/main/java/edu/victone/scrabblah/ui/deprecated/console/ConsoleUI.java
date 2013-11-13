@@ -1,14 +1,13 @@
-package edu.victone.scrabblah.ui.console;
+package edu.victone.scrabblah.ui.deprecated.console;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Move;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.Player;
-import edu.victone.scrabblah.ui.UserInterface;
+import edu.victone.scrabblah.ui.deprecated.UserInterface;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -18,6 +17,7 @@ import java.util.Scanner;
  * Time: 7:32 PM
  */
 
+@Deprecated
 public class ConsoleUI extends UserInterface {
     Scanner scanner;
 
@@ -142,9 +142,9 @@ public class ConsoleUI extends UserInterface {
                 }
             } while (name.equals(""));
         } else {
-            name = AIPlayer.playerNames[new Random().nextInt(AIPlayer.playerNames.length)];
+            //name = AIPlayer.playerNames[new Random().nextInt(AIPlayer.playerNames.length)];
         }
-        return (type.toLowerCase().equals("y") ? new Player(name, rank) : new AIPlayer(name, rank));
+        return (type.toLowerCase().equals("y") ? new Player(name) : new AIPlayer(name, rank));
     }
 
     @Override
@@ -200,6 +200,17 @@ public class ConsoleUI extends UserInterface {
         printPlayerSummary();
         System.out.print(gameState.getGameBoard());
         System.out.println("Current Player: " + currentPlayer);
+
+        if (currentPlayer.getClass().equals(AIPlayer.class)) {
+            AIPlayer aiPlayer = (AIPlayer) currentPlayer;
+            //word w = aiPlayer.getWord(gameState.getGameBoard());
+            //play the word
+            //aiPlayer.takeTurn();
+
+            //ai player passes.
+            endTurn();
+        }
+
         System.out.println(currentPlayer.getTileRack());
         if (gameState.errorPresent()) {
             System.out.println(gameState.getErrorMessage());
