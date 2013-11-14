@@ -1,10 +1,10 @@
 package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
-import edu.victone.scrabblah.logic.player.PlayerList;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
 import edu.victone.scrabblah.logic.player.Player;
+import edu.victone.scrabblah.logic.player.PlayerList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,10 +37,15 @@ public class GameState {
         }
         gameBoard = new GameBoard();
         tileBag = new TileBag();
+ //       playerList = new PlayerList();
     }
 
     public GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    public int getNumberRemainingTiles() {
+        return tileBag.size();
     }
 
     public TileBag getTileBag() {
@@ -49,10 +54,6 @@ public class GameState {
 
     public PlayerList getPlayerList() {
         return playerList;
-    }
-
-    public void setNumberPlayers(int numPlayers) {
-        playerList = new PlayerList(numPlayers);
     }
 
     public void addPlayer(Player p) {
@@ -87,6 +88,15 @@ public class GameState {
 
     public Tile removeTile(Coordinate coord) {
         return gameBoard.getCellAt(coord).recallTile();
+    }
+
+    public void pass() {
+        //pass a turn, so increment the player list
+        endTurn();
+    }
+
+    public void resign() {
+        getCurrentPlayer().resign();
     }
 
     public boolean endTurn() {
@@ -155,6 +165,10 @@ public class GameState {
 
     public boolean errorPresent() {
         return errorMessage != null;
+    }
+
+    public void swapTiles(ArrayList<Tile> tilesToSwap) {
+        getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
     }
 
     @Override

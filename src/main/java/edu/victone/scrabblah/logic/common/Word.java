@@ -1,6 +1,6 @@
 package edu.victone.scrabblah.logic.common;
 
-import java.util.List;
+import com.google.common.base.Objects;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,11 +13,11 @@ public class Word {
     public static final boolean HORIZONTAL = true;
     public static final boolean VERTICAL = false;
 
-    String word;
-    boolean orientation;
-    Coordinate head;
-    int score;
-    boolean locked = false;
+    private String word;
+    private boolean orientation;
+    private Coordinate head;
+    private int score;
+    private boolean locked = false;
 
     public Word(Coordinate head, boolean orientation, String word) {
         this.head = head;
@@ -28,8 +28,10 @@ public class Word {
     public void setScore(int s) {
         if (locked) {
             throw new UnsupportedOperationException();
-        } else score = s;
-        lock();
+        } else {
+            score = s;
+            lock();
+        }
     }
 
     public boolean lock() {
@@ -73,10 +75,6 @@ public class Word {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash *= 53 * hash + word.hashCode();
-        hash *= 53 * hash + head.hashCode();
-        hash *= 53 * (orientation ? 1 : 2);
-        return hash;
+        return Objects.hashCode(word, head, orientation);
     }
 }

@@ -21,18 +21,18 @@ public class AIPlayer extends Player {
     private static Random random = new Random();
     private double skillLevel;
 
-    public AIPlayer(String name, int rank) {
-        this(name, rank, 1.0); //creates godlike scrabble players
+    public AIPlayer(String name) {
+        this(name, 1.0); //creates godlike scrabble players
     }
 
-    public AIPlayer(String name, int rank, double skillLevel) {
-        super(name, rank);
+    public AIPlayer(String name, double skillLevel) {
+        super(name);
         this.skillLevel = skillLevel;
 
     }
 
-    public void takeTurn() {
-
+    public Word takeTurn() {
+        return null;
     }
 
     private static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
@@ -61,7 +61,6 @@ public class AIPlayer extends Player {
             }
         }
 
-
         return null; //return the word to play
     }
 
@@ -83,7 +82,7 @@ public class AIPlayer extends Player {
 
     @Override
     public String toString() {
-        return "P" + rank + ": " + name + " (AI) - Score: " + score;
+        return name + " (AI) - Score: " + score;
     }
 
     public static String getRandomName() {

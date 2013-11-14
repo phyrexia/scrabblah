@@ -1,8 +1,8 @@
 package edu.victone.scrabblah;
 
-import edu.victone.scrabblah.ui.console.ConsoleUI;
-import edu.victone.scrabblah.ui.gui.GraphicalUI;
-import edu.victone.scrabblah.ui.UserInterface;
+import edu.victone.scrabblah.ui.deprecated.console.ConsoleUI;
+import edu.victone.scrabblah.ui.deprecated.gui.GraphicalUI;
+import edu.victone.scrabblah.ui.deprecated.UserInterface;
 
 /**
  * Created with IntelliJ IDEA.

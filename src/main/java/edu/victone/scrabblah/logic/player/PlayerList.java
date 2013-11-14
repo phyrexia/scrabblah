@@ -14,21 +14,19 @@ public class PlayerList implements Iterable<Player> {
     //basically a fixed-size doubly-linked-list with an index
     ArrayList<Player> playerList;
     ArrayList<Player> activePlayers;
-    private final int numPlayers;
-    private int counter;
+    private int numPlayers;
     private int index;
 
-    public PlayerList(int numPlayers) {
-        this.numPlayers = numPlayers;
-        playerList = new ArrayList<Player>(numPlayers);
-        activePlayers = new ArrayList<Player>(numPlayers);
+    public PlayerList() {
+        playerList = new ArrayList<Player>(4);
+        activePlayers = new ArrayList<Player>(4);
     }
 
     public void addPlayer(Player p) {
-        if (counter < numPlayers) {
+        if (numPlayers < 4) {
             playerList.add(p);
             activePlayers.add(p);
-            counter++;
+            numPlayers++;
         } else {
             throw new ArrayIndexOutOfBoundsException();
         }

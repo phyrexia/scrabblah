@@ -1,7 +1,5 @@
 package edu.victone.scrabblah.logic.player;
 
-import edu.victone.scrabblah.logic.common.Tile;
-
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -11,16 +9,14 @@ import edu.victone.scrabblah.logic.common.Tile;
 
 public class Player {
     protected String name;
-    protected int rank;
     protected int score = 0;
 
     protected TileRack tileRack;
 
     protected boolean resigned = false;
 
-    public Player(String name, int rank) {
+    public Player(String name) {
         this.name = name;
-        this.rank = rank;
         tileRack = new TileRack();
     }
 
@@ -34,10 +30,6 @@ public class Player {
 
     public TileRack getTileRack() {
         return tileRack;
-    }
-
-    public int getRank() {
-        return rank;
     }
 
     public String getName() {
@@ -54,6 +46,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "P" + rank + ": " + name + " (human) - Score: " + score;
+        return name + " (human) - Score: " + score;
     }
 }

@@ -15,9 +15,8 @@ public class BoardCell {
     private boolean lock;
 
     public BoardCell(int multiplier, boolean isWordMultiplier) {
-        this.multiplier = multiplier;   //double or triple
+        this.multiplier = multiplier;   //single, double or triple
         this.isWordMultiplier = isWordMultiplier; //letter or word
-        tile = null;
     }
 
     public boolean setTile(Tile t) {
@@ -28,7 +27,7 @@ public class BoardCell {
         return false;
     }
 
-    public Tile recallTile() {
+    public Tile recallTile() {  //why?
         if (lock) {
             return null;
         } else {

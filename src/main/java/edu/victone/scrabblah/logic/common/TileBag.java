@@ -22,6 +22,8 @@ public class TileBag {
         random = new Random(System.nanoTime());
 
         // Place tiles in a tileBag according to the standard scrabble distribution
+        //todo: different tile distributions
+
         tileBag = new ArrayList<Tile>();
 
         add('j', (reg ? 1 : 2)); //
@@ -67,6 +69,21 @@ public class TileBag {
         return removeTiles(n);
     }
 
+    public Tile removeTile() { //removes a tile from the list and returns it
+        if (tileBag.size() == 0) {
+            return null;
+        }
+        return tileBag.remove(0);
+    }
+
+    public int size() {
+        return tileBag.size();
+    }
+
+    public boolean isEmpty() {
+        return (tileBag.size() == 0);
+    }
+
     private void add(Character c, int frequency) {
         //add a new Tile $frequency number of times.
         //this is only used for initialization.
@@ -82,12 +99,6 @@ public class TileBag {
         shuffleBag();
     }
 
-    public void dumpBag() { // don't call me.  really.
-        while (tileBag.size() > 0) {
-            System.out.print(tileBag.remove(0) + " - ");
-        }
-    }
-
     private void shuffleBag() {
         Collections.shuffle(tileBag, random);
     }
@@ -100,19 +111,10 @@ public class TileBag {
         return tileList;
     }
 
-    public Tile removeTile() { //removes a tile from the list and returns it
-        if (tileBag.size() == 0) {
-            return null;
+    protected void dumpBag() { // don't call me.  really.
+        while (tileBag.size() > 0) {
+            System.out.print(tileBag.remove(0) + " - ");
         }
-        return tileBag.remove(0);
-    }
-
-    public int size() {
-        return tileBag.size();
-    }
-
-    public boolean isEmpty() {
-        return (tileBag.size() == 0);
     }
 
     @Override
