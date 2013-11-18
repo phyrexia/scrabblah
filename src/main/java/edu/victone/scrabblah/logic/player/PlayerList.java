@@ -14,7 +14,7 @@ public class PlayerList implements Iterable<Player> {
     //basically a fixed-size doubly-linked-list with an index
     ArrayList<Player> playerList;
     ArrayList<Player> activePlayers;
-    private int numPlayers;
+    private int numberPlayers;
     private int index;
 
     public PlayerList() {
@@ -23,24 +23,24 @@ public class PlayerList implements Iterable<Player> {
     }
 
     public void addPlayer(Player p) {
-        if (numPlayers < 4) {
+        if (numberPlayers < 4) {
             playerList.add(p);
             activePlayers.add(p);
-            numPlayers++;
+            numberPlayers++;
         } else {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
 
     public void setIndex(int newIndex) throws ArrayIndexOutOfBoundsException {
-        if (newIndex >= numPlayers || newIndex < 0) {
+        if (newIndex >= numberPlayers || newIndex < 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
         index = newIndex;
     }
 
     public void incrementIndex() {
-        if (index < numPlayers - 1) {
+        if (index < numberPlayers - 1) {
             index++;
         } else {
             index = 0;
@@ -65,7 +65,7 @@ public class PlayerList implements Iterable<Player> {
     }
 
     public int size() {
-        return playerList.size();
+        return numberPlayers;
     }
 
     @Override
