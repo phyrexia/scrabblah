@@ -27,6 +27,7 @@ public class GameState {
 
     private int turnCounter = 1;
     private String errorMessage;
+    private boolean active;
 
     public GameState() {
         try {
@@ -37,7 +38,7 @@ public class GameState {
         }
         gameBoard = new GameBoard();
         tileBag = new TileBag();
- //       playerList = new PlayerList();
+        playerList = new PlayerList();
     }
 
     public GameBoard getGameBoard() {
@@ -65,6 +66,13 @@ public class GameState {
     }
 
     public boolean startGame() {
+        if (active) {
+            //kaboom
+        } else {
+            active = true;
+        }
+
+
         if (getPlayerList() == null) {
             return false;
         }
@@ -91,12 +99,15 @@ public class GameState {
     }
 
     public void pass() {
-        //pass a turn, so increment the player list
         endTurn();
     }
 
     public void resign() {
         getCurrentPlayer().resign();
+    }
+
+    public void swapTiles(ArrayList<Tile> tilesToSwap) {
+        getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
     }
 
     public boolean endTurn() {
@@ -120,6 +131,10 @@ public class GameState {
 
     public Player getCurrentPlayer() {
         return playerList.getCurrentPlayer();
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public boolean isGameOver() {
@@ -165,10 +180,6 @@ public class GameState {
 
     public boolean errorPresent() {
         return errorMessage != null;
-    }
-
-    public void swapTiles(ArrayList<Tile> tilesToSwap) {
-        getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
     }
 
     @Override
