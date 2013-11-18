@@ -34,6 +34,10 @@ public class Word {
         }
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public boolean lock() {
         return (!locked && (locked = true));
     }
@@ -54,7 +58,7 @@ public class Word {
     public String toString() {
         StringBuilder sb = new StringBuilder(word);
         sb.append(orientation ? " horizontal at " : " vertical at ");
-        sb.append(head.print() + "; " + head);
+        sb.append(head);
         return sb.toString();
     }
 
@@ -65,12 +69,7 @@ public class Word {
         }
 
         final Word w = (Word) o;
-        if (getWord() == w.getWord() &&
-                getOrientation() == w.getOrientation() &&
-                getHead() == w.getHead()) {
-            return true;
-        }
-        return false;
+        return (word.equals(w.getWord()) && orientation == w.getOrientation() && head.equals(w.getHead()));
     }
 
     @Override
