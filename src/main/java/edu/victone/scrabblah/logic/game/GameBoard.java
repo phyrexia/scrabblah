@@ -148,16 +148,21 @@ public class GameBoard {
 
     @Override
     public String toString() {
-        String header = "   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O\n";
-        String row = " |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|";
+        String header = "    A   B   C   D   E   F   G   H   I   J   K   L   M   N   O\n";
+        String row = "  |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|";
         StringBuilder sb = new StringBuilder(header);
         sb.append(row);
         sb.append("\n");
         for (int i = 0; i < 15; i++) {
-            sb.append(new Integer(i+1).toString());
-            sb.append("|");
+            Integer y = new Integer(i + 1);
+            sb.append(y);
+            sb.append(i < 9 ? " |" : "|");
             for (int j = 0; j < 15; j++) {
                 BoardCell bc = boardCells[i][j];
+                if (i == 7 && j == 7 && bc.isEmpty()) {
+                    sb.append(" * |");
+                    continue;
+                }
                 if (bc.isEmpty()) {
                     switch (bc.getMultiplier()) {
                         case 1:
@@ -175,7 +180,7 @@ public class GameBoard {
                     sb.append(bc.getTile().toString().length() == 2 ? " |" : "|");
                 }
             }
-            sb.append((char) (i + 65));
+            sb.append(y);
             sb.append("\n");
             sb.append(row);
             sb.append("\n");
