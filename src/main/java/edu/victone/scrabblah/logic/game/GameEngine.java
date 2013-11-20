@@ -22,9 +22,15 @@ public class GameEngine { //rules, etc
     }
 
     public static boolean isLegalState(GameState gameState) {
+        //todo: refactor me
         if (dictionary == null) {
             gameState.setErrorMessage("Dictionary not loaded.");
             return false;
+        }
+
+        //if first turn is a pass or a swap
+        if (gameState.getTurn() == 1 && gameState.getGameBoard().getWordList().size() == 0) {
+            return true;
         }
 
         if (gameState.getPlayerList() == null) {
@@ -32,7 +38,7 @@ public class GameEngine { //rules, etc
             return false;
         }
 
-        //are all cells locked?
+        //are all cells locked? do they need to be?
 
         //first turn must include center cell
         if (gameState.getTurn() == 1 && gameState.getGameBoard().getCellAt(new Coordinate(7, 7)).isEmpty()) {
@@ -40,32 +46,8 @@ public class GameEngine { //rules, etc
             return false;
         }
 
-        //if first word played is a one-letter word
-        if (gameState.getGameBoard().getNumOccupiedCells() == 1) {
-            gameState.setErrorMessage("Single-letter words are not allowed.");
-            return false;
-        }
-
-        //are all letters contiguous?
-        if (!areLettersContiguous(gameState)) {
-            gameState.setErrorMessage("Invalid tile placement.");
-            return false;
-        }
-
-        //get all words on the board.
-        ArrayList<Word> words = gameState.getGameBoard().getWordList();
-
-        //todo: remove this GameEngine debug code
-        System.out.println("words size: " + words.size());
-        for (Word word : words) {
-            System.out.println("words from board: " + word);
-        }
-
-        //ensure all the words on the board are words in the dictionary
-        int n = indexOfBadWord(words);
-        if (n != -1) {
-            String sDisplay = words.get(n).toString().substring(0, 1).toUpperCase() + words.get(n).toString().substring(1);
-            gameState.setErrorMessage(sDisplay + " is not a valid word.");
+        if (!isLegalGameBoard(gameState.getGameBoard())) {
+            gameState.setErrorMessage("Illegal tile placement.");
             return false;
         }
 
@@ -73,8 +55,38 @@ public class GameEngine { //rules, etc
         return true;
     }
 
-    private static boolean areLettersContiguous(GameState gameState) {
-        GameBoard gameBoard = gameState.getGameBoard();
+    private static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
+        //todo: refactor me
+        //if first word played is a one-letter word
+        if (gameBoard.getNumOccupiedCells() == 1) {
+            //gameState.setErrorMessage("Single-letter words are not allowed.");
+            return false;
+        }
+
+        //are all letters contiguous?
+        if (!areLettersContiguous(gameBoard)) {
+            //gameState.setErrorMessage("Invalid tile placement.");
+            return false;
+        }
+
+        //ensure all the words on the board are words in the dictionary
+        int n = indexOfBadWord(gameBoard.getWordList());
+        if (n != -1) {
+            String sDisplay = gameBoard.getWordList().get(n).toString().substring(0, 1).toUpperCase()
+                    + gameBoard.getWordList().get(n).toString().substring(1);
+            //gameState.setErrorMessage(sDisplay + " is not a valid word.");
+            return false;
+        }
+
+        //todo: remove this GameEngine debug code
+        System.out.println("words size: " + gameBoard.getWordList().size());
+        for (Word word : gameBoard.getWordList()) {
+            System.out.println("words from board: " + word);
+        }
+        return true;
+    }
+
+    private static boolean areLettersContiguous(GameBoard gameBoard) {
         ArrayList<BoardCell> neighbors;
         BoardCell boardCell;
         Coordinate coord;
