@@ -10,9 +10,6 @@ import com.google.common.base.Objects;
  */
 
 public class Word {
-    public static final boolean HORIZONTAL = true;
-    public static final boolean VERTICAL = false;
-
     private String word;
     private boolean orientation;
     private Coordinate head;
@@ -46,7 +43,7 @@ public class Word {
         return head;
     }
 
-    public boolean getOrientation() {
+    public boolean isHorizontal() {
         return orientation;
     }
 
@@ -69,7 +66,7 @@ public class Word {
         }
 
         final Word w = (Word) o;
-        return (word.equals(w.getWord()) && orientation == w.getOrientation() && head.equals(w.getHead()));
+        return (word.equals(w.getWord()) && orientation == w.isHorizontal() && head.equals(w.getHead()));
     }
 
     @Override
