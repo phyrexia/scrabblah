@@ -43,6 +43,15 @@ public class TileRack implements Iterable<Tile> {
         }
     }
 
+    public boolean contains(Tile t) {
+        for (Tile tile : rack) {
+            if (tile.getCharacter().equals(t.getCharacter())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean removeTile(Tile t) {
         for (Tile tile : rack) {
             if (tile.getCharacter().equals(t.getCharacter())) {
@@ -53,23 +62,15 @@ public class TileRack implements Iterable<Tile> {
         return false;
     }
 
-    public void dumpRack() { // don't invoke this
-        while (rack.size() > 0) {
-            System.out.print(rack.remove(0) + " - ");
-        }
-    }
-
     public int size() {
         return rack.size();
     }
 
-    public boolean contains(Tile t) {
-        for (Tile tile : rack) {
-            if (tile.getCharacter().equals(t.getCharacter())) {
-                return true;
-            }
+    @Deprecated
+    public void dumpRack() {
+        while (rack.size() > 0) {
+            System.out.print(rack.remove(0) + " - ");
         }
-        return false;
     }
 
     @Override
