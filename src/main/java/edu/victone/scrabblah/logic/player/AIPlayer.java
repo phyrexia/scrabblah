@@ -18,11 +18,16 @@ import java.util.Random;
 
 public class AIPlayer extends Player {
     private static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
+    private static ArrayList<String> availableNames;
     private static Random random = new Random();
     private double skillLevel;
 
+    public AIPlayer() {
+        this(getRandomName());
+    }
+
     public AIPlayer(String name) {
-        this(name, 1.0); //creates godlike scrabble players
+        this(name, 1.0); //creates godlike scrabble players (but they'll probably think slowly...)
     }
 
     public AIPlayer(String name, double skillLevel) {
@@ -31,12 +36,9 @@ public class AIPlayer extends Player {
 
     }
 
-    public Word takeTurn() {
-        return null;
-    }
-
-    private static Word scrabbleCheater(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
+    public static Word getWordToPlay(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
         //threading???
+        //TODO: IMPLEMENT THE FUCK OUT OF ME
 
         if (skillLevel == null) {
             skillLevel = 1.0;
@@ -46,13 +48,13 @@ public class AIPlayer extends Player {
             throw new IllegalArgumentException("Skill Level must be between 0 and 1.");
         }
 
-        ArrayList<Word> possiblePlays = new ArrayList<Word>();
+        ArrayList<Word> possiblePlays = new ArrayList<>(1000);
 
         ArrayList<String> anagrams = generateAnagramTree(null); //tiles
 
         //todo: generate anagrams
 
-        ArrayList<Coordinate> startingZone = new ArrayList<>();
+        ArrayList<Coordinate> startingZone = new ArrayList<>(100);
 
         //TODO: generate startingZone
         for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
@@ -60,8 +62,21 @@ public class AIPlayer extends Player {
 
             }
         }
-
         return null; //return the word to play
+    }
+
+    public static String getRandomName() {
+        if (availableNames == null) {
+            populateCollection();
+        }
+        return availableNames.remove(random.nextInt(availableNames.size()));
+    }
+
+    private static void populateCollection() {
+        availableNames = new ArrayList<String>();
+        for (String s : playerNames) {
+            availableNames.add(s);
+        }
     }
 
     private static ArrayList<String> generateAnagramTree(String string) {
@@ -74,7 +89,7 @@ public class AIPlayer extends Player {
         HashSet<Coordinate> startingCoordinates = new HashSet<Coordinate>();
         for (int i = 0; i < 15; i++) {
             for (int x = 0; x < 15; x++) {
-            //TODO: this
+                //TODO: this
             }
         }
         return null;
@@ -83,9 +98,5 @@ public class AIPlayer extends Player {
     @Override
     public String toString() {
         return name + " (AI) - Score: " + score;
-    }
-
-    public static String getRandomName() {
-        return playerNames[random.nextInt(playerNames.length)];
     }
 }
