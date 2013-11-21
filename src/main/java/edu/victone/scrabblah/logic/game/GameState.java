@@ -45,6 +45,10 @@ public class GameState {
         return gameBoard;
     }
 
+    public void setGameBoard(GameBoard newGameBoard) {
+        gameBoard = newGameBoard;
+    }
+
     public int getNumberRemainingTiles() {
         return tileBag.size();
     }
