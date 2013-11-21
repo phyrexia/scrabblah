@@ -156,7 +156,7 @@ public class GameEngine { //rules, etc
         for (int i = 0; i < charArr.length; i++) {
             int tileMultiplier = 1;
             BoardCell boardCell = gameBoard.getCellAt(new Coordinate(
-                    (w.getOrientation() ? x + i : x), (w.getOrientation() ? y : y + i)));
+                    (w.isHorizontal() ? x + i : x), (w.isHorizontal() ? y : y + i)));
             int multiplier = boardCell.getMultiplier();
 
             if (boardCell.isWordMultiplier()) {
