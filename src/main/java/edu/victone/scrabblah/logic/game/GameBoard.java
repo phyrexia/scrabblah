@@ -99,7 +99,7 @@ public class GameBoard {
                             coord = a == 0 ? new Coordinate(++j, i) : new Coordinate(i, ++j); //the next tile
                             if (gameBoard.getCellAt(coord).isEmpty()) { //if the next tile is empty we're done
                                 if (stringBuilder.length() > 1) { //one letter does not a word make
-                                    word = new Word(head, a == 0 ? Word.HORIZONTAL : Word.VERTICAL, stringBuilder.toString());
+                                    word = new Word(head, a == 0, stringBuilder.toString());
                                     wordsOnBoard.add(word);
                                 }
                             }
