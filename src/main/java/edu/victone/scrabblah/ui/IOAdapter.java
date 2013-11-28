@@ -3,10 +3,14 @@ package edu.victone.scrabblah.ui;
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
+import edu.victone.scrabblah.logic.game.GameBoard;
+import edu.victone.scrabblah.logic.game.GameEngine;
 import edu.victone.scrabblah.logic.game.GameState;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.Player;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,49 +21,48 @@ import java.util.Scanner;
 
 public class IOAdapter {
 
+    //todo: all strings -> static consts or proper modern java idiom
+
     private GameState gameState;
-    private UserInterface ui;
 
-    public IOAdapter() { /*...*/ }
+    private InputStream input;
+    private PrintStream output;
 
-    public void setGameState() {
 
-    }
-
-    public void setUi(UserInterface ui) {
-        this.ui = ui;
+    public IOAdapter(InputStream input, PrintStream output) {
+        this.input = input;
+        this.output = output;
+        /*...*/
     }
 
     public boolean listen() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(input);
 
         while (true) {
-            parse(scanner.next());
-            //System.out.println(gameState);
+            output.print("$");
+            parse(scanner.nextLine());
+            display();
         }
     }
 
+    private void display() {
+        if (gameState != null && gameState.isActive()) {
+            output.println(gameState.getGameBoard());
+            output.println(gameState.getCurrentPlayer());
+            output.println(gameState.getCurrentPlayer().getTileRack());
+            if (gameState.errorPresent()) {
+                output.println(gameState.getErrorMessage());
+            }
+        }
+    }
+
+
     private void parse(String command) {
-        /*
-        so the properly formed expressions are:
-
-        (new)
-        (add {human/cpu} [$PlayerName])
-        (start)
-
-        (play {h/v} $word (headx,heady))
-          or would we rather have
-        (play $tile (x,y)) + (turn) when done
-        (pass)
-        (swap t i l e s)
-        (resign)
-        */
-
         command = command.trim();
 
-        //is it valid parenthesized s-exp?
-        if (command.charAt(0) != '(' && command.charAt(command.length()) != ')') {
-            System.out.println("ERROR: Invalid input.");
+        //is it valid parenthesized s-exp? (ish)
+        if (command.charAt(0) != '(' && command.charAt(command.length() - 1) != ')') {
+            output.println("(ERROR: Invalid input.)");
             return;
         }
 
@@ -67,40 +70,119 @@ public class IOAdapter {
         int i = 0;
         switch (components[i++]) {
             case "new":
-                if (i == components.length) {
-                    newGame();
+                if (components.length == 1) {
+                    gameState = new GameState();
+                    output.println("New Game initializing.");
                 } else {
-                    System.out.println("ERROR: Invalid syntax.");
+                    output.println("ERROR: Invalid syntax.");
                 }
                 break;
             case "add": //add a player to the list.
-                Player p;
-                if (components[i++].toLowerCase().equals("human")) {
-                    String playerName;
-                    try {
-                        playerName = components[i++];
-                    } catch (IndexOutOfBoundsException e) {
-                        System.out.println("ERROR: Human players must have specified names.");
-                        return;
-                    }
-                    p = new Player(playerName);
-                } else {
-                    p = new AIPlayer(AIPlayer.getRandomName());
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
                 }
+
+                if (gameState.getNumberPlayers() == 4) {
+                    output.println("ERROR: Max players already added to game.");
+                    return;
+                }
+
+                Player p;
+                if (components.length == 1) {
+                    p = new AIPlayer();
+                } else {
+                    StringBuilder playerName = new StringBuilder();
+                    for (int j = i; j < components.length; j++) {
+                        playerName.append(components[j]);
+                        playerName.append(" ");
+                    }
+                    p = new Player(playerName.toString());
+                }
+
                 gameState.addPlayer(p);
+                output.println("Added " + p.getName() + " to the game.");
                 break;
             case "start":
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
+                }
+                start();
                 break;
             case "play":
-                //parse rest of stmt
-                Coordinate c = new Coordinate(0, 0);
-                Word w = new Word(c, true, "word");
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
+                }
+
+                //are coordinates valid parenthesized s-exp? (ish)
+                String cpString = components[i++];
+                if (cpString.charAt(0) != '(' && cpString.charAt(command.length() - 1) != ')') {
+                    output.println("ERROR: Invalid input.");
+                    return;
+                }
+
+                String coordArray[] = cpString.split(",");
+                if (coordArray.length != 2) {
+                    output.println("ERROR: Invalid input.");
+                    return;
+                }
+
+                int x = coordArray[0].charAt(0) - 17;
+
+                //debug
+                System.out.println(x);
+
+                int y;
+                try {
+                    y = Integer.parseInt(coordArray[1]);
+
+                } catch (Exception e) {
+                    output.println("ERROR: Invalid input.");
+                    return;
+
+                }
+
+                //debug
+                output.println(y);
+
+                if (x < 0 || x > 14 || y < 0 || y > 15) {
+                    output.println("ERROR: Invalid input.");
+                    return;
+                }
+
+                Coordinate c = new Coordinate(x,y);
+
+                boolean isHorizontal;
+                if (components[i].toLowerCase().equals("h")) {
+                    isHorizontal = true;
+                } else if (components[i].toLowerCase().equals("v")) {
+                    isHorizontal = false;
+                } else {
+                    output.println("ERROR: Invalid input.");
+                    return;
+                }
+
+                String word = components[++i];
+                Word w = new Word(c, isHorizontal, word);
+
+                output.println("Attempting to play " + w);
                 play(w);
                 break;
             case "pass":
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
+                }
+                output.println(gameState.getCurrentPlayer().getName() + " passing.");
                 gameState.pass();
                 break;
             case "swap":
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
+                }
                 //todo: implement
                 ArrayList<Tile> toSwap = new ArrayList<>(7);
                 for (int j = i; j < components.length; j++) {
@@ -108,37 +190,89 @@ public class IOAdapter {
                 }
                 if (swap(null)) {
                 } else {
-                    System.out.println("ERROR: Unable to swap.  Not enough remaining tiles.");
+                    output.println("ERROR: Unable to swap.  Not enough remaining tiles.");
                 }
                 break;
             case "resign":
+                if (gameState == null) {
+                    output.println("ERROR: No game yet.");
+                    return;
+                }
+                output.println(gameState.getCurrentPlayer().getName() + " resigning.");
                 gameState.resign();
                 break;
+            case "help":
+                displayHelp();
+                break;
             case "quit":
-                System.out.println("Terminating.");
+                output.println("Terminating.");
                 System.exit(0);
                 break;
             default:
-                System.out.println("ERROR: Invalid input.");
+                output.println("ERROR: Invalid input.");
                 break;
         }
-        char[] commandArray = command.substring(1, command.length() - 1).toCharArray();
-
-        System.out.println(/* msg */);
     }
 
-    private void newGame() {
-        //todo:
-        gameState = new GameState();
+    private void displayHelp() {
+        output.println("Available Commands:");
+        output.println("\t(new)\tNew Game\n" +
+                "\t(add)\tAdd an AI player\n" +
+                "\t(add $playerName)\tAdd a named Human player\n" +
+                "\t(start)\tStart the Game\n" +
+                "\t(play ($headx,$heady) {h/v} $word)\tPlay $word at ($headx, $heady), oriented h or v\n" +
+                "\t(pass)\tPass current turn\n" +
+                "\t(swap t i l e s)\tSwap the listed tiles\n" +
+                "\t(resign)\n" +
+                "\t(help)\tPrint this message");
 
     }
 
-    private boolean play(Word w) {
+    private void start() {
+        if (gameState.getNumberPlayers() > 1) {
+            gameState.startGame();
+        } else {
+            output.println("ERROR: Not enough players.  Add " + (2 - gameState.getNumberPlayers()) + " to " +
+                    (4 - gameState.getNumberPlayers()) + " players.");
+        }
+    }
+
+    private void play(Word w) {
         //place each tile of w on the board
         //check for validity
         //if valid end turn, return true
         //if not...
-        return false;
+        if (GameEngine.dictionary.contains(w.getWord())) {
+            GameBoard newBoard = new GameBoard(gameState.getGameBoard());
+            //are all tiles in the player's tile rack (or on the board?)
+            Tile t;
+            if (w.isHorizontal()) {
+                int wx = w.getHead().getX();
+                int y = w.getHead().getY();
+                for (int x = wx - 1, l = 0; x < wx + w.getWord().length(); x++, l++ ) {
+
+                    if (gameState.getGameBoard().getCellAt(new Coordinate(x,y)).isEmpty()) {
+                        t = new Tile(w.getWord().charAt(l));
+                        if (gameState.getCurrentPlayer().getTileRack().contains(t)) {
+                            //todo: this next
+                            //add tile to removelist
+
+                            //ok so
+                            //do we want to actually remove the tiles from the board at this point?
+                            //we could add references to a list and then remove them after we're verified
+
+
+
+                        }
+                    }
+                }
+            }
+
+
+        } else {
+            output.println("ERROR: " + w.getWord() + " is not in the dictionary.");
+        }
+
     }
 
     private boolean swap(ArrayList<Tile> tilesToSwap) {
@@ -147,5 +281,10 @@ public class IOAdapter {
         }
         gameState.swapTiles(tilesToSwap);
         return true;
+    }
+
+    private void printError(int errorCode) {
+        //todo: convert
+
     }
 }

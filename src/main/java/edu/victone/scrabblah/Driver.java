@@ -1,8 +1,6 @@
 package edu.victone.scrabblah;
 
-import edu.victone.scrabblah.ui.deprecated.console.ConsoleUI;
-import edu.victone.scrabblah.ui.deprecated.gui.GraphicalUI;
-import edu.victone.scrabblah.ui.deprecated.UserInterface;
+import edu.victone.scrabblah.ui.IOAdapter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,15 +11,15 @@ import edu.victone.scrabblah.ui.deprecated.UserInterface;
 
 public class Driver {
     public static void main(String[] args) {
-        UserInterface ui;
+        System.out.println("Driver has begun to drive...");
+        IOAdapter ioa = null;
 
-        if (args.length > 1 && args[1].equals("-g")) {
-            //graphical mode
-            ui = new GraphicalUI();
-        } else {
-            //console mode
-            ui = new ConsoleUI();
+        //take args from CLI
+        if (args.length == 0) {
+            ioa = new IOAdapter(System.in, System.out);
+
         }
+        ioa.listen();
     }
 }
 
