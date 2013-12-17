@@ -119,13 +119,13 @@ public class IOAdapter {
                 //are coordinates valid parenthesized s-exp? (ish)
                 String cpString = components[i++];
                 if (cpString.charAt(0) != '(' && cpString.charAt(command.length() - 1) != ')') {
-                    output.println("ERROR: Invalid input.");
+                    output.println("ERROR: Invalid input, coords not parenthesized.");
                     return;
                 }
 
                 String coordArray[] = cpString.split(",");
                 if (coordArray.length != 2) {
-                    output.println("ERROR: Invalid input.");
+                    output.println("ERROR: Invalid input, not enough coords.");
                     return;
                 }
 
@@ -139,7 +139,7 @@ public class IOAdapter {
                     y = Integer.parseInt(coordArray[1]);
 
                 } catch (Exception e) {
-                    output.println("ERROR: Invalid input.");
+                    output.println("ERROR: Invalid input, integer parse error.");
                     return;
 
                 }
@@ -148,7 +148,7 @@ public class IOAdapter {
                 output.println(y);
 
                 if (x < 0 || x > 14 || y < 0 || y > 15) {
-                    output.println("ERROR: Invalid input.");
+                    output.println("ERROR: Invalid input, coords out of range.");
                     return;
                 }
 
@@ -160,7 +160,7 @@ public class IOAdapter {
                 } else if (components[i].toLowerCase().equals("v")) {
                     isHorizontal = false;
                 } else {
-                    output.println("ERROR: Invalid input.");
+                    output.println("ERROR: Invalid input, must specify h/v.");
                     return;
                 }
 
