@@ -41,10 +41,7 @@ public class GameEngine { //rules, etc
         //are all cells locked? do they need to be?
 
         //first turn must include center cell
-        if (gameState.getTurn() == 1 && gameState.getGameBoard().getCellAt(new Coordinate(7, 7)).isEmpty()) {
-            gameState.setErrorMessage("On the first turn, the center cell must be occupied.");
-            return false;
-        }
+
 
         if (!isLegalGameBoard(gameState.getGameBoard())) {
             gameState.setErrorMessage("Illegal tile placement.");
@@ -55,11 +52,20 @@ public class GameEngine { //rules, etc
         return true;
     }
 
-    private static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
+    public static boolean centerCellUnoccupied(GameBoard gameBoard) {
+        return gameBoard.getCellAt(GameBoard.CENTER).isEmpty();
+    }
+
+    public static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
         //todo: refactor me
         //if first word played is a one-letter word
         if (gameBoard.getNumOccupiedCells() == 1) {
             //gameState.setErrorMessage("Single-letter words are not allowed.");
+            return false;
+        }
+
+        if (centerCellUnoccupied(gameBoard)) {
+            System.out.println("not legal: center cell unoccupied");
             return false;
         }
 
