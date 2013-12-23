@@ -1,6 +1,5 @@
 package edu.victone.scrabblah.logic.game;
 
-import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
 import edu.victone.scrabblah.logic.player.Player;
@@ -10,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,8 +19,6 @@ import java.util.Random;
  */
 
 public class GameState {
-    private GameBoard gameBoard;
-    private GameBoard oldBoard;
     private PlayerList playerList;
     private TileBag tileBag;
     private Player winner = null;
@@ -28,6 +26,7 @@ public class GameState {
     private int turnCounter = 1;
     private String errorMessage;
     private boolean active;
+    private Stack<GameBoard> gameBoards;
 
     public GameState() {
         try {
@@ -36,17 +35,19 @@ public class GameState {
             System.err.println("Fatal Error: Dictionary File Not Found.");
             System.exit(1);
         }
-        gameBoard = new GameBoard();
+        gameBoards = new Stack<>();
+        gameBoards.push(new GameBoard());
         tileBag = new TileBag();
         playerList = new PlayerList();
+
     }
 
     public GameBoard getGameBoard() {
-        return gameBoard;
+        return gameBoards.peek();
     }
 
-    public void setGameBoard(GameBoard newGameBoard) {
-        gameBoard = newGameBoard;
+    public void pushGameBoard(GameBoard newGameBoard) {
+        gameBoards.push(newGameBoard);
     }
 
     public int getNumberRemainingTiles() {
@@ -91,17 +92,6 @@ public class GameState {
         return true;
     }
 
-    public boolean placeTile(Tile t, Coordinate coord) {
-        if (!gameBoard.getCellAt(coord).isEmpty()) {
-            return false;
-        }
-        return gameBoard.getCellAt(coord).setTile(t);
-    }
-
-    public Tile removeTile(Coordinate coord) {
-        return gameBoard.getCellAt(coord).recallTile();
-    }
-
     public void pass() {
         endTurn();
     }
@@ -114,23 +104,18 @@ public class GameState {
         getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
     }
 
-    public boolean endTurn() {
-        if (!GameEngine.isLegalState(this)) {
-            return false;
+    public void endTurn() {
+        if (GameEngine.isLegalState(this)) {
+            Player p = getCurrentPlayer();
+            p.addScore(GameEngine.computeScore(gameBoards.elementAt(gameBoards.size() - 2), gameBoards.peek()));
+
+            while (p.getTileRack().size() < 7) {
+                p.getTileRack().addTile(tileBag.removeTile());
+            }
+
+            playerList.incrementIndex();
+            turnCounter++;
         }
-        gameBoard.lockOccupiedCells();
-
-        Player p = getCurrentPlayer();
-        p.addScore(GameEngine.computeScore(oldBoard, gameBoard));
-
-        while (p.getTileRack().size() < 7) {
-            p.getTileRack().addTile(tileBag.removeTile());
-        }
-
-        playerList.incrementIndex();
-        turnCounter++;
-        oldBoard = new GameBoard(gameBoard);
-        return true;
     }
 
     public Player getCurrentPlayer() {
