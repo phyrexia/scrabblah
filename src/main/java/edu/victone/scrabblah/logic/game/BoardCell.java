@@ -12,42 +12,24 @@ public class BoardCell {
     private int multiplier;
     private boolean isWordMultiplier;
     private Tile tile;
-    private boolean lock;
+
 
     public BoardCell(int multiplier, boolean isWordMultiplier) {
         this.multiplier = multiplier;   //single, double or triple
         this.isWordMultiplier = isWordMultiplier; //letter or word
     }
 
-    public boolean setTile(Tile t) {
+    public void setTile(Tile t) {
         if (isEmpty()) {
             tile = t;
-            return true;
-        }
-        return false;
-    }
-
-    public Tile recallTile() {  //why?
-        if (lock) {
-            return null;
+            System.out.println("setting");
         } else {
-            Tile retVal = tile;
-            tile = null;
-            return retVal;
+            throw new IllegalStateException("Cell already contains Tile");
         }
-    }
-
-    public void lock() {
-        if (tile != null)
-            lock = true;
-    }
-
-    public boolean isLocked() {
-        return lock;
     }
 
     public boolean isEmpty() {
-        return (tile == null);
+        return tile == null;
     }
 
     public int getMultiplier() {
