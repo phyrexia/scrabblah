@@ -1,7 +1,6 @@
 package edu.victone.scrabblah.logic.game;
 
 import edu.victone.scrabblah.logic.common.Coordinate;
-import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
 
 import java.util.ArrayList;
@@ -33,20 +32,21 @@ public class GameBoard {
     private BoardCell[][] boardCells = new BoardCell[15][15];
     private ArrayList<Word> wordList;
 
+    public static final Coordinate CENTER = new Coordinate(7, 7);
+
     public GameBoard() {
         initBoard();
     }
 
-    public GameBoard(GameBoard gb) {
+    public GameBoard(GameBoard gameBoard) {
         initBoard();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (!boardCells[i][j].isEmpty()) {
-                    Coordinate coord = new Coordinate(i, j);
-                    boardCells[i][j].setTile(new Tile(gb.getCellAt(coord).getTile()));
-                    if (gb.getCellAt(coord).isLocked()) {
-                        boardCells[i][j].lock();
-                    }
+                if (!gameBoard.getCellAt(j, i).isEmpty()) {
+                    //boardCells[i][j].setTile(new Tile(gameBoard.getCellAt(j, i).getTile()));
+                    boardCells[i][j].setTile(gameBoard.getCellAt(j, i).getTile());
+
+
                 }
             }
         }
@@ -112,8 +112,23 @@ public class GameBoard {
         return wordsOnBoard;
     }
 
+    public BoardCell getCellAt(int x, int y) {
+        return boardCells[y][x];
+    }
+
     public BoardCell getCellAt(Coordinate coord) {
         return boardCells[coord.getY()][coord.getX()];
+    }
+
+    public ArrayList<BoardCell> getCellNeighbors(int x, int y) {
+        ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
+
+        retVal.add(y > 0 ? getCellAt(x, y - 1) : null);
+        retVal.add(y < 14 ? getCellAt(x, y + 1) : null);
+        retVal.add(x < 14 ? getCellAt(x + 1, y) : null);
+        retVal.add(x > 0 ? getCellAt(x - 1, y) : null);
+
+        return retVal;
     }
 
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
@@ -134,12 +149,6 @@ public class GameBoard {
                 if (!boardCells[i][j].isEmpty())
                     ctr++;
         return ctr;
-    }
-
-    public void lockOccupiedCells() {
-        for (int i = 0; i < 15; i++)
-            for (int j = 0; j < 15; j++)
-                getCellAt(new Coordinate(i, j)).lock();
     }
 
     public ArrayList<Word> getWordList() {
