@@ -6,6 +6,7 @@ import edu.victone.scrabblah.logic.game.AnagramTree;
 import edu.victone.scrabblah.logic.game.GameBoard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -30,31 +31,22 @@ public class AIPlayer extends Player {
         this(name, 1.0); //creates godlike scrabble players (but they'll probably think slowly...)
     }
 
-    public AIPlayer(String name, double skillLevel) {
+    public AIPlayer(String name, Double skillLevel) {
         super(name);
-        this.skillLevel = skillLevel;
-
-    }
-
-    public static Word getWordToPlay(GameBoard gameBoard, TileRack tileRack, Double skillLevel) {
-        //threading???
-        //TODO: IMPLEMENT THE FUCK OUT OF ME
-
-        if (skillLevel == null) {
-            skillLevel = 1.0;
-        }
-
         if (skillLevel.compareTo(0.0) < 0 || skillLevel.compareTo(1.0) > 0) {
             throw new IllegalArgumentException("Skill Level must be between 0 and 1.");
         }
+        this.skillLevel = skillLevel;
+    }
 
-        ArrayList<Word> possiblePlays = new ArrayList<>(1000);
+    public static Word getWordToPlay(GameBoard gameBoard, TileRack tileRack) {
+        //TODO: IMPLEMENT ME
 
-        ArrayList<String> anagrams = generateAnagramTree(null); //tiles
 
-        //todo: generate anagrams
 
-        ArrayList<Coordinate> startingZone = new ArrayList<>(100);
+        ArrayList<Word> possibleWords = new ArrayList<>(1000);
+
+        ArrayList<Coordinate> startingZone = new ArrayList<>(225);
 
         //TODO: generate startingZone
         for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
@@ -62,7 +54,12 @@ public class AIPlayer extends Player {
 
             }
         }
-        return null; //return the word to play
+
+        for (int i = 0; i < 7; i++) {
+
+        }
+
+        return null; //return the word to playWord
     }
 
     public static String getRandomName() {
@@ -73,10 +70,8 @@ public class AIPlayer extends Player {
     }
 
     private static void populateCollection() {
-        availableNames = new ArrayList<String>();
-        for (String s : playerNames) {
-            availableNames.add(s);
-        }
+        availableNames = new ArrayList<>(9);
+        Collections.addAll(availableNames, playerNames);
     }
 
     private static ArrayList<String> generateAnagramTree(String string) {
@@ -85,8 +80,7 @@ public class AIPlayer extends Player {
     }
 
     private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
-        //todo
-        HashSet<Coordinate> startingCoordinates = new HashSet<Coordinate>();
+        HashSet<Coordinate> startingCoordinates = new HashSet<>(100);
         for (int i = 0; i < 15; i++) {
             for (int x = 0; x < 15; x++) {
                 //TODO: this

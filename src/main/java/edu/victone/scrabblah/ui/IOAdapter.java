@@ -3,10 +3,13 @@ package edu.victone.scrabblah.ui;
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
+import edu.victone.scrabblah.logic.game.Dictionary;
 import edu.victone.scrabblah.logic.game.GameState;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.Player;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class IOAdapter {
     public boolean listen() {
         Scanner scanner = new Scanner(input);
 
+        //noinspection InfiniteLoopStatement
         while (true) {
             output.print("$");
             parse(scanner.nextLine());
@@ -77,6 +81,11 @@ public class IOAdapter {
             case "new":
                 if (components.length == 1) {
                     gameState = new GameState();
+                    try {
+                        Dictionary.load(new File("sowpods.txt"));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     output.println("New Game initializing.");
                 } else {
                     output.println("ERROR: Invalid syntax.");
@@ -111,7 +120,7 @@ public class IOAdapter {
                 if (gameStateIsNull()) return;
                 start();
                 break;
-            case "playWord":
+            case "play":
                 if (gameStateIsNull()) return;
 
                 //are coordinates valid parenthesized s-exp? (ish)
@@ -170,6 +179,9 @@ public class IOAdapter {
                 output.println(gameState.getCurrentPlayer().getName() + " passing.");
                 gameState.pass();
                 break;
+            case "shuffle":
+                gameState.getCurrentPlayer().getTileRack().shuffleRack();
+                break;
             case "swap":
                 if (gameStateIsNull()) return;
                 ArrayList<Tile> toSwap = new ArrayList<>(7);
@@ -188,7 +200,6 @@ public class IOAdapter {
                 break;
             case "quit":
                 output.println("Terminating.");
-                //output.println();
                 System.exit(0);
                 break;
             default:
@@ -207,16 +218,17 @@ public class IOAdapter {
 
     private void displayHelp() {
         output.println("Available Commands:");
-        output.println("\t(new)\tNew Game\n" +
-                "\t(add)\tAdd an AI player\n" +
-                "\t(add $playerName)\tAdd a named Human player\n" +
-                "\t(start)\tStart the Game\n" +
+        output.println("\t(new)\t\t\t\t\t\tNew Game\n" +
+                "\t(add)\t\t\t\t\t\tAdd an AI player\n" +
+                "\t(add $playerName)\t\t\tAdd a named Human player\n" +
+                "\t(start)\t\t\t\t\t\tStart the Game\n" +
                 "\t(play (x,y) {h/v} $word)\tPlay $word at (x, y), oriented h or v\n" +
-                "\t(pass)\tPass current turn\n" +
-                "\t(swap t i l e s)\tSwap the listed tiles\n" +
-                "\t(resign)\n" +
-                "\t(help)\tPrint this message");
-
+                "\t(shuffle)\t\t\t\t\tShuffle your tile rack\n" +
+                "\t(pass)\t\t\t\t\t\tPass current turn\n" +
+                "\t(swap t i l e s)\t\t\tSwap the listed tiles\n" +
+                "\t(resign)\t\t\t\t\tResign the game\n" +
+                "\t(quit)\t\t\t\t\t\tExit the program\n" +
+                "\t(help)\t\t\t\t\t\tPrint this message");
     }
 
     private void start() {

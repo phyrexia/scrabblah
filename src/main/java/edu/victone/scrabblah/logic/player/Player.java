@@ -8,11 +8,9 @@ package edu.victone.scrabblah.logic.player;
  */
 
 public class Player {
-    protected String name;
-    protected int score = 0;
-
     protected TileRack tileRack;
-
+    protected String name;
+    protected Integer score = 0;
     protected boolean resigned = false;
 
     public Player(String name) {
