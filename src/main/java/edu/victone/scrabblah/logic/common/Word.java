@@ -10,33 +10,23 @@ import com.google.common.base.Objects;
  */
 
 public class Word {
-    private String word;
-    private boolean orientation;
     private Coordinate head;
+    private String string;
     private int score;
-    private boolean locked = false;
+    private boolean orientation;
 
-    public Word(Coordinate head, boolean orientation, String word) {
+    public Word(Coordinate head, boolean orientation, String string) {
         this.head = head;
         this.orientation = orientation;
-        this.word = word;
+        this.string = string;
     }
 
     public void setScore(int s) {
-        if (locked) {
-            throw new UnsupportedOperationException();
-        } else {
             score = s;
-            lock();
-        }
     }
 
     public int getScore() {
         return score;
-    }
-
-    public boolean lock() {
-        return (!locked && (locked = true));
     }
 
     public Coordinate getHead() {
@@ -47,16 +37,13 @@ public class Word {
         return orientation;
     }
 
-    public String getWord() {
-        return word;
+    public String getString() {
+        return string;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(word);
-        sb.append(orientation ? " horizontal at " : " vertical at ");
-        sb.append(head);
-        return sb.toString();
+        return string + (orientation ? " horizontal at " : " vertical at ") + head;
     }
 
     @Override
@@ -66,11 +53,11 @@ public class Word {
         }
 
         final Word w = (Word) o;
-        return (word.equals(w.getWord()) && orientation == w.isHorizontal() && head.equals(w.getHead()));
+        return (string.equals(w.string) && orientation == w.orientation && head.equals(w.head));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(word, head, orientation);
+        return Objects.hashCode(string, head, orientation);
     }
 }
