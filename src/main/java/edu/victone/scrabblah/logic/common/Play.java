@@ -40,5 +40,4 @@ public class Play {
     public int hashCode() {
         return Objects.hashCode(player, words, turn);
     }
-
 }
