@@ -13,12 +13,12 @@ import java.util.*;
 
 public class TileRack implements Iterable<Tile> {
     static final int MAXSIZE = 7;
-    private static Random random = new Random(System.nanoTime());;
+    private static Random random = new Random(System.nanoTime());
 
     private List<Tile> rack;
 
     public TileRack() {
-        rack = new ArrayList<Tile>(MAXSIZE);
+        rack = new ArrayList<>(MAXSIZE);
     }
 
     public void shuffleRack() {
@@ -66,13 +66,6 @@ public class TileRack implements Iterable<Tile> {
         return rack.size();
     }
 
-    @Deprecated
-    public void dumpRack() {
-        while (rack.size() > 0) {
-            System.out.print(rack.remove(0) + " - ");
-        }
-    }
-
     @Override
     public Iterator<Tile> iterator() {
         return rack.iterator();
@@ -83,7 +76,7 @@ public class TileRack implements Iterable<Tile> {
         StringBuilder sb = new StringBuilder("Tile Rack: ");
 
         for (Tile t : rack) {
-            sb.append(t + " ");
+            sb.append(t).append(' ');
         }
         return sb.toString();
     }
