@@ -1,5 +1,7 @@
 package edu.victone.scrabblah.logic.common;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -7,32 +9,29 @@ package edu.victone.scrabblah.logic.common;
  * Time: 4:11 PM
  */
 public class Tile {
-
-    //So, it occurs to me that I could just use a Character,
-    //move several of these methods into GameEngine,
-    //and eliminate this class completely.
-
     private Character letter;
-    private int value;
+    private static HashMap<Character,Integer> values;
+    static {
+        values = new HashMap<>(27);
+        for (int i = 97; i < 124; i++) {
+            values.put((char) i, generateValues((char) i));
+        }
+        values.put(' ', 0);
+    }
 
     public Tile(Character c) {
         letter = Character.toLowerCase(c);
-        value = Tile.getValue(c);
-    }
-
-    public Tile(Tile t) {
-        this(t.getCharacter());
     }
 
     public Character getCharacter() {
         return letter;
     }
 
-    public int getValue() {
-        return value;
+    public static int getValue(Character c) {
+        return values.get(c);
     }
 
-    public static int getValue(Character c) {
+    private static int generateValues(Character c) {
         int val;
         switch (c) {
             case 'e':
@@ -87,7 +86,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "" + letter + "" + value;
+        return String.valueOf(letter) + getValue(letter);
     }
 
     @Override
@@ -97,10 +96,7 @@ public class Tile {
         }
 
         final Tile t = (Tile) o;
-        if (getCharacter() == t.getCharacter()) {
-            return true;
-        }
-        return false;
+        return letter == t.letter;
     }
 
     @Override
