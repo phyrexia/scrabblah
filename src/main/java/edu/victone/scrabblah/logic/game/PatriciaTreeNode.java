@@ -33,14 +33,12 @@ public class PatriciaTreeNode {
 
     //leaf constructor
     public PatriciaTreeNode(CharSequence cs, int depth) {
-        currentSubstring = cs.subSequence(0,depth).toString(); ;
-
+        currentSubstring = cs.subSequence(0, depth).toString();
     }
 
     public void add(CharSequence cs) {
-       // if (children.contains(cs.s))
+        // if (children.contains(cs.s))
         children.add(new PatriciaTreeNode(cs, 0));
-
     }
 
     public boolean contains(CharSequence cs) {
