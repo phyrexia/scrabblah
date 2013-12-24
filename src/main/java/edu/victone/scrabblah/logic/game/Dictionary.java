@@ -6,7 +6,6 @@ import edu.victone.scrabblah.logic.game.concurrent.SubstringConsumer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -16,17 +15,15 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Time: 4:03 PM
  */
 
-public class Dictionary implements Iterable<String> {
-    private HashSet<String> dictionary;
-    private PatriciaTrie substrings;
+public class Dictionary {
+    private static HashSet<String> dictionary;
+    private static PatriciaTrie substrings;
 
-    private LinkedBlockingQueue<String> substringWorkPool;
-
-    public Dictionary(File dictionaryFile) throws FileNotFoundException {
-        dictionary = new HashSet<String>(360000); //tuning this increased the speed significantly
+    public static void load(File dictionaryFile) throws FileNotFoundException {
+        dictionary = new HashSet<>(360000);
         substrings = new PatriciaTrie();
 
-        substringWorkPool = new LinkedBlockingQueue<String>(); //for later
+        LinkedBlockingQueue<String> substringWorkPool = new LinkedBlockingQueue<>();
 
         Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool);
         SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
@@ -35,26 +32,27 @@ public class Dictionary implements Iterable<String> {
         new Thread(substringConsumer).start();
     }
 
-    public boolean contains(String s) {
+    public static boolean contains(String s) {
         return dictionary.contains(s.toUpperCase());
     }
 
-    @Override
-    public Iterator<String> iterator() {
-        return dictionary.iterator();
+    public static boolean containsSubstring(String s) {
+        return substrings.contains(s);
     }
 
     public static void main(String... args) {
-        Dictionary d = null;
         try {
-            d = new Dictionary(new File("sowpods.txt"));
+            Dictionary.load(new File("sowpods.txt"));
+            for (String s : Dictionary.dictionary) {
+                System.out.println(s);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("FAIL: fnf");
-            //System.exit(1);
+            System.exit(1);
         }
+    }
 
-        for (String s : d) {
-            System.out.println(d);
-        }
+    public static boolean isLoaded() {
+        return !dictionary.isEmpty();
     }
 }
