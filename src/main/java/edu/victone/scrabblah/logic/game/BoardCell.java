@@ -22,7 +22,6 @@ public class BoardCell {
     public void setTile(Tile t) {
         if (isEmpty()) {
             tile = t;
-            System.out.println("setting");
         } else {
             throw new IllegalStateException("Cell already contains Tile");
         }
