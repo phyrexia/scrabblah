@@ -43,10 +43,7 @@ public class GameBoard {
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 if (!gameBoard.getCellAt(j, i).isEmpty()) {
-                    //boardCells[i][j].setTile(new Tile(gameBoard.getCellAt(j, i).getTile()));
                     boardCells[i][j].setTile(gameBoard.getCellAt(j, i).getTile());
-
-
                 }
             }
         }
@@ -78,7 +75,7 @@ public class GameBoard {
     }
 
     private static ArrayList<Word> getWordsOnBoard(GameBoard gameBoard) {
-        ArrayList<Word> wordsOnBoard = new ArrayList<Word>();
+        ArrayList<Word> wordsOnBoard = new ArrayList<Word>(50);
         StringBuilder stringBuilder;
         Coordinate coord;
         Word word;
@@ -93,7 +90,7 @@ public class GameBoard {
                     BoardCell boardCell = gameBoard.getCellAt(coord);
                     while (!boardCell.isEmpty()) { //catch the first letter
                         Coordinate head = coord;
-                        stringBuilder = new StringBuilder();
+                        stringBuilder = new StringBuilder(15);
                         do {
                             stringBuilder.append(boardCell.getTile().getCharacter()); //add a letter
                             coord = a == 0 ? new Coordinate(++j, i) : new Coordinate(i, ++j); //the next tile
@@ -121,7 +118,7 @@ public class GameBoard {
     }
 
     public ArrayList<BoardCell> getCellNeighbors(int x, int y) {
-        ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
+        ArrayList<BoardCell> retVal = new ArrayList<>(4);
 
         retVal.add(y > 0 ? getCellAt(x, y - 1) : null);
         retVal.add(y < 14 ? getCellAt(x, y + 1) : null);
@@ -132,7 +129,7 @@ public class GameBoard {
     }
 
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
-        ArrayList<BoardCell> retVal = new ArrayList<BoardCell>(4);
+        ArrayList<BoardCell> retVal = new ArrayList<>(4);
 
         retVal.add(coord.getY() > 0 ? getCellAt(new Coordinate(coord.getX(), coord.getY() - 1)) : null);
         retVal.add(coord.getY() < 14 ? getCellAt(new Coordinate(coord.getX(), coord.getY() + 1)) : null);
@@ -161,9 +158,9 @@ public class GameBoard {
         String row = "  |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|";
         StringBuilder sb = new StringBuilder(header);
         sb.append(row);
-        sb.append("\n");
+        sb.append('\n');
         for (int i = 0; i < 15; i++) {
-            Integer y = new Integer(i + 1);
+            Integer y = i + 1;
             sb.append(y);
             sb.append(i < 9 ? " |" : "|");
             for (int j = 0; j < 15; j++) {
@@ -190,9 +187,9 @@ public class GameBoard {
                 }
             }
             sb.append(y);
-            sb.append("\n");
+            sb.append('\n');
             sb.append(row);
-            sb.append("\n");
+            sb.append('\n');
         }
         sb.append(header);
         return sb.toString();
