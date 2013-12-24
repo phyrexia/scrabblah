@@ -1,7 +1,9 @@
 package edu.victone.scrabblah.logic.game;
 
+import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.TileBag;
+import edu.victone.scrabblah.logic.common.Word;
 import edu.victone.scrabblah.logic.player.Player;
 import edu.victone.scrabblah.logic.player.PlayerList;
 
@@ -50,6 +52,10 @@ public class GameState {
         gameBoards.push(newGameBoard);
     }
 
+    public void pushGameBoard() {
+        gameBoards.push(new GameBoard(gameBoards.peek()));
+    }
+
     public int getNumberRemainingTiles() {
         return tileBag.size();
     }
@@ -62,17 +68,17 @@ public class GameState {
         return playerList;
     }
 
-    public void addPlayer(Player p) {
-        playerList.addPlayer(p);
+    public boolean addPlayer(Player p) {
+        return playerList.addPlayer(p);
     }
 
-    public int getNumberPlayers() {
+    private int getNumberPlayers() {
         return playerList.size();
     }
 
     public boolean startGame() {
         if (active) {
-            //kaboom
+            setErrorMessage("ERROR: Can't start a game already in progress.");
         } else {
             active = true;
         }
@@ -80,6 +86,13 @@ public class GameState {
 
         if (getPlayerList() == null) {
             return false;
+        }
+
+        if (getNumberPlayers() <= 1) {
+
+
+            setErrorMessage("ERROR: Not enough players.  Add " + (2 - getNumberPlayers()) + " to " +
+                    (4 - getNumberPlayers()) + " players.");
         }
 
         getPlayerList().setIndex(new Random().nextInt(getNumberPlayers()));
@@ -92,19 +105,115 @@ public class GameState {
         return true;
     }
 
-    public void pass() {
-        endTurn();
+    public boolean play(Word w) {
+        //place each tile of w on the board
+        //check for validity
+        //if valid end turn, return true
+        //if not...
+
+        if (GameEngine.dictionary.contains(w.getWord())) {
+            ArrayList<Tile> tilesToRemove = new ArrayList<>() ;
+            GameBoard newBoard = new GameBoard(getGameBoard());
+            //newBoard = gameState.getGameBoard();
+            //are all tiles in the player's tile rack (or on the board?)
+            Tile t;
+            if (w.isHorizontal()) {
+                int wx = w.getHead().getX();
+                int y = w.getHead().getY();
+                for (int x = wx, ptr = 0; x < wx + w.getWord().length(); x++, ptr++ ) {
+                    t = new Tile(w.getWord().charAt(ptr));
+                    Coordinate c = new Coordinate(x,y);
+                    if (getGameBoard().getCellAt(c).isEmpty()) {
+                        if (getCurrentPlayer().getTileRack().contains(t)) {
+                            tilesToRemove.add(t);
+                            newBoard.getCellAt(c).setTile(t);
+                        } else {
+                            //fail: this tile is not in the rack
+                            setErrorMessage("ERROR: Tile " + t + " not in rack");
+                            return false;
+                        }
+                    } else if (getGameBoard().getCellAt(c).getTile().equals(t)) {
+                        //same tile, doesn't have to be in rack, so do nothing...
+
+                    } else {
+                        //fail, can't play a tile on another tile.
+                        setErrorMessage("ERROR: Tile " + t + " doesn't fit");
+                        return false;
+                    }
+                }
+            } else {
+                int x = w.getHead().getX();
+                int wy = w.getHead().getY();
+                for (int y = wy, ptr = 0; y < wy + w.getWord().length(); y++, ptr++ ) {
+                    t = new Tile(w.getWord().charAt(ptr));
+                    Coordinate c = new Coordinate(x,y);
+                    if (getGameBoard().getCellAt(c).isEmpty()) {
+                        if (getCurrentPlayer().getTileRack().contains(t)) {
+                            tilesToRemove.add(t);
+                            newBoard.getCellAt(c).setTile(t);
+                        } else {
+                            //fail: this tile is not in the rack
+                            setErrorMessage("ERROR: Tile " + t + " not in rack");
+                            return false;
+
+                        }
+                    } else if (getGameBoard().getCellAt(c).getTile().equals(t)) {
+                        //same tile, doesn't have to be in rack, so do nothing...
+
+                    } else {
+                        //fail, can't play a tile on another tile.
+                        setErrorMessage("ERROR: Tile " + t + " doesn't fit");
+                        return false;
+                    }
+                }
+            }
+            //if we made it this far we're good
+            if (GameEngine.isLegalGameBoard(newBoard)) {
+                pushGameBoard(newBoard);
+            } else {
+                setErrorMessage("ERROR: Illegal Tile Placement");
+                return false;
+            }
+            for (Tile tile : tilesToRemove) {
+                getCurrentPlayer().getTileRack().removeTile(tile);
+            }
+            return endTurn();
+        } else {
+            setErrorMessage("ERROR: " + w.getWord() + " is not in the dictionary.");
+            return false;
+        }
     }
+
+
 
     public void resign() {
         getCurrentPlayer().resign();
     }
 
-    public void swapTiles(ArrayList<Tile> tilesToSwap) {
-        getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
+    public boolean swapTiles(ArrayList<Tile> tilesToSwap) {
+        if (getNumberRemainingTiles() >= tilesToSwap.size()) {
+
+
+            for (Tile t : tilesToSwap) {
+                getCurrentPlayer().getTileRack().removeTile(t);
+            }
+
+            getCurrentPlayer().getTileRack().addTiles(tileBag.swapTiles(tilesToSwap));
+            playerList.incrementIndex();
+            turnCounter++;
+            return true;
+        } else {
+            setErrorMessage("ERROR: Not enough tiles to swap.");
+            return false;
+        }
     }
 
-    public void endTurn() {
+    public void pass() {
+        playerList.incrementIndex();
+        turnCounter++;
+    }
+
+    public boolean endTurn() {
         if (GameEngine.isLegalState(this)) {
             Player p = getCurrentPlayer();
             p.addScore(GameEngine.computeScore(gameBoards.elementAt(gameBoards.size() - 2), gameBoards.peek()));
@@ -115,6 +224,9 @@ public class GameState {
 
             playerList.incrementIndex();
             turnCounter++;
+            return true;
+        } else {
+            return false;
         }
     }
 

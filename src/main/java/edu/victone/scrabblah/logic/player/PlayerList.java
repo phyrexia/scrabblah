@@ -22,13 +22,14 @@ public class PlayerList implements Iterable<Player> {
         activePlayers = new ArrayList<Player>(4);
     }
 
-    public void addPlayer(Player p) {
+    public boolean addPlayer(Player p) {
         if (numberPlayers < 4) {
             playerList.add(p);
             activePlayers.add(p);
             numberPlayers++;
+            return true;
         } else {
-            throw new ArrayIndexOutOfBoundsException();
+            return false;
         }
     }
 

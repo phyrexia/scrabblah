@@ -3,8 +3,6 @@ package edu.victone.scrabblah.ui;
 import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
-import edu.victone.scrabblah.logic.game.GameBoard;
-import edu.victone.scrabblah.logic.game.GameEngine;
 import edu.victone.scrabblah.logic.game.GameState;
 import edu.victone.scrabblah.logic.player.AIPlayer;
 import edu.victone.scrabblah.logic.player.Player;
@@ -87,11 +85,6 @@ public class IOAdapter {
                     return;
                 }
 
-                if (gameState.getNumberPlayers() == 4) {
-                    output.println("ERROR: Max players already added to game.");
-                    return;
-                }
-
                 Player p;
                 if (components.length == 1) {
                     p = new AIPlayer();
@@ -99,13 +92,20 @@ public class IOAdapter {
                     StringBuilder playerName = new StringBuilder();
                     for (int j = i; j < components.length; j++) {
                         playerName.append(components[j]);
-                        playerName.append(" ");
+                        if (j < components.length - 1) {
+                            playerName.append(" ");
+                        }
                     }
                     p = new Player(playerName.toString());
                 }
 
-                gameState.addPlayer(p);
-                output.println("Added " + p.getName() + " to the game.");
+                if (gameState.addPlayer(p)) {
+
+                    output.println("Added " + p.getName() + " to the game.");
+                }       else {
+                    output.println("ERROR: Could not add player.");
+
+                }
                 break;
             case "start":
                 if (gameState == null) {
@@ -185,12 +185,12 @@ public class IOAdapter {
                     output.println("ERROR: No game yet.");
                     return;
                 }
-                //todo: implement
                 ArrayList<Tile> toSwap = new ArrayList<>(7);
                 for (int j = i; j < components.length; j++) {
-
+                    toSwap.add(new Tile(components[j].charAt(0)));
                 }
-                if (swap(null)) {
+                if (swap(toSwap)) {
+                    output.println("Swapped " + toSwap);
                 } else {
                     output.println("ERROR: Unable to swap.  Not enough remaining tiles.");
                 }
@@ -208,6 +208,7 @@ public class IOAdapter {
                 break;
             case "quit":
                 output.println("Terminating.");
+                //output.println();
                 System.exit(0);
                 break;
             default:
@@ -222,7 +223,7 @@ public class IOAdapter {
                 "\t(add)\tAdd an AI player\n" +
                 "\t(add $playerName)\tAdd a named Human player\n" +
                 "\t(start)\tStart the Game\n" +
-                "\t(play ($headx,$heady) {h/v} $word)\tPlay $word at ($headx, $heady), oriented h or v\n" +
+                "\t(play (x,y) {h/v} $word)\tPlay $word at (x, y), oriented h or v\n" +
                 "\t(pass)\tPass current turn\n" +
                 "\t(swap t i l e s)\tSwap the listed tiles\n" +
                 "\t(resign)\n" +
@@ -230,98 +231,16 @@ public class IOAdapter {
 
     }
 
-    private void start() {
-        if (gameState.getNumberPlayers() > 1) {
-            gameState.startGame();
-        } else {
-            output.println("ERROR: Not enough players.  Add " + (2 - gameState.getNumberPlayers()) + " to " +
-                    (4 - gameState.getNumberPlayers()) + " players.");
-        }
+    private boolean start() {
+        return gameState.startGame();
     }
 
-    private void play(Word w) {
-        //place each tile of w on the board
-        //check for validity
-        //if valid end turn, return true
-        //if not...
-
-        if (GameEngine.dictionary.contains(w.getWord())) {
-            ArrayList<Tile> tilesToRemove = new ArrayList<>() ;
-            GameBoard newBoard = new GameBoard(gameState.getGameBoard());
-            //newBoard = gameState.getGameBoard();
-            //are all tiles in the player's tile rack (or on the board?)
-            Tile t;
-            if (w.isHorizontal()) {
-                int wx = w.getHead().getX();
-                int y = w.getHead().getY();
-                for (int x = wx, ptr = 0; x < wx + w.getWord().length(); x++, ptr++ ) {
-                    t = new Tile(w.getWord().charAt(ptr));
-                    Coordinate c = new Coordinate(x,y);
-                    if (gameState.getGameBoard().getCellAt(c).isEmpty()) {
-                        if (gameState.getCurrentPlayer().getTileRack().contains(t)) {
-                            tilesToRemove.add(t);
-                            newBoard.getCellAt(c).setTile(t);
-                        } else {
-                            //fail: this tile is not in the rack
-                            output.println("ERROR: Tile " + t + " not in rack");
-                            return;
-                        }
-                    } else if (gameState.getGameBoard().getCellAt(c).getTile().equals(t)) {
-                        //same tile, doesn't have to be in rack, so do nothing...
-
-                    } else {
-                        //fail, can't play a tile on another tile.
-                        output.println("ERROR: Tile " + t + " doesn't fit");
-                        return;
-                    }
-                }
-            } else {
-                int x = w.getHead().getX();
-                int wy = w.getHead().getY();
-                for (int y = wy, ptr = 0; y < wy + w.getWord().length(); y++, ptr++ ) {
-                    t = new Tile(w.getWord().charAt(ptr));
-                    Coordinate c = new Coordinate(x,y);
-                    if (gameState.getGameBoard().getCellAt(c).isEmpty()) {
-                        if (gameState.getCurrentPlayer().getTileRack().contains(t)) {
-                            tilesToRemove.add(t);
-                            newBoard.getCellAt(c).setTile(t);
-                        } else {
-                            //fail: this tile is not in the rack
-                            output.println("ERROR: Tile " + t + " not in rack");
-                            return;
-
-                        }
-                    } else if (gameState.getGameBoard().getCellAt(c).getTile().equals(t)) {
-                        //same tile, doesn't have to be in rack, so do nothing...
-
-                    } else {
-                        //fail, can't play a tile on another tile.
-                        output.println("ERROR: Tile " + t + " doesn't fit");
-                        return;
-                    }
-                }
-            }
-            //if we made it this far we're good
-            if (GameEngine.isLegalGameBoard(newBoard)) {
-                gameState.pushGameBoard(newBoard);
-            } else {
-                return;
-            }
-            for (Tile tile : tilesToRemove) {
-                gameState.getCurrentPlayer().getTileRack().removeTile(tile);
-            }
-            gameState.endTurn();
-        } else {
-            output.println("ERROR: " + w.getWord() + " is not in the dictionary.");
-        }
+    private boolean play(Word w) {
+        return gameState.play(w);
     }
 
     private boolean swap(ArrayList<Tile> tilesToSwap) {
-        if (gameState.getNumberRemainingTiles() < tilesToSwap.size()) {
-            return false;
-        }
-        gameState.swapTiles(tilesToSwap);
-        return true;
+        return gameState.swapTiles(tilesToSwap);
     }
 
     private void printError(int errorCode) {
