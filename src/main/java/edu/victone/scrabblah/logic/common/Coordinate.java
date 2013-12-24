@@ -32,12 +32,12 @@ public class Coordinate {
     public String print() {
         Character xChar = (char) (x + 48);
         Character yChar = (char) (y + 48);
-        return ("(" + xChar + "," + yChar + ")");
+        return ("(" + xChar + ',' + yChar + ')');
     }
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ")";
+        return '(' + x + ", " + y + ')';
     }
 
     @Override
@@ -51,21 +51,18 @@ public class Coordinate {
         }
 
         final Coordinate other = (Coordinate) o;
-        if (x != other.getX() || y != other.getY()) {
-            return false;
-        }
-        return true;
+        return !(!x.equals(other.x) || !y.equals(other.y));
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(x,y);
+        return java.util.Objects.hash(x, y);
     }
 
     public static void main(String... args) {
         Coordinate a = new Coordinate(4, 4);
         Coordinate b = new Coordinate(4, 4);
 
-        System.out.println( a.equals(b) ? "pass" : "fail" );
+        System.out.println(a.equals(b) ? "pass" : "fail");
     }
 }
