@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * author: vwilson
@@ -18,6 +19,8 @@ import java.util.Scanner;
  */
 
 public class IOAdapter {
+    private static final Pattern SPLIT_SPACE = Pattern.compile(" ");
+    private static final Pattern SPLIT_COMMA = Pattern.compile(",");
 
     //todo: all strings -> static consts or proper modern java idiom
 
@@ -49,7 +52,7 @@ public class IOAdapter {
             output.println(gameState.getCurrentPlayer());
             output.println(gameState.getCurrentPlayer().getTileRack());
             if (gameState.errorPresent()) {
-                output.println(gameState.getErrorMessage());
+                output.println(gameState.getStatusMessage());
             }
         }
     }
@@ -68,7 +71,7 @@ public class IOAdapter {
             return;
         }
 
-        String[] components = command.substring(1, command.length() - 1).split(" ");
+        String[] components = SPLIT_SPACE.split(command.substring(1, command.length() - 1));
         int i = 0;
         switch (components[i++]) {
             case "new":
@@ -80,20 +83,17 @@ public class IOAdapter {
                 }
                 break;
             case "add": //add a player to the list.
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+                if (gameStateIsNull()) return;
 
                 Player p;
                 if (components.length == 1) {
                     p = new AIPlayer();
                 } else {
-                    StringBuilder playerName = new StringBuilder();
+                    StringBuilder playerName = new StringBuilder(16);
                     for (int j = i; j < components.length; j++) {
                         playerName.append(components[j]);
                         if (j < components.length - 1) {
-                            playerName.append(" ");
+                            playerName.append(' ');
                         }
                     }
                     p = new Player(playerName.toString());
@@ -108,17 +108,11 @@ public class IOAdapter {
                 }
                 break;
             case "start":
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+                if (gameStateIsNull()) return;
                 start();
                 break;
-            case "play":
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+            case "playWord":
+                if (gameStateIsNull()) return;
 
                 //are coordinates valid parenthesized s-exp? (ish)
                 String cpString = components[i++];
@@ -130,7 +124,7 @@ public class IOAdapter {
 
                 //parse coordinates
                 cpString = cpString.substring(1, cpString.length() - 1);
-                String coordArray[] = cpString.split(",");
+                String coordArray[] = SPLIT_COMMA.split(cpString);
                 if (coordArray.length != 2) {
                     output.println("ERROR: Invalid input, not enough coords.");
                     return;
@@ -169,37 +163,23 @@ public class IOAdapter {
                 String word = components[++i];
                 Word w = new Word(c, isHorizontal, word);
 
-                output.println("Attempting to play " + w);
                 play(w);
                 break;
             case "pass":
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+                if (gameStateIsNull()) return;
                 output.println(gameState.getCurrentPlayer().getName() + " passing.");
                 gameState.pass();
                 break;
             case "swap":
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+                if (gameStateIsNull()) return;
                 ArrayList<Tile> toSwap = new ArrayList<>(7);
                 for (int j = i; j < components.length; j++) {
                     toSwap.add(new Tile(components[j].charAt(0)));
                 }
-                if (swap(toSwap)) {
-                    output.println("Swapped " + toSwap);
-                } else {
-                    output.println("ERROR: Unable to swap.  Not enough remaining tiles.");
-                }
+                swap(toSwap);
                 break;
             case "resign":
-                if (gameState == null) {
-                    output.println("ERROR: No game yet.");
-                    return;
-                }
+                if (gameStateIsNull()) return;
                 output.println(gameState.getCurrentPlayer().getName() + " resigning.");
                 gameState.resign();
                 break;
@@ -217,6 +197,14 @@ public class IOAdapter {
         }
     }
 
+    private boolean gameStateIsNull() {
+        if (gameState == null) {
+            output.println("ERROR: No game yet.");
+            return true;
+        }
+        return false;
+    }
+
     private void displayHelp() {
         output.println("Available Commands:");
         output.println("\t(new)\tNew Game\n" +
@@ -231,20 +219,15 @@ public class IOAdapter {
 
     }
 
-    private boolean start() {
-        return gameState.startGame();
+    private void start() {
+        gameState.startGame();
     }
 
-    private boolean play(Word w) {
-        return gameState.play(w);
+    private void play(Word w) {
+        gameState.playWord(w);
     }
 
-    private boolean swap(ArrayList<Tile> tilesToSwap) {
-        return gameState.swapTiles(tilesToSwap);
-    }
-
-    private void printError(int errorCode) {
-        //todo: convert
-
+    private void swap(ArrayList<Tile> tilesToSwap) {
+        gameState.swapTiles(tilesToSwap);
     }
 }
