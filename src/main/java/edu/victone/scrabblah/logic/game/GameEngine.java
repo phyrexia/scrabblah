@@ -4,8 +4,6 @@ import edu.victone.scrabblah.logic.common.Coordinate;
 import edu.victone.scrabblah.logic.common.Tile;
 import edu.victone.scrabblah.logic.common.Word;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -15,16 +13,10 @@ import java.util.ArrayList;
  * Time: 4:40 PM
  */
 public class GameEngine { //rules, etc
-    public static Dictionary dictionary;// = new Dictionary();
-
-    public static void loadDictionary(File dictionaryFile) throws FileNotFoundException {
-        dictionary = new Dictionary(dictionaryFile);
-    }
 
     public static boolean isLegalState(GameState gameState) {
-        //todo: refactor me
-        if (dictionary == null) {
-            gameState.setErrorMessage("Dictionary not loaded.");
+        if (Dictionary.isLoaded()) {
+            gameState.setStatusMessage("Dictionary not loaded.");
             return false;
         }
 
@@ -34,17 +26,12 @@ public class GameEngine { //rules, etc
         }
 
         if (gameState.getPlayerList() == null) {
-            gameState.setErrorMessage("There are no players.");
+            gameState.setStatusMessage("There are no players.");
             return false;
         }
 
-        //are all cells locked? do they need to be?
-
-        //first turn must include center cell
-
-
         if (!isLegalGameBoard(gameState.getGameBoard())) {
-            gameState.setErrorMessage("Illegal tile placement.");
+            gameState.setStatusMessage("Illegal tile placement.");
             return false;
         }
 
@@ -57,10 +44,9 @@ public class GameEngine { //rules, etc
     }
 
     public static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
-        //todo: refactor me
         //if first word played is a one-letter word
         if (gameBoard.getNumOccupiedCells() == 1) {
-            //gameState.setErrorMessage("Single-letter words are not allowed.");
+            //gameState.setStatusMessage("Single-letter words are not allowed.");
             return false;
         }
 
@@ -71,16 +57,16 @@ public class GameEngine { //rules, etc
 
         //are all letters contiguous?
         if (!areLettersContiguous(gameBoard)) {
-            //gameState.setErrorMessage("Invalid tile placement.");
+            //gameState.setStatusMessage("Invalid tile placement.");
             return false;
         }
 
         //ensure all the words on the board are words in the dictionary
         int n = indexOfBadWord(gameBoard.getWordList());
         if (n != -1) {
-            String sDisplay = gameBoard.getWordList().get(n).toString().substring(0, 1).toUpperCase()
-                    + gameBoard.getWordList().get(n).toString().substring(1);
-            //gameState.setErrorMessage(sDisplay + " is not a valid word.");
+            //String sDisplay = gameBoard.getWordList().get(n).toString().substring(0, 1).toUpperCase()
+            //        + gameBoard.getWordList().get(n).toString().substring(1);
+            //gameState.setStatusMessage(sDisplay + " is not a valid word.");
             return false;
         }
 
@@ -120,17 +106,8 @@ public class GameEngine { //rules, etc
         //is not in the dictionary,
         //or -1 if all words are in the dictionary
         for (Word w : words) {
-            if (!dictionary.contains(w.getWord())) {
+            if (!Dictionary.contains(w.getString())) {
                 return words.indexOf(w);
-            }
-        }
-        return -1;
-    }
-
-    public static int indexOfBadString(ArrayList<String> strings) {
-        for (String s : strings) {
-            if (!dictionary.contains(s)) {
-                return strings.indexOf(s);
             }
         }
         return -1;
@@ -158,11 +135,14 @@ public class GameEngine { //rules, etc
         int x = w.getHead().getX();
         int y = w.getHead().getY();
 
-        char[] charArr = w.getWord().toCharArray();
+        char[] charArr = w.getString().toCharArray();
         for (int i = 0; i < charArr.length; i++) {
             int tileMultiplier = 1;
-            BoardCell boardCell = gameBoard.getCellAt(new Coordinate(
-                    (w.isHorizontal() ? x + i : x), (w.isHorizontal() ? y : y + i)));
+
+            BoardCell boardCell = (w.isHorizontal() ? gameBoard.getCellAt(x + i, y) : gameBoard.getCellAt(x, y + i));
+
+            //BoardCell boardCell = gameBoard.getCellAt(new Coordinate(
+            //      (w.isHorizontal() ? x + i : x), (w.isHorizontal() ? y : y + i)));
             int multiplier = boardCell.getMultiplier();
 
             if (boardCell.isWordMultiplier()) {
