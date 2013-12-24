@@ -26,7 +26,7 @@ public class AnagramTree {
     }
 
     private static ArrayList<Character> stringToSortedCharArray(String s) {
-        ArrayList<Character> charArray = new ArrayList<Character>();
+        ArrayList<Character> charArray = new ArrayList<>(10);
         for (Character c : s.toUpperCase().toCharArray()) {
             charArray.add(c);
         }
@@ -38,17 +38,17 @@ public class AnagramTree {
         this.parent = parent;
         if (parent == null) {
             System.out.println("this parent is null");
-            anagrams = new ArrayList<String>();
+            anagrams = new ArrayList<>(1024);
         }
         //if getThisSubString() is not parseable into the DB, die
         //actually we want to keep from ever even constructing the child though
         //getSubstring();
         if (node == null && charArray != null) { //head case
             this.node = null;
-            StringBuilder rootBuilder = new StringBuilder();
-            children = new HashSet<AnagramTree>();
+            StringBuilder rootBuilder = new StringBuilder(10);
+            children = new HashSet<>(charArray.size());
             for (Character c : charArray) {
-                ArrayList<Character> grandkids = new ArrayList<Character>(charArray);
+                ArrayList<Character> grandkids = new ArrayList<>(charArray);
                 rootBuilder.append(c);
                 grandkids.remove(c);
                 children.add(new AnagramTree(c, grandkids, this));
@@ -57,21 +57,24 @@ public class AnagramTree {
         } else if (node != null && charArray != null) { //"f, oobar"
             this.node = node;
             //if getSubString()) {
-            children = new HashSet<AnagramTree>();
+            children = new HashSet<>(charArray.size());
             for (Character c : charArray) {
                 //construct a new parent and the grandkids
-                ArrayList<Character> grandkids = new ArrayList<Character>(charArray);
+                ArrayList<Character> grandkids = new ArrayList<>(charArray);
                 grandkids.remove(c);
                 AnagramTree child;
                 child = new AnagramTree(c, grandkids.size() == 0 ? null : grandkids, this);
                 children.add(child);
-            //}
+                //}
             }
-        } else if (node != null && charArray == null) { //"r"
+        } else if (node != null) { //"r"
             this.node = node;
             children = null;
             //if substring not in worddb, don't passUpstream
-            passUpstream(getSubstring());
+            String str = getSubstring();
+            if (Dictionary.contains(str)) {
+                passUpstream(getSubstring());
+            }
 
         } else {
             throw new IllegalArgumentException();
@@ -89,6 +92,7 @@ public class AnagramTree {
     }
 
     private void passUpstream(String string) {
+        //send a string up the chain.  but this is terrible and we shouldn't use it this way.
         if (parent == null) {
             anagrams.add(string);
         } else {
