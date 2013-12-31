@@ -16,43 +16,27 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public class Dictionary {
-    private static HashSet<String> dictionary;
-    private static PatriciaTrie substrings;
+  private HashSet<String> dictionary;
+  private PatriciaTrie substrings;
 
-    public static void load(File dictionaryFile) throws FileNotFoundException {
-        dictionary = new HashSet<>(360000);
-        substrings = new PatriciaTrie();
+  public Dictionary(File dictionaryFile) throws FileNotFoundException {
+    dictionary = new HashSet<>(360000);
+    substrings = new PatriciaTrie();
 
-        LinkedBlockingQueue<String> substringWorkPool = new LinkedBlockingQueue<>();
+    LinkedBlockingQueue<String> substringWorkPool = new LinkedBlockingQueue<>();
 
-        Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool);
-        SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
+    Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool);
+    SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
 
-        new Thread(producer).start();
-        new Thread(substringConsumer).start();
-    }
+    new Thread(producer).start();
+    new Thread(substringConsumer).start();
+  }
 
-    public static boolean contains(String s) {
-        return dictionary.contains(s.toUpperCase());
-    }
+  public boolean contains(String s) {
+    return dictionary.contains(s.toUpperCase());
+  }
 
-    public static boolean containsSubstring(String s) {
-        return substrings.contains(s);
-    }
-
-    public static void main(String... args) {
-        try {
-            Dictionary.load(new File("sowpods.txt"));
-            for (String s : Dictionary.dictionary) {
-                System.out.println(s);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("FAIL: fnf");
-            System.exit(1);
-        }
-    }
-
-    public static boolean isLoaded() {
-        return !dictionary.isEmpty();
-    }
+  public boolean containsSubstring(String s) {
+    return substrings.contains(s);
+  }
 }
