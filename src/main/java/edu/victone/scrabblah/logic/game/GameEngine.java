@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GameEngine { //rules, etc
 
     public static boolean isLegalState(GameState gameState) {
-        if (Dictionary.isLoaded()) {
+        if (!Dictionary.isLoaded()) {
             gameState.setStatusMessage("Dictionary not loaded.");
             return false;
         }

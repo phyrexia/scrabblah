@@ -16,10 +16,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public class Dictionary {
-  private HashSet<String> dictionary;
-  private PatriciaTrie substrings;
+  private static HashSet<String> dictionary;
+  private static PatriciaTrie substrings;
 
-  public Dictionary(File dictionaryFile) throws FileNotFoundException {
+  public static void load(File dictionaryFile) throws FileNotFoundException {
     dictionary = new HashSet<>(360000);
     substrings = new PatriciaTrie();
 
@@ -32,11 +32,15 @@ public class Dictionary {
     new Thread(substringConsumer).start();
   }
 
-  public boolean contains(String s) {
+  public static boolean contains(String s) {
     return dictionary.contains(s.toUpperCase());
   }
 
-  public boolean containsSubstring(String s) {
+  public static boolean containsSubstring(String s) {
     return substrings.contains(s);
+  }
+
+  public static boolean isLoaded() {
+    return dictionary != null;
   }
 }
