@@ -202,7 +202,7 @@ public class GameState {
     }
 
     public boolean isGameOver() {
-        if (tileBag.isEmpty()) {
+        if (tileBag.size() == 0) {
             for (Player p : playerList) {
                 if (p.getTileRack().size() == 0) {
                     setWinner(p);

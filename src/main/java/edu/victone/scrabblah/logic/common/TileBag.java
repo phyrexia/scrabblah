@@ -80,10 +80,6 @@ public class TileBag {
         return tileBag.size();
     }
 
-    public boolean isEmpty() {
-        return (tileBag.size() == 0);
-    }
-
     private void add(Character c, int frequency) {
         //add a new Tile $frequency number of times.
         //this is only used for initialization.
