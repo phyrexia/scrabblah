@@ -1,6 +1,7 @@
 package edu.victone.scrabblah.logic.common;
 
 import com.google.common.base.Objects;
+import edu.victone.scrabblah.logic.player.*;
 
 import java.util.ArrayList;
 
@@ -11,33 +12,45 @@ import java.util.ArrayList;
  */
 
 public class Play {
-    private String player;
-    private ArrayList<Word> words;
-    private Integer turn;
+  private String player;
+  private ArrayList<Word> words;
+  private Integer turn;
+  private Action action;
 
-    public Play(int turn, String player, ArrayList<Word> words) {
-        this.turn = turn;
-        this.player = player;
-        this.words = words;
+  public Play(int turn, String player, ArrayList<Word> words, Action action) {
+    this.turn = turn;
+    this.player = player;
+    this.words = words;
+    this.action = action;
+  }
+
+  @Override
+  public String toString() {
+    switch (action) {
+      case PLAY:
+        break;
+      case SWAP:
+        break;
+      case PASS:
+        break;
+      default:
+        //wtf
+    }
+    return "Turn " + turn + ": " + player + " played " + words;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (getClass() != o.getClass()) {
+      return false;
     }
 
-    @Override
-    public String toString() {
-        return "Turn " + turn + ": " + player + " played " + words;
-    }
+    final Play p = (Play) o;
+    return (turn.equals(p.turn) && words.containsAll(p.words) && p.words.containsAll(words) && player.equals(p.player));
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Play p = (Play) o;
-        return (turn.equals(p.turn) && words.containsAll(p.words) && p.words.containsAll(words) && player.equals(p.player));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(player, words, turn);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(player, words, turn);
+  }
 }

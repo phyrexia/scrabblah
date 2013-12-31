@@ -13,7 +13,7 @@ public class Player {
     protected Integer score = 0;
     protected boolean resigned = false;
 
-    public Player(String name) {
+  public Player(String name) {
         this.name = name;
         tileRack = new TileRack();
     }
@@ -25,6 +25,10 @@ public class Player {
     public boolean hasResigned() {
         return resigned;
     }
+
+   public boolean isHuman() {
+    return true;
+   }
 
     public TileRack getTileRack() {
         return tileRack;
@@ -46,4 +50,6 @@ public class Player {
     public String toString() {
         return name + " (human) - Score: " + score;
     }
+
+
 }

@@ -1,14 +1,9 @@
 package edu.victone.scrabblah.logic.player;
 
-import edu.victone.scrabblah.logic.common.Coordinate;
-import edu.victone.scrabblah.logic.common.Word;
-import edu.victone.scrabblah.logic.game.AnagramTree;
-import edu.victone.scrabblah.logic.game.GameBoard;
+import edu.victone.scrabblah.logic.common.*;
+import edu.victone.scrabblah.logic.game.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,79 +13,91 @@ import java.util.Random;
  */
 
 public class AIPlayer extends Player {
-    private static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
-    private static ArrayList<String> availableNames;
-    private static Random random = new Random();
-    private double skillLevel;
+  private static String[] playerNames = {"Charles B.", "Bill G.", "Steve J.", "Steve W.", "Alan T.", "John V.N.", "Bob H.", "Ken S.", "John J."};
+  private static ArrayList<String> availableNames;
+  private static Random random = new Random();
 
-    public AIPlayer() {
-        this(getRandomName());
+  private Word wordToPlay;
+  private ArrayList<Tile> tilesToSwap;
+  private double skillLevel;
+
+  public static String getRandomName() {
+    if (availableNames == null) {
+      initializeAvailableNames();
     }
+    return availableNames.remove(random.nextInt(availableNames.size()));
+  }
 
-    public AIPlayer(String name) {
-        this(name, 1.0); //creates godlike scrabble players (but they'll probably think slowly...)
+  private static void initializeAvailableNames() {
+    availableNames = new ArrayList<>(9);
+    Collections.addAll(availableNames, playerNames);
+  }
+
+  public AIPlayer() {
+    this(getRandomName());
+  }
+
+  public AIPlayer(String name) {
+    this(name, 1.0);
+  }
+
+  public AIPlayer(String name, Double skillLevel) {
+    super(name);
+    if (skillLevel.compareTo(0.0) < 0 || skillLevel.compareTo(1.0) > 0) {
+      throw new IllegalArgumentException("Skill Level must be between 0 and 1.");
     }
+    this.skillLevel = skillLevel;
 
-    public AIPlayer(String name, Double skillLevel) {
-        super(name);
-        if (skillLevel.compareTo(0.0) < 0 || skillLevel.compareTo(1.0) > 0) {
-            throw new IllegalArgumentException("Skill Level must be between 0 and 1.");
-        }
-        this.skillLevel = skillLevel;
+    double d = Math.pow(10, skillLevel);
+  }
+
+  @Override
+  public boolean isHuman() {
+    return false;
+  }
+
+  /*
+  returns the best word we can think of, or
+  a magic word if we should pass, or,
+  a magic word if we should swap.
+   */
+  public Action getNextAction(GameState gameState) {
+     //return the action
+    //to do this we're still going to have to think sort of hard.
+
+    //do a bunch of stuff
+
+
+    //randomly swap tiles?
+
+
+    return Action.PASS;
+  }
+
+  public ArrayList<String> generateAnagramTree(String string) {
+    return new AnagramTree(string).getAnagrams();
+  }
+
+  public static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
+    HashSet<Coordinate> startingCoordinates = new HashSet<>(100);
+    for (int i = 0; i < 15; i++) {
+      for (int x = 0; x < 15; x++) {
+        //TODO: this
+      }
     }
+    return null;
+  }
 
-    public static Word getWordToPlay(GameBoard gameBoard, TileRack tileRack) {
-        //TODO: IMPLEMENT ME
+  public Word getWordToPlay() {
+    return wordToPlay;
+  }
 
+  public ArrayList<Tile> getTilesToSwap() {
+    return tilesToSwap;
+  }
 
-
-        ArrayList<Word> possibleWords = new ArrayList<>(1000);
-
-        ArrayList<Coordinate> startingZone = new ArrayList<>(225);
-
-        //TODO: generate startingZone
-        for (int numPlayedTiles = 1; numPlayedTiles < 8; numPlayedTiles++) {
-            for (Coordinate coord : getStartingCoordinates(gameBoard, numPlayedTiles)) {
-
-            }
-        }
-
-        for (int i = 0; i < 7; i++) {
-
-        }
-
-        return null; //return the word to playWord
-    }
-
-    public static String getRandomName() {
-        if (availableNames == null) {
-            populateCollection();
-        }
-        return availableNames.remove(random.nextInt(availableNames.size()));
-    }
-
-    private static void populateCollection() {
-        availableNames = new ArrayList<>(9);
-        Collections.addAll(availableNames, playerNames);
-    }
-
-    private static ArrayList<String> generateAnagramTree(String string) {
-        AnagramTree someTree = new AnagramTree(string);
-        return someTree.getAnagrams();
-    }
-
-    private static HashSet<Coordinate> getStartingCoordinates(GameBoard gameBoard, int numTilesPlayed) {
-        HashSet<Coordinate> startingCoordinates = new HashSet<>(100);
-        for (int i = 0; i < 15; i++) {
-            for (int x = 0; x < 15; x++) {
-                //TODO: this
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (AI) - Score: " + score;
-    }
+  @Override
+  public String toString() {
+    return name + " (AI) - Score: " + score;
+  }
 }

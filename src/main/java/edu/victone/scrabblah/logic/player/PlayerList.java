@@ -13,19 +13,18 @@ import java.util.Iterator;
 public class PlayerList implements Iterable<Player> {
     //basically a fixed-size doubly-linked-list with an index
     ArrayList<Player> playerList;
-    ArrayList<Player> activePlayers;
+    //ArrayList<Player> activePlayers;
     private int numberPlayers;
     private int index;
 
     public PlayerList() {
-        playerList = new ArrayList<Player>(4);
-        activePlayers = new ArrayList<Player>(4);
+        playerList = new ArrayList<>(4);
     }
 
     public boolean addPlayer(Player p) {
         if (numberPlayers < 4) {
             playerList.add(p);
-            activePlayers.add(p);
+         //   activePlayers.add(p);
             numberPlayers++;
             return true;
         } else {
@@ -57,9 +56,15 @@ public class PlayerList implements Iterable<Player> {
 
     public ArrayList<Player> getActivePlayers() {
         //returns updated list
-        for (Player p : activePlayers) {
-            if (p.hasResigned()) {
-                activePlayers.remove(p);
+//      Iterator iter = playerList.iterator();
+//      while (iter.hasNext()) {
+//        Player p = (Player) iter.next();
+//
+//      }
+      ArrayList<Player> activePlayers = new ArrayList<>(4);
+        for (Player p : playerList) {
+            if (!p.hasResigned()) {
+                activePlayers.add(p);
             }
         }
         return activePlayers;

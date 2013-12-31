@@ -1,6 +1,6 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.common.Tile;
+import edu.victone.scrabblah.logic.common.*;
 import edu.victone.scrabblah.logic.game.GameBoard;
 
 /**
@@ -10,13 +10,15 @@ import edu.victone.scrabblah.logic.game.GameBoard;
 
 public class GameBoardTest {
 
+  public static void main(String[] args) {
+    GameBoard a = new GameBoard();
+    Coordinate c = new Coordinate(8, 8);
+    Tile t = new Tile('c');
 
-    public static void main(String[] args) {
-        GameBoard a = new GameBoard();
-        a.getCellAt(8,8).setTile((new Tile('c')));
-        System.out.println(a);
+    a.getCellAt(c).setTile(t);
+    System.out.println(a);
 
-        GameBoard b = new GameBoard(a);
-        System.out.println(b);
-    }
+    GameBoard b = new GameBoard(a);
+    System.out.println(b);
+  }
 }

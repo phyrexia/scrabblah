@@ -93,7 +93,7 @@ public class GameState {
         //if valid end turn, return true
         //if not...
 
-        if (Dictionary.contains(w.getString())) {
+        if (Dictionary.contains(w.getPlayedWord())) {
             ArrayList<Tile> tilesToRemove = new ArrayList<>(7);
             GameBoard newBoard = new GameBoard(getGameBoard());
             //are all tiles in the player's tile rack (or on the board?)
@@ -101,8 +101,8 @@ public class GameState {
             if (w.isHorizontal()) {
                 int wx = w.getHead().getX();
                 int y = w.getHead().getY();
-                for (int x = wx, ptr = 0; x < wx + w.getString().length(); x++, ptr++) {
-                    t = new Tile(w.getString().charAt(ptr));
+                for (int x = wx, ptr = 0; x < wx + w.getPlayedWord().length(); x++, ptr++) {
+                    t = new Tile(w.getPlayedWord().charAt(ptr));
                     Coordinate c = new Coordinate(x, y);
                     if (getGameBoard().getCellAt(c).isEmpty()) {
                         if (getCurrentPlayer().getTileRack().contains(t)) {
@@ -112,18 +112,16 @@ public class GameState {
                             statusMessage = "ERROR: Tile " + t + " not in rack";
                             return;
                         }
-                    } else if (getGameBoard().getCellAt(c).getTile().equals(t)) {
-                        //same tile, doesn't have to be in rack, so do nothing...
-                    } else {
-                        statusMessage = "ERROR: Word " + w.getString() + " doesn't fit";
+                    } else if (!getGameBoard().getCellAt(c).getTile().equals(t)) {
+                        statusMessage = "ERROR: Word " + w.getPlayedWord() + " doesn't fit";
                         return;
                     }
                 }
             } else {
                 int x = w.getHead().getX();
                 int wy = w.getHead().getY();
-                for (int y = wy, ptr = 0; y < wy + w.getString().length(); y++, ptr++) {
-                    t = new Tile(w.getString().charAt(ptr));
+                for (int y = wy, ptr = 0; y < wy + w.getPlayedWord().length(); y++, ptr++) {
+                    t = new Tile(w.getPlayedWord().charAt(ptr));
                     Coordinate c = new Coordinate(x, y);
                     if (getGameBoard().getCellAt(c).isEmpty()) {
                         if (getCurrentPlayer().getTileRack().contains(t)) {
@@ -148,14 +146,17 @@ public class GameState {
             for (Tile tile : tilesToRemove) {
                 getCurrentPlayer().getTileRack().removeTile(tile);
             }
+          //todo: nonnull push
+            plays.push(null);
             endTurn();
         } else {
-            statusMessage = "ERROR: " + w.getString() + " is not in the dictionary.";
+            statusMessage = "ERROR: " + w.getPlayedWord() + " is not in the dictionary.";
         }
     }
 
     public void resign() {
         getCurrentPlayer().resign();
+      playerList.incrementIndex();
     }
 
     public void swapTiles(ArrayList<Tile> tilesToSwap) {
@@ -173,6 +174,7 @@ public class GameState {
     }
 
     public void pass() {
+        statusMessage = getCurrentPlayer() + " passes.";
         playerList.incrementIndex();
         turnCounter++;
     }
@@ -210,7 +212,7 @@ public class GameState {
                 }
             }
         } else {
-            //if all but one player has resigned, the player that has not resigned is the winner.
+            //if all but one player has resigned
             ArrayList<Player> activePlayers = playerList.getActivePlayers();
             if (playerList.getActivePlayers().size() == 1) {
                 setWinner(activePlayers.get(0));

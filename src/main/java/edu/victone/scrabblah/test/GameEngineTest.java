@@ -1,7 +1,5 @@
 package edu.victone.scrabblah.test;
 
-import edu.victone.scrabblah.logic.game.GameState;
-
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -11,9 +9,6 @@ import edu.victone.scrabblah.logic.game.GameState;
 public class GameEngineTest {
 
     public static void main(String args[]) {
-        GameState gs = new GameState();
-        boolean b;
-        System.out.println(b = false);
 
     }
 }
