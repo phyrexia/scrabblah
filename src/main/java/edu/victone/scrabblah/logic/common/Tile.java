@@ -1,7 +1,5 @@
 package edu.victone.scrabblah.logic.common;
 
-import java.util.HashMap;
-
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -10,14 +8,6 @@ import java.util.HashMap;
  */
 public class Tile {
     private Character letter;
-    private static HashMap<Character,Integer> values;
-    static {
-        values = new HashMap<>(27);
-        for (int i = 97; i < 124; i++) {
-            values.put((char) i, generateValues((char) i));
-        }
-        values.put(' ', 0);
-    }
 
     public Tile(Character c) {
         letter = Character.toLowerCase(c);
@@ -28,10 +18,6 @@ public class Tile {
     }
 
     public static int getValue(Character c) {
-        return values.get(c);
-    }
-
-    private static int generateValues(Character c) {
         int val;
         switch (c) {
             case 'e':
