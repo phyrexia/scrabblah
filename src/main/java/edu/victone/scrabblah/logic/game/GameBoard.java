@@ -42,8 +42,9 @@ public class GameBoard {
         initBoard();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                if (!gameBoard.getCellAt(j, i).isEmpty()) {
-                    boardCells[i][j].setTile(gameBoard.getCellAt(j, i).getTile());
+              Coordinate c = new Coordinate(j, i);
+                if (!gameBoard.getCellAt(c).isEmpty()) {
+                    boardCells[i][j].setTile(gameBoard.getCellAt(c).getTile());
                 }
             }
         }
@@ -75,7 +76,7 @@ public class GameBoard {
     }
 
     private static ArrayList<Word> getWordsOnBoard(GameBoard gameBoard) {
-        ArrayList<Word> wordsOnBoard = new ArrayList<Word>(50);
+        ArrayList<Word> wordsOnBoard = new ArrayList<>(50);
         StringBuilder stringBuilder;
         Coordinate coord;
         Word word;
@@ -109,23 +110,8 @@ public class GameBoard {
         return wordsOnBoard;
     }
 
-    public BoardCell getCellAt(int x, int y) {
-        return boardCells[y][x];
-    }
-
     public BoardCell getCellAt(Coordinate coord) {
         return boardCells[coord.getY()][coord.getX()];
-    }
-
-    public ArrayList<BoardCell> getCellNeighbors(int x, int y) {
-        ArrayList<BoardCell> retVal = new ArrayList<>(4);
-
-        retVal.add(y > 0 ? getCellAt(x, y - 1) : null);
-        retVal.add(y < 14 ? getCellAt(x, y + 1) : null);
-        retVal.add(x < 14 ? getCellAt(x + 1, y) : null);
-        retVal.add(x > 0 ? getCellAt(x - 1, y) : null);
-
-        return retVal;
     }
 
     public ArrayList<BoardCell> getCellNeighbors(Coordinate coord) {
