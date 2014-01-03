@@ -11,13 +11,13 @@ import java.util.ArrayList;
  * date: 12/24/13
  */
 
-public class Play {
+public class Turn {
   private String player;
   private ArrayList<Word> words;
   private Integer turn;
   private Action action;
 
-  public Play(int turn, String player, ArrayList<Word> words, Action action) {
+  public Turn(int turn, String player, ArrayList<Word> words, Action action) {
     this.turn = turn;
     this.player = player;
     this.words = words;
@@ -26,12 +26,12 @@ public class Play {
 
   @Override
   public String toString() {
-    switch (action) {
-      case PLAY:
+    switch (action.getType()) {
+      case "play":
         break;
-      case SWAP:
+      case "swap":
         break;
-      case PASS:
+      case "pass":
         break;
       default:
         //wtf
@@ -45,7 +45,7 @@ public class Play {
       return false;
     }
 
-    final Play p = (Play) o;
+    final Turn p = (Turn) o;
     return (turn.equals(p.turn) && words.containsAll(p.words) && p.words.containsAll(words) && player.equals(p.player));
   }
 
