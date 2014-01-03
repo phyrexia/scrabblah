@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Time: 4:00 PM
  */
 public class GameBoard {
-    static int[][] cellValues =
+  static int[][] cellValues =
             {{4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4},
                     {0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0},
                     {0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0},
@@ -31,8 +31,6 @@ public class GameBoard {
 
     private BoardCell[][] boardCells = new BoardCell[15][15];
     private ArrayList<Word> wordList;
-
-    public static final Coordinate CENTER = new Coordinate(7, 7);
 
     public GameBoard() {
         initBoard();
@@ -126,16 +124,17 @@ public class GameBoard {
     }
 
     public int getNumOccupiedCells() {
-        int ctr = 0;
+        int counter = 0;
         for (int i = 0; i < 15; i++)
             for (int j = 0; j < 15; j++)
                 if (!boardCells[i][j].isEmpty())
-                    ctr++;
-        return ctr;
+                    counter++;
+        return counter;
     }
 
     public ArrayList<Word> getWordList() {
         return wordList == null ? wordList = getWordsOnBoard(this) : wordList;
+      //return getWordsOnBoard(this);
     }
 
     @Override
