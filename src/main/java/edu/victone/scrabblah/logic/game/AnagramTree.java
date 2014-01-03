@@ -27,7 +27,7 @@ public class AnagramTree {
 
   private static ArrayList<Character> stringToSortedCharArray(String s) {
     ArrayList<Character> charArray = new ArrayList<>(10);
-    for (Character c : s.toUpperCase().toCharArray()) {
+    for (Character c : s.toLowerCase().toCharArray()) {
       charArray.add(c);
     }
     Collections.sort(charArray);
