@@ -13,9 +13,13 @@ public class AIPlayerTest {
   public static void main(String... args) throws FileNotFoundException {
     GameState gameState = new GameState();
     Dictionary.load(new File("sowpods.txt"));
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     TileRack tr = new TileRack();
     AIPlayer ai = new AIPlayer();
-
 
     ai.getTileRack().addTile(new Tile('f'));
     ai.getTileRack().addTile(new Tile('o'));
@@ -25,6 +29,6 @@ public class AIPlayerTest {
     ai.getTileRack().addTile(new Tile('r'));
     ai.getTileRack().addTile(new Tile('e'));
 
-    ai.getNextAction(gameState);
+    System.out.println(ai.getNextAction(gameState).getWord());
   }
 }
