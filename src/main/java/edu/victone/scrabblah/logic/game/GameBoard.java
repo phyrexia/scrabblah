@@ -134,7 +134,6 @@ public class GameBoard {
 
     public ArrayList<Word> getWordList() {
         return wordList == null ? wordList = getWordsOnBoard(this) : wordList;
-      //return getWordsOnBoard(this);
     }
 
     @Override

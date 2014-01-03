@@ -41,7 +41,7 @@ public class GameEngine { //rules, etc
   }
 
   public static boolean centerCellUnoccupied(GameBoard gameBoard) {
-    return gameBoard.getCellAt(GameBoard.CENTER).isEmpty();
+    return gameBoard.getCellAt(Coordinate.CENTER).isEmpty();
   }
 
   public static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
@@ -107,36 +107,42 @@ public class GameEngine { //rules, etc
     //is not in the dictionary,
     //or -1 if all words are in the dictionary
     for (Word w : words) {
-      if (!Dictionary.contains(w.getPlayedWord())) {
+      if (!Dictionary.contains(w.getWord())) {
         return words.indexOf(w);
       }
     }
     return -1;
   }
 
-  public static int computeScore(GameBoard oldBoard, GameBoard currentBoard) {
+  public static int computeScore(GameBoard oldBoard, GameBoard newBoard) {
     int score = 0;
     if (oldBoard == null) { //first turn case
+      System.out.println("never happens...?");
       oldBoard = new GameBoard();
     }
 
-    //get words that are on cb but not ob.
-    ArrayList<Word> newWords = currentBoard.getWordList();
-    newWords.removeAll(oldBoard.getWordList());
+    //get words that are on nb but not ob.
+    ArrayList<Word> wordsToScore = newBoard.getWordList();
+    System.out.println("word list before removal: " + wordsToScore);
 
-    for (Word w : newWords) {
-      score += computeWordScore(w, currentBoard);
+    wordsToScore.removeAll(oldBoard.getWordList());
+    System.out.println("word list after removal: " + wordsToScore);
+
+    for (Word w : wordsToScore) {
+      System.out.println("computing the score for " + w);
+
+      score += computeWordScore(w, new GameBoard());
     }
     return score;
   }
 
-  private static int computeWordScore(Word w, GameBoard gameBoard) {
+  public static int computeWordScore(Word w, GameBoard gameBoard) {
     int wordMultiplier = 1;
     int wordScore = 0;
     int x = w.getHead().getX();
     int y = w.getHead().getY();
 
-    char[] charArr = w.getPlayedWord().toCharArray();
+    char[] charArr = w.getWord().toCharArray();
     for (int i = 0; i < charArr.length; i++) {
       int tileMultiplier = 1;
 
