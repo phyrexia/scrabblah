@@ -10,7 +10,7 @@ import com.google.common.base.Objects;
  */
 
 public class Word {
-  private String playedWord;
+  private String word;
   private Coordinate head;
   private int score;
   private boolean orientation;
@@ -18,8 +18,23 @@ public class Word {
   public Word(Coordinate head, boolean orientation, String string) {
     this.head = head;
     this.orientation = orientation;
-    this.playedWord = string;
+    this.word = string;
 
+  }
+
+  public Word(Coordinate head, boolean orientation) {
+    this.head = head;
+    this.orientation = orientation;
+  }
+
+  public Word(Word w) {
+    this.head = w.getHead();
+    this.orientation = w.orientation;
+    this.word = w.getWord();
+  }
+
+  public void setWord(String s) {
+    word = s;
   }
 
   public void setScore(int s) {
@@ -38,27 +53,31 @@ public class Word {
     return orientation;
   }
 
-  public String getPlayedWord() {
-    return playedWord;
+  public String getWord() {
+    return word;
   }
 
   @Override
   public String toString() {
-    return playedWord + (orientation ? " horizontal at " : " vertical at ") + head;
+    return word + (orientation ? " horizontal at " : " vertical at ") + head;
   }
 
   @Override
   public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
     if (getClass() != o.getClass()) {
       return false;
     }
 
     final Word w = (Word) o;
-    return (playedWord.equals(w.playedWord) && (orientation && w.orientation) && head.equals(w.head));
+    return (word.equals(w.word) && (orientation == w.orientation) && head.equals(w.head));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(playedWord, head, orientation);
+    return Objects.hashCode(word, head, orientation);
   }
 }
