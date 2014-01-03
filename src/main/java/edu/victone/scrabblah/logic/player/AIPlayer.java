@@ -1,5 +1,6 @@
 package edu.victone.scrabblah.logic.player;
 
+import com.google.common.collect.*;
 import edu.victone.scrabblah.logic.common.*;
 import edu.victone.scrabblah.logic.game.*;
 
@@ -18,8 +19,6 @@ public class AIPlayer extends Player {
   private static ArrayList<String> availableNames;
   private static Random random = new Random();
 
-  private Word wordToPlay;
-  private ArrayList<Tile> tilesToSwap;
   private double skillLevel;
 
   public static String getRandomName() {
@@ -87,60 +86,58 @@ public class AIPlayer extends Player {
     }
 
     //sort words by length
-    HashMap<Integer, ArrayList<String>> wordsByLength = sortWordsByLength(possibleWords);
+    HashMap<Integer, ArrayList<String>> wordsByLength = getSortedWordsByLength(possibleWords);
 
     //populate a hashmap, key = wordlength, val = set of halfwords
     HashMap<Integer, ArrayList<Word>> coordsAndOrientations = new HashMap<>(50);
     for (Integer i : wordsByLength.keySet()) {
       coordsAndOrientations.put(i, new ArrayList<Word>());
-      coordsAndOrientations.get(i).addAll(getStartingCoordsAndOrientations(gameState, i));
+      coordsAndOrientations.get(i).addAll(getHalfWords(gameState, i));
     }
 
     //join the two maps
-    ArrayList<Word> wordsToTry = new ArrayList<>(possibleWords.size() * 4);
-    for (Integer i : coordsAndOrientations.keySet()) {
-    //for (int i = 2; i <= 7; i++) {
-      ArrayList<Word> halfWords = coordsAndOrientations.get(i);
+    ArrayList<Word> wordsToScore = new ArrayList<>(possibleWords.size() * 4);
+    HashMap<Integer, ArrayList<Word>> wts = new HashMap<>();
 
+    for (Integer i : coordsAndOrientations.keySet()) {
+      //gonna join these two lists in wts["$i"]
+      ArrayList<Word> halfWords = coordsAndOrientations.get(i);
       ArrayList<String> strings = wordsByLength.get(i);
 
       for (Word w : halfWords) {
         for (String s : strings) {
           Word word = new Word(w);
           word.setWord(s);
-          wordsToTry.add(word);
+          wordsToScore.add(word);
+          if (!wts.containsKey(i)) {
+            wts.put(i, new ArrayList<Word>());
+          }
+          wts.get(i).add(word);
         }
       }
     }
 
-    //sort gameboards by score
-    HashMap<Integer, Word> wordsByScore = new HashMap<>();
-    for (Word w : wordsToTry) {
-
-      //WHAT THE FUCK
-      int score = - GameEngine.computeWordScore(w, gameState.getGameBoard());
-      //WHAT THE FUCK
-
-      System.out.println(w + " scores " + score + " points.");
+    //sort words by score
+    HashMultimap<Integer, Word> wordsByScore = HashMultimap.create(7, 100);
+    for (Word w : wordsToScore) {
+      int score = GameEngine.computeWordScore(w, gameState.getGameBoard());
       wordsByScore.put(score, w);
-    }
-
-    for (Integer score : wordsByScore.keySet()) {
-      //WTF
-      System.out.println(score + " " + wordsByScore.get(score));
     }
 
     //get gameboard with highest score
     int score = 0;
+    Word wordToPlay = null;
     for (Integer i : wordsByScore.keySet()) {
       if (i.compareTo(score) > 0) {
-        wordToPlay = wordsByScore.get(i);
+        //todo: this sorta sucks
+        int s = wordsByScore.get(i).toArray().length;
+        wordToPlay = (Word) wordsByScore.get(i).toArray()[random.nextInt(s)];
       }
     }
-    return Action.PLAY;
+    return new Action("play", wordToPlay);
   }
 
-  private HashMap<Integer, ArrayList<String>> sortWordsByLength(HashSet<String> possibleWords) {
+  private HashMap<Integer, ArrayList<String>> getSortedWordsByLength(HashSet<String> possibleWords) {
     HashMap<Integer, ArrayList<String>> wordsByLength = new HashMap<>(9);
     for (String s : possibleWords) {
       Integer len = s.length();
@@ -155,7 +152,7 @@ public class AIPlayer extends Player {
   /*
   returns Words that are just the head coordinate and the orientation
   */
-  private static ArrayList<Word> getStartingCoordsAndOrientations(GameState gameState, int numTilesPlayed) {
+  private static ArrayList<Word> getHalfWords(GameState gameState, int numTilesPlayed) {
     if (numTilesPlayed > 7 || numTilesPlayed < 0) {
       throw new IllegalArgumentException("Illegal numTilesPlayed");
     }
@@ -171,25 +168,14 @@ public class AIPlayer extends Player {
         unfinishedStartingWords.add(new Word(d, false));
       }
     } else {
+      //todo: get starting coords when it's not the first turn
       //more work involved...
       for (int i = 0; i < 15; i++) {
         for (int x = 0; x < 15; x++) {
-          //TODO: this
         }
       }
     }
     return unfinishedStartingWords;
-  }
-
-  public Word getWordToPlay() {
-//    Word w = wordToPlay;
-//    wordToPlay = null;
-//    return w;
-    return wordToPlay;
-  }
-
-  public ArrayList<Tile> getTilesToSwap() {
-    return tilesToSwap;
   }
 
   @Override
