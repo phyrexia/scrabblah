@@ -21,7 +21,7 @@ public class GameState {
   private Player winner;
 
   private Stack<GameBoard> gameBoards;
-  private Stack<Play> plays;
+  private Stack<Turn> plays;
   private String statusMessage;
   private int turnCounter = 1;
   private boolean active;
