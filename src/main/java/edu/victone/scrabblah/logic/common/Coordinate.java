@@ -1,5 +1,7 @@
 package edu.victone.scrabblah.logic.common;
 
+import com.google.common.base.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -8,6 +10,9 @@ package edu.victone.scrabblah.logic.common;
  */
 
 public class Coordinate {
+
+  public static final Coordinate CENTER = new Coordinate(7, 7);
+
   private final int x, y;
 
   public static int characterToInt(Character value) {
@@ -54,6 +59,6 @@ public class Coordinate {
 
   @Override
   public int hashCode() {
-    return java.util.Objects.hash(x, y);
+    return Objects.hashCode(x, y);
   }
 }
