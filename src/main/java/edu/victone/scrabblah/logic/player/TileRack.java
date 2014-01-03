@@ -66,6 +66,14 @@ public class TileRack implements Iterable<Tile> {
         return rack.size();
     }
 
+  public String arrayToString() {
+    String retVal = "";
+    for (Tile t : rack) {
+      retVal += t.getCharacter().toString();
+    }
+    return retVal;
+  }
+
     @Override
     public Iterator<Tile> iterator() {
         return rack.iterator();
