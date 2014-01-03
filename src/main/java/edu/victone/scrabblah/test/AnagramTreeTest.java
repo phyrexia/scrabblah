@@ -31,8 +31,6 @@ public class AnagramTreeTest {
 
         final long start = System.currentTimeMillis();
         AnagramTree tree = new AnagramTree("foobar");
-        //before pruning has been implemented,
-        // 720 anagrams in 25ms (on a good day apparently?)
 
         System.out.println("generated " + tree.getAnagrams().size() + " anagrams in " + (System.currentTimeMillis() - start) + "ms");
         for (String s : tree.getAnagrams()) System.out.println(s);
