@@ -18,7 +18,7 @@ public class Tile {
     }
 
     public static int getValue(Character c) {
-        int val;
+      int val;
         switch (c) {
             case 'e':
             case 'a':
@@ -64,8 +64,7 @@ public class Tile {
                 val = 0;
                 break;
             default:
-                val = -1;
-                break;
+                throw new IllegalArgumentException("Illegal character");
         }
         return val;
     }
