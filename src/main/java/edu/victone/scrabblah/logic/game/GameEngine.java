@@ -147,10 +147,9 @@ public class GameEngine { //rules, etc
     int x = w.getHead().getX();
     int y = w.getHead().getY();
 
-    char[] charArr = w.getWord().toCharArray();
-    for (int i = 0; i < charArr.length; i++) {
+    char[] wordAsArray = w.getWord().toCharArray();
+    for (int i = 0; i < wordAsArray.length; i++) {
       int tileMultiplier = 1;
-
       Coordinate c = w.isHorizontal() ? new Coordinate(x + i, y) : new Coordinate(x, y + i);
       BoardCell boardCell = gameBoard.getCellAt(c);
 
@@ -162,9 +161,7 @@ public class GameEngine { //rules, etc
         tileMultiplier = multiplier;
       }
 
-      wordScore += (Tile.getValue(charArr[i]) * tileMultiplier);
-
-      boardCell.setUsed(true);
+      wordScore += (Tile.getValue(wordAsArray[i]) * (boardCell.isLocked() ? 1 : tileMultiplier) );
     }
 
     return wordScore * wordMultiplier;

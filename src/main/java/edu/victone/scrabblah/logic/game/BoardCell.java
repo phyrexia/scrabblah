@@ -11,7 +11,7 @@ import edu.victone.scrabblah.logic.common.Tile;
 public class BoardCell {
   private int multiplier;
   private boolean isWordMultiplier;
-  private boolean used;
+  private boolean locked;
   private Tile tile;
 
   public BoardCell(int multiplier, boolean isWordMultiplier) {
@@ -31,12 +31,12 @@ public class BoardCell {
     return tile == null;
   }
 
-  public boolean isUsed() {
-    return used;
+  public boolean isLocked() {
+    return locked;
   }
 
-  public void setUsed(boolean used) {
-    this.used = used;
+  public void setLocked(boolean locked) {
+    this.locked = locked;
   }
 
   public int getMultiplier() {
