@@ -178,4 +178,14 @@ public class GameBoard {
         sb.append(header);
         return sb.toString();
     }
+
+  public void lockCells() {
+    for (int i = 0; i < 15; i++) {
+      for (int j = 0; j < 15; j++) {
+        if (!boardCells[i][j].isEmpty()) {
+          boardCells[i][j].setLocked(true);
+        }
+      }
+    }
+  }
 }
