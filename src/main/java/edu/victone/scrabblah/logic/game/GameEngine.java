@@ -133,6 +133,11 @@ public class GameEngine { //rules, etc
 
       score += computeWordScore(w, new GameBoard());
     }
+
+    if (newBoard.getNumOccupiedCells() - oldBoard.getNumOccupiedCells() == 7) {
+      score += 50; //used all your tiles
+    }
+
     return score;
   }
 
@@ -156,8 +161,12 @@ public class GameEngine { //rules, etc
       } else {
         tileMultiplier = multiplier;
       }
+
       wordScore += (Tile.getValue(charArr[i]) * tileMultiplier);
+
+      boardCell.setUsed(true);
     }
+
     return wordScore * wordMultiplier;
   }
 }
