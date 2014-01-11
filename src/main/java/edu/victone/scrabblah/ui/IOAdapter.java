@@ -26,7 +26,6 @@ public class IOAdapter {
 
   private Scanner scanner;
 
-
   //todo: all strings -> static consts or proper modern java idiom?
 
   private GameState gameState;
@@ -63,27 +62,26 @@ public class IOAdapter {
 
       }
 
-
-
       if (gameState.getCurrentPlayer().isHuman()) {
         output.print("$");
         parse(scanner.nextLine());
       } else {
         //ask ai player what to do
         AIPlayer currentPlayer = (AIPlayer) gameState.getCurrentPlayer();
-        switch (currentPlayer.getNextAction(gameState)) {
-          case PLAY:
-            play(currentPlayer.getWordToPlay());
+        Action a = currentPlayer.getNextAction(gameState);
+        switch (a.getType()) {
+          case "play":
+            play(a.getWord());
             break;
-          case SWAP:
-            swap(currentPlayer.getTilesToSwap());
+          case "swap":
+            //swap(currentPlayer.getTilesToSwap());
             break;
-          case PASS:
-            System.out.println("passing...");
+          case "pass":
+            //System.out.println("passing...");
             gameState.pass();
             break;
           default: {
-            throw new IllegalArgumentException("WTF did that enum come from");
+            throw new IllegalArgumentException("WTF did that action come from");
           }
         }
       }

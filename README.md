@@ -1,7 +1,7 @@
 scrabblah
 =========
 
-Scrabblah, a Scrabble Clone - UAB CIS496 Games & Puzzles Seminar, & BEYOND!!@
+Scrabblah, a Scrabble Engine - UAB CIS496 Games & Puzzles Seminar, & BEYOND!!@
 
 Scrabblah is written in Java 7 with some help from IntelliJ IDEA.  It is, as of
 this writing, a continuing work in progress.  I have lofty goals for this project

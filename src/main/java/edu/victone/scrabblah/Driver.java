@@ -10,7 +10,7 @@ import edu.victone.scrabblah.ui.IOAdapter;
  */
 
 public class Driver {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         System.out.println("Driver has begun to drive...");
         IOAdapter ioa = null;
 
