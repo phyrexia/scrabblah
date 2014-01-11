@@ -194,6 +194,8 @@ public class GameState {
         p.getTileRack().addTile(tileBag.removeTile());
       }
 
+      getGameBoard().lockCells();
+
       playerList.incrementIndex();
       turnCounter++;
     } else {
