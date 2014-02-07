@@ -19,7 +19,6 @@ public class Word {
     this.head = head;
     this.orientation = orientation;
     this.word = string;
-
   }
 
   public Word(Coordinate head, boolean orientation) {

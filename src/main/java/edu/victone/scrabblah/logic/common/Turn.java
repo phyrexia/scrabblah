@@ -5,13 +5,12 @@ import edu.victone.scrabblah.logic.player.*;
 
 import java.util.ArrayList;
 
-
 /**
  * author: vwilson
  * date: 12/24/13
  */
 
-public class Turn {
+public class Turn { //for use with statistical analysis at end of game.  currently unused.
   private String player;
   private ArrayList<Word> words;
   private Integer turn;

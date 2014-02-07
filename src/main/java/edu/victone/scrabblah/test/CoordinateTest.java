@@ -5,6 +5,7 @@ import edu.victone.scrabblah.logic.common.*;
 /**
  * Created by vwilson on 12/30/13!
  */
+@SuppressWarnings("ConstantConditions")
 public class CoordinateTest {
 
   public static void main(String... args) {

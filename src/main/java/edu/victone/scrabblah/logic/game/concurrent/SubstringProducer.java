@@ -12,15 +12,15 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Date: 10/23/13
  * Time: 12:01 AM
  */
-public class Producer implements Runnable {
+public class SubstringProducer implements Runnable {
     private LinkedBlockingQueue<String> substringWorkPool;
 
     private Scanner scanner;
     private HashSet<String> dictionary;
 
-    public Producer(File dictionaryFile,
-                    HashSet<String> dictionary,
-                    LinkedBlockingQueue<String> substringWorkPool) throws FileNotFoundException {
+    public SubstringProducer(File dictionaryFile,
+                             HashSet<String> dictionary,
+                             LinkedBlockingQueue<String> substringWorkPool) throws FileNotFoundException {
         scanner = new Scanner(dictionaryFile);
 
         this.dictionary = dictionary;

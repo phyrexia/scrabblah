@@ -18,7 +18,7 @@ public class GameBoardTest {
     a.getCellAt(c).setTile(t);
     //System.out.println(a);
 
-    GameBoard b = new GameBoard(a);
+    //GameBoard b = new GameBoard(a);
     //System.out.println(b);
   }
 }

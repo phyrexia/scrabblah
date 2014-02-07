@@ -16,7 +16,7 @@ public class GameEngine { //rules, etc
   //todo: eliminate this class by moving the methods to appropriate class files
 
   public static boolean isLegalState(GameState gameState) {
-    if (!Dictionary.isLoaded()) {
+    if (Dictionary.isNotLoaded()) {
       gameState.setStatusMessage("Dictionary not loaded.");
       return false;
     }
@@ -44,7 +44,7 @@ public class GameEngine { //rules, etc
     return gameBoard.getCellAt(Coordinate.CENTER).isEmpty();
   }
 
-  public static boolean isLegalGameBoard(GameBoard gameBoard) { //terrible use of repeated code
+  public static boolean isLegalGameBoard(GameBoard gameBoard) {
     //if first word played is a one-letter word
     if (gameBoard.getNumOccupiedCells() == 1) {
       //gameState.setStatusMessage("Single-letter words are not allowed.");
@@ -57,7 +57,7 @@ public class GameEngine { //rules, etc
     }
 
     //are all letters contiguous?
-    if (!areLettersContiguous(gameBoard)) {
+    if (!areTilesContiguous(gameBoard)) {
       //gameState.setStatusMessage("Invalid tile placement.");
       return false;
     }
@@ -71,15 +71,14 @@ public class GameEngine { //rules, etc
       return false;
     }
 
-    //todo: remove this GameEngine debug code
-    System.out.println("words size: " + gameBoard.getWordList().size());
-    for (Word word : gameBoard.getWordList()) {
-      System.out.println("words from board: " + word);
-    }
+//    System.out.println("words size: " + gameBoard.getWordList().size());
+//    for (Word word : gameBoard.getWordList()) {
+//      System.out.println("words from board: " + word);
+//    }
     return true;
   }
 
-  private static boolean areLettersContiguous(GameBoard gameBoard) {
+  private static boolean areTilesContiguous(GameBoard gameBoard) {
     ArrayList<BoardCell> neighbors;
     BoardCell boardCell;
     Coordinate coord;
@@ -117,25 +116,25 @@ public class GameEngine { //rules, etc
   public static int computeScore(GameBoard oldBoard, GameBoard newBoard) {
     int score = 0;
     if (oldBoard == null) { //first turn case
-      System.out.println("never happens...?");
+      System.out.println("should never happen...");
       oldBoard = new GameBoard();
     }
 
     //get words that are on nb but not ob.
     ArrayList<Word> wordsToScore = newBoard.getWordList();
-    System.out.println("word list before removal: " + wordsToScore);
+    //System.out.println("word list before removal: " + wordsToScore);
 
     wordsToScore.removeAll(oldBoard.getWordList());
-    System.out.println("word list after removal: " + wordsToScore);
+    //System.out.println("word list after removal: " + wordsToScore);
 
     for (Word w : wordsToScore) {
-      System.out.println("computing the score for " + w);
+      //System.out.println("computing the score for " + w);
 
       score += computeWordScore(w, new GameBoard());
     }
 
     if (newBoard.getNumOccupiedCells() - oldBoard.getNumOccupiedCells() == 7) {
-      score += 50; //used all your tiles
+      score += 50; //used all your tiles, hooray
     }
 
     return score;
@@ -160,8 +159,7 @@ public class GameEngine { //rules, etc
       } else {
         tileMultiplier = multiplier;
       }
-
-      wordScore += (Tile.getValue(wordAsArray[i]) * (boardCell.isLocked() ? 1 : tileMultiplier) );
+      wordScore += Tile.getValue(wordAsArray[i]) * ( boardCell.isLocked() ? 1 : tileMultiplier );
     }
 
     return wordScore * wordMultiplier;

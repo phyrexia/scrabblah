@@ -13,7 +13,7 @@ public class PatriciaTrie {
     int size;
 
     public PatriciaTrie() {
-        trees = new HashMap<Character, PatriciaTreeNode>(52, .5f);
+        trees = new HashMap<>(52, .5f);
         for (int i = 65; i < 91; i++) {
             trees.put((char) i, new PatriciaTreeNode((char) i));
         }

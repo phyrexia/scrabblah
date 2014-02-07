@@ -22,9 +22,10 @@ public class TileBag {
         random = new Random(System.nanoTime());
 
         // Place tiles in a tileBag according to the standard scrabble distribution
+
         //todo: different tile distributions
 
-        tileBag = new ArrayList<Tile>();
+        tileBag = new ArrayList<>();
 
         add('j', (reg ? 1 : 2)); //
         add('k', (reg ? 1 : 2)); //
@@ -100,7 +101,7 @@ public class TileBag {
     }
 
     private ArrayList<Tile> removeTiles(int numTiles) {
-        ArrayList<Tile> tileList = new ArrayList<Tile>(numTiles);
+        ArrayList<Tile> tileList = new ArrayList<>(numTiles);
         for (int i = 1; i <= numTiles; i++) {
             tileList.add(removeTile());
         }

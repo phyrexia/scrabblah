@@ -1,6 +1,6 @@
 package edu.victone.scrabblah.logic.game;
 
-import edu.victone.scrabblah.logic.game.concurrent.Producer;
+import edu.victone.scrabblah.logic.game.concurrent.SubstringProducer;
 import edu.victone.scrabblah.logic.game.concurrent.SubstringConsumer;
 
 import java.io.File;
@@ -25,10 +25,10 @@ public class Dictionary {
 
     LinkedBlockingQueue<String> substringWorkPool = new LinkedBlockingQueue<>();
 
-    Producer producer = new Producer(dictionaryFile, dictionary, substringWorkPool);
+    SubstringProducer substringProducer = new SubstringProducer(dictionaryFile, dictionary, substringWorkPool);
     SubstringConsumer substringConsumer = new SubstringConsumer(substringWorkPool, substrings);
 
-    new Thread(producer).start();
+    new Thread(substringProducer).start();
     new Thread(substringConsumer).start();
   }
 
@@ -40,7 +40,7 @@ public class Dictionary {
     return substrings.contains(s);
   }
 
-  public static boolean isLoaded() {
-    return dictionary != null;
+  public static boolean isNotLoaded() {
+    return dictionary == null;
   }
 }

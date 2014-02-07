@@ -26,7 +26,7 @@ public class PatriciaTreeNode {
 
     //head constructor
     public PatriciaTreeNode(char c) {
-        children = new HashSet<PatriciaTreeNode>();
+        children = new HashSet<>();
         depth = 0;
         head = c;
     }
