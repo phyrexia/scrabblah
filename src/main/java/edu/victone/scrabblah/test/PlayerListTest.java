@@ -7,7 +7,8 @@ package edu.victone.scrabblah.test;
  * Time: 10:36 PM
  */
 public class PlayerListTest {
-    public static void main(String args[]) {
+    public static void main(String... args) {
+        //todo: write some tests against the playerlist
 
     }
 }

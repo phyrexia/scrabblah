@@ -10,15 +10,15 @@ import edu.victone.scrabblah.logic.game.GameBoard;
 
 public class GameBoardTest {
 
-  public static void main(String[] args) {
+  public static void main(String... args) {
     GameBoard a = new GameBoard();
     Coordinate c = new Coordinate(8, 8);
     Tile t = new Tile('c');
 
     a.getCellAt(c).setTile(t);
-    System.out.println(a);
+    //System.out.println(a);
 
     GameBoard b = new GameBoard(a);
-    System.out.println(b);
+    //System.out.println(b);
   }
 }

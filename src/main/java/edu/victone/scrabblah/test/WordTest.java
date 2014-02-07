@@ -18,17 +18,17 @@ public class WordTest {
     Word w4 = new Word(new Coordinate(7,6), false, "bat");
 
     if (w.equals(w2)) {
-      System.out.println("pass");
+      System.out.println("wordtest: pass");
 
     } else {
-      System.out.println("fail");
+      System.out.println("wordtest: fail");
     }
 
     if (w3.equals(w4)) {
-      System.out.println("pass");
+      System.out.println("wordtest: pass");
 
     } else {
-      System.out.println("fail");
+      System.out.println("wordtest: fail");
     }
 
     ArrayList<Word> more = new ArrayList<>();
@@ -39,12 +39,12 @@ public class WordTest {
     more.add(w2);
     more.add(w3);
 
-    System.out.println(less);
-    System.out.println(more);
+    //System.out.println(less);
+    //System.out.println(more);
 
-    more.removeAll(less);
+    //more.removeAll(less);
 
-    System.out.println(more);
+    //System.out.println(more);
 
   }
 }

@@ -6,5 +6,6 @@ package edu.victone.scrabblah.test;
 public class DictionaryTest {
 
   public static void main(String... args) {
+      //todo: write some tests against the dictionary
   }
 }

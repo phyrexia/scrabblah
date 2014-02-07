@@ -7,7 +7,6 @@ import edu.victone.scrabblah.logic.common.*;
  */
 public class CoordinateTest {
 
-  @SuppressWarnings("UnusedDeclaration")
   public static void main(String... args) {
     try {
       Coordinate a = new Coordinate(0, 0);

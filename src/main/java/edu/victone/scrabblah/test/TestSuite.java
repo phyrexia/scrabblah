@@ -1,5 +1,7 @@
 package edu.victone.scrabblah.test;
 
+import java.io.FileNotFoundException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vwilson
@@ -11,13 +13,27 @@ public class TestSuite {
     public static void main(String[] args) {
         argTest(args);
 
-        playerListTest();
+        //todo: incorporate all the test classes
 
-    }
+        try {
+            AIPlayerTest.main();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-    private static void playerListTest() {
+        AnagramTreeTest.main();
 
+        CoordinateTest.main();
 
+        DictionaryTest.main();
+
+        GameBoardTest.main();
+
+        GameEngineTest.main();
+
+        PlayerListTest.main();
+
+        WordTest.main();
     }
 
     private static void argTest(String[] args) {

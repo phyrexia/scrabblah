@@ -36,7 +36,7 @@ public class AnagramTreeTest {
         for (String s : tree.getAnagrams()) System.out.println(s);
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new AnagramTreeTest();
         System.out.println("completed without blowing up");
     }

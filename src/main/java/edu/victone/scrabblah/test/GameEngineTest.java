@@ -11,7 +11,7 @@ import edu.victone.scrabblah.logic.game.*;
  */
 public class GameEngineTest {
 
-    public static void main(String args[]) {
+    public static void main(String... args) {
 
       Coordinate a = new Coordinate(7,7);
       Coordinate b = new Coordinate(7,7);
